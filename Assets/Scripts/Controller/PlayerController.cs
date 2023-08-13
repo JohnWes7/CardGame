@@ -9,10 +9,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int cost;
 
 
-    // 玩家卡牌
+    // 玩家卡牌总共卡牌
     [SerializeField] private List<Card> mCards;
 
     // buff
 
+    
+    public PlayerController(int HP, List<Card> carryCards)
+    {
+        this.HP = HP;
+        this.mCards = carryCards;
 
+        // 洗牌
+
+    }
+
+    
 }
