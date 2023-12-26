@@ -12,7 +12,7 @@ public class CardFeildController : MonoBehaviour
         this.player = player;
     }
 
-    public void UpdateShow(List<Card> handCard, )
+    public void UpdateShow(List<Card> handCard)
     {
         
     }
