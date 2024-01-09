@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class CardFeildController : MonoBehaviour
 {
-    [SerializeField] private PlayerController player;
+    [SerializeField] private ShipController player;
     
 
-    public void Init(PlayerController player)
+    public void Init(ShipController player)
     {
         this.player = player;
     }

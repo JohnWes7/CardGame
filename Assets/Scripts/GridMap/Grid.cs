@@ -35,8 +35,6 @@ public class Grid<T>
             {
                 T obj = constructor.Invoke(this, j, i, cellsize, parent);
                 oneline.Add(obj);
-                //Debug.DrawLine(GetWorldPositionLeftBottom(j, i), GetWorldPositionLeftBottom(j, i + 1), Color.white, 100f);
-                //Debug.DrawLine(GetWorldPositionLeftBottom(j, i), GetWorldPositionLeftBottom(j + 1, i), Color.white, 100f);
             }
 
             content.Add(oneline);
@@ -65,9 +63,112 @@ public class Grid<T>
         return offset;
     }
 
+    /// <summary>
+    /// 以最左下角为基准计算所有需要的位置并返回位置的 T
+    /// </summary>
+    /// <param name="leftButtomPos"></param>
+    /// <param name="placePoint"></param>
+    /// <param name="dir"></param>
+    /// <returns></returns>
+    public List<T> GetObjectPlaceByPosList(Vector2Int leftButtomPos, List<Vector2Int> placePoint, Dir dir)
+    {
+        List<T> result = new List<T>();
+        switch (dir)
+        {
+            case Dir.up:
+                foreach (var item in placePoint)
+                {
+                    Vector2Int position = leftButtomPos + item;
+                    result.Add(GetGridObject(position));
+                }
+                break;
+            case Dir.down:
+                foreach (var item in placePoint)
+                {
+                    Vector2Int offset = new Vector2Int(-item.x, -item.y);
+                    Vector2Int position = leftButtomPos + offset;
+                    result.Add(GetGridObject(position));
+                }
+                break;
+            case Dir.left:
+                foreach (var item in placePoint)
+                {
+                    Vector2Int offset = new Vector2Int(-item.y, item.x);
+                    Vector2Int position = leftButtomPos + offset;
+                    result.Add(GetGridObject(position));
+                }
+                break;
+            case Dir.right:
+                foreach (var item in placePoint)
+                {
+                    Vector2Int offset = new Vector2Int(item.y, -item.x);
+                    Vector2Int position = leftButtomPos + offset;
+                    result.Add(GetGridObject(position));
+                }
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    public List<T> GetRectObjectList(Vector2Int leftButtomPos, Vector2Int widthHeight, Dir dir)
+    {
+        List<T> result = new List<T>();
+        switch (dir)
+        {
+            case Dir.up:
+                for (int i = leftButtomPos.y; i < leftButtomPos.y + widthHeight.y; i++)
+                {
+                    for (int j = leftButtomPos.x; j < leftButtomPos.x + widthHeight.x; j++)
+                    {
+                        result.Add(content[j][i]);
+                    }
+                }
+                break;
+            case Dir.down:
+                break;
+            case Dir.left:
+                break;
+            case Dir.right:
+                break;
+            default:
+                break;
+        }
+
+        return result;
+    }
+
     public T GetGridObject(int x, int y)
     {
-        return content[x][y];
+        if (x < 0 || x >= width)
+        {
+            return default(T);
+        }
+        if (y < 0 || y >= height)
+        {
+            return default(T);
+        }
+
+        return content[y][x];
+    }
+
+    public T GetGridObject(Vector2Int pos)
+    {
+        return GetGridObject(pos.x, pos.y);
+    }
+
+    public bool isOutOfBound(Vector2Int pos)
+    {
+        if (pos.x < 0 || pos.x >= width)
+        {
+            return false;
+        }
+        if (pos.y < 0 || pos.y >= height)
+        {
+            return false;
+        }
+        return true;
     }
 
     public Vector2Int LocalPositionToGridXY(Vector3 position)
@@ -131,4 +232,13 @@ public class Grid<T>
         return width;
     }
 
+    public float GetRealWorldWidth()
+    {
+        return width * cellsize;
+    }
+    
+    public float GetRealWorldHeight()
+    {
+        return height * cellsize;
+    }
 }

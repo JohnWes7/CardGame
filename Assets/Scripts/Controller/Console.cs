@@ -8,9 +8,13 @@ public class Console : MonoBehaviour
     [SerializeField]
     private bool active;
 
+    [SerializeField] private UnitSO test1;
+    [SerializeField] private UnitSO test2;
+
     private void Start()
     {
         active = true;
+
     }
 
     private void Update()

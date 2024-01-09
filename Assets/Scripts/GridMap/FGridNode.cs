@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class FGridNode : MonoBehaviour
 {
-    private GameObject content;
-    private int x;
-    private int y;
-    private Grid<FGridNode> grid;
+    [SerializeField] private UnitObject content;
+    [SerializeField] private int x;
+    [SerializeField] private int y;
+    [SerializeField] private Grid<FGridNode> grid;
 
-    public void SetContent(GameObject content)
+    public void SetContent(UnitObject content)
     {
-        content = gameObject;
+        this.content = content;
     }
 
-    public GameObject GetContent()
+    public UnitObject GetContent()
     {
         return content;
+    }
+
+    public bool CanBuild()
+    {
+        return content == null;
     }
 
     public void SetPostion(int x, int y)
@@ -29,4 +34,5 @@ public class FGridNode : MonoBehaviour
     {
         this.grid = grid;
     }
+
 }
