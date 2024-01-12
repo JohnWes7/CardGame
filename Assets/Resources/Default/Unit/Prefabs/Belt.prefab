@@ -208,3 +208,4 @@ MonoBehaviour:
     item: {fileID: 0}
   - point: {x: 0, y: 0.5, z: 0}
     item: {fileID: 0}
+  beltSpeed: 1

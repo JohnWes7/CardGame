@@ -47,5 +47,16 @@ public class UnitObject : MonoBehaviour
     [SerializeField] protected UnitSO unitSO;
     [SerializeField] protected Grid<FGridNode> grid; 
 
-
+    /// <summary>
+    /// 在自己的grid上面找到改位置的unitObject 如果没有则返回null
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
+    public UnitObject GetUnitObjectOnGrid(Vector2Int pos)
+    {
+        var gridobj = grid?.GetGridObject(pos);
+        UnitObject unit = gridobj != null ? gridobj.GetContent() : null;
+        unit = unit == null ? null : unit;
+        return unit;
+    }
 }

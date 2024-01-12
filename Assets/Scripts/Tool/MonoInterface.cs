@@ -7,7 +7,9 @@ using UnityEngine;
 public struct MonoInterface<T>
 {
     [SerializeField] private T interfaceObj;
+#pragma warning disable IDE0052 // 删除未读的私有成员
     [SerializeField] private MonoBehaviour monoBehaviour;
+#pragma warning restore IDE0052 // 删除未读的私有成员
 
     public MonoInterface(T itf)
     {

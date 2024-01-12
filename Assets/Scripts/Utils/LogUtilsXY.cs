@@ -10,13 +10,13 @@ public class LogUtilsXY : MonoBehaviour
         LogOnPos(text, Camera.main.ScreenToWorldPoint(Input.mousePosition) + Vector3.forward, charSize);
     }
 
-    public static void LogOnPos(string text, Vector3 position, float charSize = 0.2f)
+    public static void LogOnPos(string text, Vector3 position, float charSize = 0.2f, float zOffset = -1)
     {
         GameObject obj = new GameObject("log", typeof(TextMesh));
         TextMesh tm = obj.GetComponent<TextMesh>();
         LogUtilsXY logUtils = obj.AddComponent<LogUtilsXY>();
 
-        obj.transform.position = position;
+        obj.transform.position = position + new Vector3(0, 0, zOffset);
 
         tm.text = text;
         tm.characterSize = charSize;

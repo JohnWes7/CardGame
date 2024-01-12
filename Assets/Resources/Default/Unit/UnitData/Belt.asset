@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Belt
   m_EditorClassIdentifier: 
   unitName: Belt
-  prefab: {fileID: 3967607146753847630, guid: 0307a7712e8aeb343abff81d13cb2180, type: 3}
+  prefab: {fileID: 2918591379562714713, guid: 871f9f44b38910b48abf57990f03e1f6, type: 3}
   fullsizeSprite: {fileID: 21300000, guid: 1648c3706007a4c459a4a73876e67a8a, type: 3}
   place:
   - {x: 0, y: 0}
-  dir: 0
+  spriteBLtoCMOffset: {x: 0, y: 0}

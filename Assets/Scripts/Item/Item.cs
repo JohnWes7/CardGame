@@ -9,7 +9,7 @@ public class Item : MonoBehaviour
         GameObject go = Instantiate<GameObject>(itemSO.prefab);
 
         Item item = go.GetComponent<Item>();
-        item = item ?? go.AddComponent<Item>();
+        item = item != null ? item : go.AddComponent<Item>();
 
         //if (item == null)
         //{

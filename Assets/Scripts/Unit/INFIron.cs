@@ -23,12 +23,12 @@ public class INFIron : UnitObject, IShipUnit
 
     public IShipController GetShip()
     {
-        throw new System.NotImplementedException();
+        return shipController.InterfaceObj;
     }
 
     public void SetShip(IShipController sc)
     {
-        throw new System.NotImplementedException();
+        shipController.InterfaceObj = sc;
     }
 
     private void Update()
@@ -46,28 +46,31 @@ public class INFIron : UnitObject, IShipUnit
             Vector2Int insertPosWithDir = TransformGridPoint(position, insertPos, dir);
             LogUtilsXY.LogOnPos($"Try Create IRON On {insertPosWithDir}", transform.position - Vector3.forward);
 
-            UnitObject unit = grid?.GetGridObject(insertPosWithDir)?.GetContent();
+
+            var gridobj = grid?.GetGridObject(insertPosWithDir);
+            UnitObject unit = gridobj != null ? gridobj.GetContent() : null;
 
             // 如果从出口位置是传送带 
-            if (unit is IBelt)
+            if (unit is IBelt && unit != null)
             {
 
                 var belt = unit as IBelt;
-                if (belt.CanInsertItem())
+                Item item = buffer != null ? buffer : Item.CreateItemFactory(ironSO);
+                item.transform.SetParent(transform);
+
+                item.transform.localRotation = Quaternion.identity;
+
+                Vector2Int createLocalPos = (insertPos - new Vector2Int(0, 1)).VecterRotateByDir(dir);
+                item.transform.localPosition = new Vector3(createLocalPos.x, createLocalPos.y);
+                bool result = belt.TryInsertItem(item);
+
+                if (!result)
                 {
-                    Item item = buffer ?? Item.CreateItemFactory(ironSO);
-                    item.transform.SetParent(transform);
-
-                    item.transform.localRotation = Quaternion.identity;
-
-                    Vector2Int createLocalPos = (insertPos - new Vector2Int(0, 1)).VecterRotateByDir(dir);
-                    item.transform.localPosition = new Vector3(createLocalPos.x, createLocalPos.y);
-                    bool result = belt.TryInsertItem(item);
-
-                    if (!result)
-                    {
-                        buffer = item;
-                    }
+                    buffer = item;
+                }
+                else
+                {
+                    buffer = null;
                 }
             }
         }

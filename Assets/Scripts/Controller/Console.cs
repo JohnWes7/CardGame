@@ -4,31 +4,42 @@ using UnityEngine;
 
 public class Console : MonoBehaviour
 {
+    private static Console instance;
 
     [SerializeField]
     private bool active;
 
-    [SerializeField] private UnitSO test1;
-    [SerializeField] private UnitSO test2;
+    public bool Active { get => active; set => active = value; }
+    public static Console Instance { get => instance; }
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
         active = true;
-
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Backspace))
+        if (Input.GetKeyDown(KeyCode.BackQuote))
         {
             active = !active;
         }
 
         if (active)
         {
-            //if (Input.GetKeyDown(KeyCode.Alpha1))
+            //if (Input.GetKeyDown(KeyCode.Q))
             //{
-            //    CreatText("test", Vector3.zero);
+            //    Debug.Log(testgo);
+            //    // 必须要这么用
+            //    Debug.Log(testgo != null ? testgo.name : null);
+            //}
+            //if (Input.GetKeyDown(KeyCode.W))
+            //{
+            //    Destroy(testgo);
             //}
         }
 

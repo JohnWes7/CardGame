@@ -79,6 +79,7 @@ public class ShipBuildingState : IShipBuildingState
             sbc.PrefabShadow.sprite = null;
         }
 
+        // 建造部分
         // 左键建造
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -117,7 +118,11 @@ public class ShipBuildingState : IShipBuildingState
                     item.SetContent(uo);
                 }
 
-                // 如果是飞船unit
+                // 如果是飞船unit 设置为创造这个的飞船
+                if (uo is IShipUnit)
+                {
+                    (uo as IShipUnit).SetShip(sbc.Sc.InterfaceObj);
+                }
             }
             else
             {
