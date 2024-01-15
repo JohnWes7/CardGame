@@ -238,6 +238,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9579816245196d9498cb68ebe8fba162, type: 2}
   - {fileID: 11400000, guid: 0f0651cbc348e284fa9d8a6fe9650c1f, type: 2}
   - {fileID: 11400000, guid: 8e4312845ec1d0c4e9de409301251287, type: 2}
+  - {fileID: 11400000, guid: aa9526dd09045f6448e5b1489bb51908, type: 2}
   buildIndex: 0
   buildDir: 0
   sc:
@@ -1684,7 +1685,7 @@ Canvas:
   m_GameObject: {fileID: 1565882496}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -1692,7 +1693,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -1765,6 +1766,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainShip: {fileID: 49091056}
+  shipBuilding: {fileID: 0}
 --- !u!1 &1609620304
 GameObject:
   m_ObjectHideFlags: 0

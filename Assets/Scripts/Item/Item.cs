@@ -16,9 +16,12 @@ public class Item : MonoBehaviour
         //    item = go.AddComponent<Item>();
         //}
 
+        item.itemSO = itemSO;
         return item;
     }
 
 
     [SerializeField] private ItemSO itemSO;
+
+    public ItemSO ItemSO { get => itemSO; set => itemSO = value; }
 }

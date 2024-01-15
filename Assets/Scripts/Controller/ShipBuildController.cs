@@ -45,18 +45,17 @@ public class ShipBuildController : MonoBehaviour
         go.transform.SetParent(this.transform);
         prefabShadow = go.GetComponent<SpriteRenderer>();
         prefabShadow.color = shadowColor;
-
-
     }
 
     private void Update()
     {
         // 临时控制 按e进入建造右键在ShipBuildState里面退出建造状态
-        if (!isBuilding && Input.GetKeyDown(KeyCode.E))
+        if (!IsBuilding && Input.GetKeyDown(KeyCode.E))
         {
             StartBuild();
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+
+        if (Input.GetKeyDown(KeyCode.F))
         {
             int temp = buildIndex + 1;
             if (temp >= buildUnit.Count)
@@ -64,6 +63,21 @@ public class ShipBuildController : MonoBehaviour
                 temp = 0;
             }
             ChangeIndex(temp);
+        }
+
+        // 点击查看物体详情
+        if (!IsBuilding && Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2Int gridXY = sc.InterfaceObj.Grid.WorldPositionToGridXY(mousePos);
+            LogUtilsXY.LogOnMousePos($"点击到了: {gridXY}");
+
+            var gridobj = sc.InterfaceObj.Grid?.GetGridObject(gridXY);
+            var unit = gridobj == null ? null : gridobj.GetContent();
+            if (unit != null && unit is IBeClick)
+            {
+                (unit as IBeClick).BeClick(this);
+            }
         }
 
         state.Update(this);

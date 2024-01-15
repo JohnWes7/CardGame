@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeltSimple : UnitObject, IShipUnit, IBelt, IBeGrabItem
+public class BeltSimple : UnitObject, IShipUnit, IBelt, IBeGrabItem, IBePutDownGrabItem
 {
 
     [SerializeField] private Item item;
@@ -29,7 +29,7 @@ public class BeltSimple : UnitObject, IShipUnit, IBelt, IBeGrabItem
             return true;
         }
 
-        if (Console.Instance.Active) LogUtilsXY.LogOnPos("无法添加", transform.position);
+        //if (Console.Instance.Active) LogUtilsXY.LogOnPos("无法添加", transform.position);
         return false;
     }
 
@@ -113,5 +113,10 @@ public class BeltSimple : UnitObject, IShipUnit, IBelt, IBeGrabItem
 
         item = null;
         return false;
+    }
+
+    public bool TryPutDownItem(Item item)
+    {
+        return TryInsertItem(item);
     }
 }

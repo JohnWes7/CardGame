@@ -7,7 +7,7 @@ public class LogUtilsXY : MonoBehaviour
     public static float duration = 1f;
     public static void LogOnMousePos(string text, float charSize = 0.2f)
     {
-        LogOnPos(text, Camera.main.ScreenToWorldPoint(Input.mousePosition) + Vector3.forward, charSize);
+        LogOnPos(text, Camera.main.ScreenToWorldPoint(Input.mousePosition) + 2 * Vector3.forward, charSize);
     }
 
     public static void LogOnPos(string text, Vector3 position, float charSize = 0.2f, float zOffset = -1)

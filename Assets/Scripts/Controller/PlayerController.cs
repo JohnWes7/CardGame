@@ -5,15 +5,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] ShipController mainShip;
+    [SerializeField] ShipBuildController shipBuilding;
     [SerializeField] IPlayerState playerState;
-
-    private void Start()
-    {
-       
-    }
-
-    private void Update()
-    {
-        
-    }
 }

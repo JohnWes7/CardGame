@@ -11,3 +11,14 @@ public interface IBeGrabItem
     /// <returns></returns>
     public bool TryGrabItem(out Item item);
 }
+
+public interface IBePutDownGrabItem
+{
+    /// <summary>
+    /// 能放下Item
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns></returns>
+    public bool TryPutDownItem(Item item);
+}
+

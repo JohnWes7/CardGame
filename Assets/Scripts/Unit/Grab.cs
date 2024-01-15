@@ -29,22 +29,61 @@ public class Grab : UnitObject, IGrab
             case GrabState.TryGrab:
                 if (TryGrab())
                 {
+                    // 如果成功抓取则切换状态并且开始执行移动动画
                     state = GrabState.Grabing;
-                    item.transform.DOLocalMove(new Vector3(0, 0.5f), 0.3f).OnComplete(() => { this.state = GrabState.TryGrab; });
+                    // 移动动画结束开始tryputdown
+                    item.transform.DOLocalMove(new Vector3(0, 0.5f), 0.3f).OnComplete(() => { this.state = GrabState.TryPutDown; });
                 }
                 break;
             case GrabState.Grabing:
                 break;
             case GrabState.TryPutDown:
-                // TODO : 放下
+                if (TryPutDown())
+                {
+                    // 如果成功放下改为抓取状态
+                    state = GrabState.TryGrab;
+                }
                 break;
             default:
                 break;
         }
     }
 
+    public bool TryPutDown()
+    {
+        // 错误 没有物品当作已经放下了
+        if (item == null)
+        {
+            return true;
+        }
+
+        Vector2Int downPos = position + Vector2Int.up.VecterRotateByDir(dir);
+        var upsideUnit = GetUnitObjectOnGrid(downPos);
+        //Debug.Log(downPos);
+
+        if (upsideUnit == null)
+        {
+            return false;
+        }
+
+        if (upsideUnit is IBePutDownGrabItem)
+        {
+            var upsidePutDownUnit = upsideUnit as IBePutDownGrabItem;
+            //Debug.Log("尝试放下");
+            if (upsidePutDownUnit.TryPutDownItem(this.item))
+            {
+                item = null;
+                if (Console.Instance.Active) LogUtilsXY.LogOnPos("放下物品", transform.position);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public bool TryGrab()
     {
+        // 错误 如果已经有了物品就当作抓取到了 防止方法触发两次
         if (item != null)
         {
             return true;
@@ -66,6 +105,7 @@ public class Grab : UnitObject, IGrab
                 this.item = item;
                 item.transform.SetParent(transform);
                 if (Console.Instance.Active) LogUtilsXY.LogOnPos("抓取到物品", transform.position);
+                return true;
             }
         }
 
