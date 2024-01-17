@@ -24,6 +24,7 @@ public class ShipNotBuildingState : IShipBuildingState
 
         // 退出建造建造方向复原
         sbc.BuildDir = Dir.up;
+        sbc.Sc.InterfaceObj.SetAllFGridNodeBackGroundActive(false);
     }
 
     public void QuitBuild(ShipBuildController sbc)

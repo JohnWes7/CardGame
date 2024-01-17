@@ -119,4 +119,9 @@ public class BeltSimple : UnitObject, IShipUnit, IBelt, IBeGrabItem, IBePutDownG
     {
         return TryInsertItem(item);
     }
+
+    ItemSO IBeGrabItem.Peek()
+    {
+        return item == null ? null : item.ItemSO;
+    }
 }

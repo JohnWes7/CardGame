@@ -60,7 +60,7 @@ public class INFIron : UnitObject, IShipUnit
 
                 item.transform.localRotation = Quaternion.identity;
 
-                Vector2Int createLocalPos = (insertPos - new Vector2Int(0, 1)).VecterRotateByDir(dir);
+                Vector2Int createLocalPos = (insertPos - new Vector2Int(0, 1));
                 item.transform.localPosition = new Vector3(createLocalPos.x, createLocalPos.y);
                 bool result = belt.TryInsertItem(item);
 

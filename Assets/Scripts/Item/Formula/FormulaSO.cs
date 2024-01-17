@@ -12,9 +12,9 @@ public class FormulaSO : ScriptableObject
         public int value;
     }
 
-    [SerializeField] public List<ItemSOValue> rawMat;
-    [SerializeField] public List<ItemSOValue> outPut;
-    [SerializeField] public float timeNeed_Second;
+    public List<ItemSOValue> rawMat;
+    public List<ItemSOValue> outPut;
+    public float timeNeed_Second;
 
     public override string ToString()
     {

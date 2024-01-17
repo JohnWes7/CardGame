@@ -8,6 +8,7 @@ public class FGridNode : MonoBehaviour
     [SerializeField] private int x;
     [SerializeField] private int y;
     [SerializeField] private Grid<FGridNode> grid;
+    [SerializeField] private SpriteRenderer background;
 
     public void SetContent(UnitObject content)
     {
@@ -35,4 +36,16 @@ public class FGridNode : MonoBehaviour
         this.grid = grid;
     }
 
+    public void SetBackGroundActive(bool value)
+    {
+        if (background == null)
+        {
+            background = GetComponentInChildren<SpriteRenderer>(true);
+        }
+
+        if (background)
+        {
+            background.enabled = value;
+        }
+    }
 }

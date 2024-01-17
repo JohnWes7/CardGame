@@ -100,15 +100,41 @@ public class Grab : UnitObject, IGrab
         if (downSideUnit is IBeGrabItem)
         {
             IBeGrabItem downBeGrab = downSideUnit as IBeGrabItem;
-            if (downBeGrab.TryGrabItem(out Item item))
+
+            // 抓取的目的地
+            UnitObject upsideUnit = GetUnitObjectOnGrid(position + Vector2Int.up.VecterRotateByDir(dir));
+            IBePutDownGrabItem upsidBePutDownGrabItem = (upsideUnit != null && upsideUnit is IBePutDownGrabItem) ? upsideUnit as IBePutDownGrabItem : null;
+
+            // 要抓取的物品一定要是需要的才行
+            if (IsItemInNeed(downBeGrab, upsidBePutDownGrabItem))
             {
-                this.item = item;
-                item.transform.SetParent(transform);
-                if (Console.Instance.Active) LogUtilsXY.LogOnPos("抓取到物品", transform.position);
-                return true;
+                if (downBeGrab.TryGrabItem(out Item item))
+                {
+                    this.item = item;
+                    item.transform.SetParent(transform);
+                    if (Console.Instance.Active) LogUtilsXY.LogOnPos("抓取到物品", transform.position);
+                    return true;
+                }
             }
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// 如果bePutDown没有物体或者beputdown返回的inneed是null 不管能抓到什么物体都算是需要的物品
+    /// </summary>
+    /// <param name="beGrabItem"></param>
+    /// <param name="bePutDownGrab"></param>
+    /// <returns></returns>
+    private bool IsItemInNeed(IBeGrabItem beGrabItem, IBePutDownGrabItem bePutDownGrab)
+    {
+        var needList = bePutDownGrab?.ItemSOInNeed();
+        if (needList == null)
+        {
+            return true;
+        }
+
+        return needList.Contains(beGrabItem.Peek());
     }
 }

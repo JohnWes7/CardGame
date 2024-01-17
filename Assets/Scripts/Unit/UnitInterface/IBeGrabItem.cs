@@ -10,6 +10,7 @@ public interface IBeGrabItem
     /// <param name="item"></param>
     /// <returns></returns>
     public bool TryGrabItem(out Item item);
+    public ItemSO Peek();
 }
 
 public interface IBePutDownGrabItem
@@ -20,5 +21,14 @@ public interface IBePutDownGrabItem
     /// <param name="item"></param>
     /// <returns></returns>
     public bool TryPutDownItem(Item item);
+
+    /// <summary>
+    /// 标记需要什么类型的物品
+    /// </summary>
+    /// <returns>如果 return null 说明可以要任何东西</returns>
+    public List<ItemSO> ItemSOInNeed()
+    {
+        return null;
+    }
 }
 

@@ -16,7 +16,14 @@ public class ShipController : MonoBehaviour, IShipController
     [SerializeField] private bool showGridLine = true;
 
     [Header("初始化")]
-    [SerializeField] private UnitSO core;
+    [SerializeField] private UnitSO coreSO;
+    [SerializeField] private UnitObject coreUnit;
+    [SerializeField] private Sprite fgNodeSprite;
+
+    // 如果有核心才能驱动飞船自带的电量和引擎
+    [Header("属性")]
+    [SerializeField] private float speed;
+
 
     public Grid<FGridNode> Grid { get => grid; set => grid = value; }
 
@@ -31,11 +38,11 @@ public class ShipController : MonoBehaviour, IShipController
 
         // 生成核心
         Vector2Int coreInitPos = new((gridWidth / 2) - 1, (gridHeight / 2) - 1);
-        List<FGridNode> place = grid.GetObjectPlaceByPosList(coreInitPos, core.place, Dir.up);
-        UnitObject unitObject = UnitObject.UnitFactoryCreate(core, coreInitPos, Dir.up, grid);
+        List<FGridNode> place = grid.GetObjectPlaceByPosList(coreInitPos, coreSO.place, Dir.up);
+        coreUnit = UnitObject.UnitFactoryCreate(coreSO, coreInitPos, Dir.up, grid);
         foreach (var item in place)
         {
-            item.SetContent(unitObject);
+            item.SetContent(coreUnit);
         }
 
 
@@ -85,11 +92,20 @@ public class ShipController : MonoBehaviour, IShipController
     /// <param name="cellsize"></param>
     /// <param name="parent"></param>
     /// <returns></returns>
-    public static FGridNode FGridNodeConstructorFunc(Grid<FGridNode> grid, int x, int y, float cellsize, GameObject parent)
+    public FGridNode FGridNodeConstructorFunc(Grid<FGridNode> grid, int x, int y, float cellsize, GameObject parent)
     {
         GameObject go = new(x + "," + y, typeof(FGridNode));
         go.transform.SetParent(parent.transform);
         go.transform.localPosition = grid.GetLocalPositionMiddleCenter(x, y);
+
+        // 添加底色
+        GameObject backGround = new GameObject("BackGround");
+        SpriteRenderer spriteRenderer = backGround.AddComponent<SpriteRenderer>();
+        spriteRenderer.sprite = fgNodeSprite;
+        spriteRenderer.color = new Color(1, 1, 1, 0.2f);
+
+        backGround.transform.SetParent(go.transform);
+        backGround.transform.localPosition = new Vector3(0, 0, 1);
 
         go.AddComponent<TextMesh>();
         TextMesh textMesh = go.GetComponent<TextMesh>();
@@ -101,5 +117,19 @@ public class ShipController : MonoBehaviour, IShipController
         fGridNode.SetPostion(x, y);
 
         return fGridNode;
+    }
+
+    public void SetAllFGridNodeBackGroundActive(bool value)
+    {
+        foreach (List<FGridNode> fgndoeList in grid.Content)
+        {
+            foreach (FGridNode node in fgndoeList)
+            {
+                if (node != null)
+                {
+                    node.SetBackGroundActive(value);
+                }
+            }
+        }
     }
 }

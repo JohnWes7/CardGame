@@ -14,7 +14,7 @@ public class Grid<T>
     private GameObject parent;
     private List<List<T>> content;
 
-
+    public List<List<T>> Content { get => content; }
 
     public Grid (int height, int width, float cellsize, Func<Grid<T>, int, int, float, GameObject, T> constructor, Vector3 originalPos)
     {
@@ -158,7 +158,7 @@ public class Grid<T>
         return GetGridObject(pos.x, pos.y);
     }
 
-    public bool isOutOfBound(Vector2Int pos)
+    public bool IsOutOfBound(Vector2Int pos)
     {
         if (pos.x < 0 || pos.x >= width)
         {

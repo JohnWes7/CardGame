@@ -26,6 +26,7 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
         [SerializeField] private FormulaSO curFormula;
         [SerializeField] private List<ItemInfo> rawMat;
         [SerializeField] private List<ItemInfo> outPut;
+        [SerializeField] private List<ItemSO> rawItemSOList;
 
         public ConstructorFormulaMatInfo(FormulaSO formulaSO)
         {
@@ -37,6 +38,7 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
             curFormula = formulaSO;
             rawMat ??= new List<ItemInfo>();
             outPut ??= new List<ItemInfo>();
+            rawItemSOList ??= new List<ItemSO>();
             Clear();
 
             if (curFormula == null)
@@ -44,9 +46,10 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
                 return;
             }
 
-            foreach (var item in formulaSO.rawMat)
+            foreach (FormulaSO.ItemSOValue item in formulaSO.rawMat)
             {
                 rawMat.Add(new ItemInfo(item));
+                rawItemSOList.Add(item.item);
             }
 
             foreach (var item in formulaSO.outPut)
@@ -58,6 +61,7 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
         public List<ItemInfo> RawMat { get => rawMat; set => rawMat = value; }
         public List<ItemInfo> OutPut { get => outPut; set => outPut = value; }
         public FormulaSO CurFormula { get => curFormula; set => curFormula = value; }
+        public List<ItemSO> RawItemSOList { get => rawItemSOList; set => rawItemSOList = value; }
 
         public bool ContainRawMat(ItemSO item)
         {
@@ -89,12 +93,11 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
             return null;
         }
 
-
-
         public void Clear()
         {
             rawMat?.Clear();
             outPut?.Clear();
+            rawItemSOList?.Clear();
         }
 
         public override string ToString()
@@ -277,6 +280,11 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
         //return false;
     }
 
+    public List<ItemSO> ItemSOInNeed()
+    {
+        return matInfo.RawItemSOList;
+    }
+
     public void SetShip(IShipController sc)
     {
         ship.InterfaceObj = sc;
@@ -351,5 +359,23 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
         {
             Destroy(constructorPanel.InterfaceObj.GetGameObject());
         }
+    }
+
+    public ItemSO Peek()
+    {
+        if (matInfo.CurFormula == null)
+        {
+            return null;
+        }
+
+        foreach (var iteminfo in matInfo.OutPut)
+        {
+            if (iteminfo.curNum > 0)
+            {
+                return iteminfo.itemAndNeedValue.item;
+            }
+        }
+
+        return null;
     }
 }

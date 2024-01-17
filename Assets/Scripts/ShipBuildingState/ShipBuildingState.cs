@@ -34,6 +34,8 @@ public class ShipBuildingState : IShipBuildingState
         sbc.IsBuilding = true;
         sbc.PrefabShadow.sprite = sbc.BuildUnit[sbc.BuildIndex].fullsizeSprite;
         sbc.PrefabShadow.transform.localRotation = DirExtensions.DirToQuaternion(sbc.BuildDir);
+        // 打开底色
+        sbc.Sc.InterfaceObj.SetAllFGridNodeBackGroundActive(true);
     }
 
     public void Update(ShipBuildController sbc)

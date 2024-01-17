@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 3967607146753847632}
   - component: {fileID: 3967607146753847633}
   - component: {fileID: 3426303920398527804}
+  - component: {fileID: 3588998147842104057}
   m_Layer: 0
   m_Name: Belt
   m_TagString: Untagged
@@ -187,25 +188,42 @@ MonoBehaviour:
   unitSO: {fileID: 0}
   ship:
     monoBehaviour: {fileID: 0}
+  itemList: []
+  testTimer: 0
   points:
   - point: {x: 0, y: -0.4, z: 0}
-    item: {fileID: 0}
   - point: {x: 0, y: -0.3, z: 0}
-    item: {fileID: 0}
   - point: {x: 0, y: -0.2, z: 0}
-    item: {fileID: 0}
   - point: {x: 0, y: -0.1, z: 0}
-    item: {fileID: 0}
   - point: {x: 0, y: 0, z: 0}
-    item: {fileID: 0}
   - point: {x: 0, y: 0.1, z: 0}
-    item: {fileID: 0}
   - point: {x: 0, y: 0.2, z: 0}
-    item: {fileID: 0}
   - point: {x: 0, y: 0.3, z: 0}
-    item: {fileID: 0}
   - point: {x: 0, y: 0.4, z: 0}
-    item: {fileID: 0}
   - point: {x: 0, y: 0.5, z: 0}
-    item: {fileID: 0}
-  beltSpeed: 1
+--- !u!61 &3588998147842104057
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3967607146753847630}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
