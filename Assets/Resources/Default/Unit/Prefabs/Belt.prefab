@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6638291456762871971}
   - component: {fileID: 1710615684886409561}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BeltImag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 3967607146753847633}
   - component: {fileID: 3426303920398527804}
   - component: {fileID: 3588998147842104057}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Belt
   m_TagString: Untagged
   m_Icon: {fileID: 0}

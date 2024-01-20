@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8629567346221064802}
   - component: {fileID: 4191326900711079276}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7993182554989919753}
   - component: {fileID: 8813657109306942084}
-  m_Layer: 0
+  - component: {fileID: 4914793099513489923}
+  m_Layer: 7
   m_Name: Constructor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +136,38 @@ MonoBehaviour:
   ship:
     monoBehaviour: {fileID: 0}
   allFormula: {fileID: 11400000, guid: 01a34f3b5cc6b484e97f4611a3361e1d, type: 2}
-  curFormula: {fileID: 0}
   constructorPanel:
     monoBehaviour: {fileID: 0}
   panelPrefab: {fileID: 6276315230353854342, guid: 92f968cfc7c44804ebf137d0a97bd2fd, type: 3}
+  matInfo:
+    curFormula: {fileID: 0}
+    rawMat: []
+    outPut: []
+    rawItemSOList: []
+  timer: 0
+--- !u!61 &4914793099513489923
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7993182554989919755}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.5, y: 0.5}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2}
+  m_EdgeRadius: 0

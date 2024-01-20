@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private int hp;
-    [SerializeField] private float speed;
-    [SerializeField] private EnemySO data;
+    [SerializeField] protected int bodyHP;
+    [SerializeField] protected float speed;
+    [SerializeField] protected EnemySO enemySO;
+
+    public int BodyHP { get => bodyHP; set => bodyHP = value; }
+    public float Speed { get => speed; set => speed = value; }
+    public EnemySO Data { get => enemySO; set => enemySO = value; }
 
     public static Enemy CreateEnemyFactory(EnemySO data)
     {
@@ -17,7 +21,7 @@ public class Enemy : MonoBehaviour
         // 没有的话就安装一个
         enemy = enemy == null ? gameObject.AddComponent<Enemy>() : enemy;
 
-        enemy.hp = data.maxHP;
+        enemy.bodyHP = data.maxHP;
         enemy.speed = data.speed;
 
         return enemy;

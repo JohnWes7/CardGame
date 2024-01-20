@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5863468567514895219}
   - component: {fileID: 4763661016180253959}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Img
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,8 @@ GameObject:
   m_Component:
   - component: {fileID: 585885598378009668}
   - component: {fileID: 3713499608372385131}
-  m_Layer: 0
+  - component: {fileID: 2571510319788597426}
+  m_Layer: 7
   m_Name: INF_Iron
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +135,34 @@ MonoBehaviour:
   unitSO: {fileID: 0}
   shipController:
     monoBehaviour: {fileID: 0}
+  buffer: {fileID: 0}
   ironSO: {fileID: 11400000, guid: ac6f53da63f83fd4cbf87facc340a53f, type: 2}
   timer: 0
   creatTime: 2
   insertPos: {x: 1, y: 2}
+--- !u!61 &2571510319788597426
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8017533352202596103}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.5, y: 0.5}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2}
+  m_EdgeRadius: 0

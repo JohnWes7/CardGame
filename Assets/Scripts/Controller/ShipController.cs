@@ -31,7 +31,6 @@ public class ShipController : MonoBehaviour, IShipController
     {
         grid = new Grid<FGridNode>(gridWidth, gridHeight, 1, FGridNodeConstructorFunc, Vector3.zero);
 
-
         // grid实体设置到飞船下面
         grid.GetParent().transform.SetParent(transform);
         grid.GetParent().transform.localPosition = new Vector3(-grid.GetRealWorldWidth() / 2, -grid.GetRealWorldHeight() / 2);
@@ -45,7 +44,7 @@ public class ShipController : MonoBehaviour, IShipController
             item.SetContent(coreUnit);
         }
 
-
+        SetAllFGridNodeBackGroundActive(false);
     }
 
     private void Update()

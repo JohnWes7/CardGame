@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BeltSimple : UnitObject, IShipUnit, IBelt, IBeGrabItem, IBePutDownGrabItem
 {
-
     [SerializeField] private Item item;
     [SerializeField] private MonoInterface<IShipController> ship;
     [SerializeField] private bool pauseOneTick;

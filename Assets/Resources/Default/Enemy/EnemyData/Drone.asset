@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a6d3e65170fe9548932bbd2e9b671a0, type: 3}
   m_Name: Drone
   m_EditorClassIdentifier: 
-  speed: 0
+  speed: 1
   prefab: {fileID: 0}
+  warningRange: 20
+  warningLayer:
+    serializedVersion: 2
+    m_Bits: 128
