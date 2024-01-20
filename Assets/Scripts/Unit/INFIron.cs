@@ -15,6 +15,7 @@ public class INFIron : UnitObject, IShipUnit
     [SerializeField] private float timer;
     [SerializeField] private float creatTime;
     [SerializeField] private Vector2Int insertPos;
+ 
 
     public static Vector2Int TransformGridPoint(Vector2Int LeftButtomPos, Vector2Int Pos, Dir dir)
     {
@@ -29,6 +30,11 @@ public class INFIron : UnitObject, IShipUnit
     public void SetShip(IShipController sc)
     {
         shipController.InterfaceObj = sc;
+    }
+
+    protected bool CheckBagItemValue()
+    {
+        return true;
     }
 
     private void Update()

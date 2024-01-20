@@ -53,6 +53,15 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Value"",
+                    ""id"": ""de7f572a-2fb8-4677-9abc-86ebbeeeddd6"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -124,7 +133,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f3bb5665-0bb5-4e8c-9b40-586b8e3121ac"",
+                    ""id"": ""ae9744fc-ad40-4042-87b7-254b0467be6a"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -132,6 +141,39 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""action"": ""CheckUnitDetail"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""d05e7cd2-487a-460e-86eb-1a06a3afb474"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""39fc4173-428b-418b-8dca-9589285afdb9"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""9f2201c6-fd3a-4c5a-a310-d32140a37a4c"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -183,6 +225,15 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Value"",
+                    ""id"": ""1546ea7a-1331-4d6c-8881-0496a5199551"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -284,6 +335,39 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""action"": ""ChangeBuildUnit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""7c2cc4c7-22e0-49ca-b5de-1e78f9818f3b"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""6bece98c-083a-466c-9152-1ca36ab4b345"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""1f438c37-305a-49fe-a57c-00f190b4fad6"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -295,6 +379,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         m_Move_Move = m_Move.FindAction("Move", throwIfNotFound: true);
         m_Move_StartBuild = m_Move.FindAction("StartBuild", throwIfNotFound: true);
         m_Move_CheckUnitDetail = m_Move.FindAction("CheckUnitDetail", throwIfNotFound: true);
+        m_Move_Zoom = m_Move.FindAction("Zoom", throwIfNotFound: true);
         // Build
         m_Build = asset.FindActionMap("Build", throwIfNotFound: true);
         m_Build_Move = m_Build.FindAction("Move", throwIfNotFound: true);
@@ -302,6 +387,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         m_Build_LeftBuild = m_Build.FindAction("LeftBuild", throwIfNotFound: true);
         m_Build_RotateDir = m_Build.FindAction("RotateDir", throwIfNotFound: true);
         m_Build_ChangeBuildUnit = m_Build.FindAction("ChangeBuildUnit", throwIfNotFound: true);
+        m_Build_Zoom = m_Build.FindAction("Zoom", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -364,6 +450,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
     private readonly InputAction m_Move_Move;
     private readonly InputAction m_Move_StartBuild;
     private readonly InputAction m_Move_CheckUnitDetail;
+    private readonly InputAction m_Move_Zoom;
     public struct MoveActions
     {
         private @ControlMap m_Wrapper;
@@ -371,6 +458,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Move_Move;
         public InputAction @StartBuild => m_Wrapper.m_Move_StartBuild;
         public InputAction @CheckUnitDetail => m_Wrapper.m_Move_CheckUnitDetail;
+        public InputAction @Zoom => m_Wrapper.m_Move_Zoom;
         public InputActionMap Get() { return m_Wrapper.m_Move; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -389,6 +477,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @CheckUnitDetail.started -= m_Wrapper.m_MoveActionsCallbackInterface.OnCheckUnitDetail;
                 @CheckUnitDetail.performed -= m_Wrapper.m_MoveActionsCallbackInterface.OnCheckUnitDetail;
                 @CheckUnitDetail.canceled -= m_Wrapper.m_MoveActionsCallbackInterface.OnCheckUnitDetail;
+                @Zoom.started -= m_Wrapper.m_MoveActionsCallbackInterface.OnZoom;
+                @Zoom.performed -= m_Wrapper.m_MoveActionsCallbackInterface.OnZoom;
+                @Zoom.canceled -= m_Wrapper.m_MoveActionsCallbackInterface.OnZoom;
             }
             m_Wrapper.m_MoveActionsCallbackInterface = instance;
             if (instance != null)
@@ -402,6 +493,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @CheckUnitDetail.started += instance.OnCheckUnitDetail;
                 @CheckUnitDetail.performed += instance.OnCheckUnitDetail;
                 @CheckUnitDetail.canceled += instance.OnCheckUnitDetail;
+                @Zoom.started += instance.OnZoom;
+                @Zoom.performed += instance.OnZoom;
+                @Zoom.canceled += instance.OnZoom;
             }
         }
     }
@@ -415,6 +509,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
     private readonly InputAction m_Build_LeftBuild;
     private readonly InputAction m_Build_RotateDir;
     private readonly InputAction m_Build_ChangeBuildUnit;
+    private readonly InputAction m_Build_Zoom;
     public struct BuildActions
     {
         private @ControlMap m_Wrapper;
@@ -424,6 +519,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         public InputAction @LeftBuild => m_Wrapper.m_Build_LeftBuild;
         public InputAction @RotateDir => m_Wrapper.m_Build_RotateDir;
         public InputAction @ChangeBuildUnit => m_Wrapper.m_Build_ChangeBuildUnit;
+        public InputAction @Zoom => m_Wrapper.m_Build_Zoom;
         public InputActionMap Get() { return m_Wrapper.m_Build; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -448,6 +544,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @ChangeBuildUnit.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnChangeBuildUnit;
                 @ChangeBuildUnit.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnChangeBuildUnit;
                 @ChangeBuildUnit.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnChangeBuildUnit;
+                @Zoom.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnZoom;
+                @Zoom.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnZoom;
+                @Zoom.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnZoom;
             }
             m_Wrapper.m_BuildActionsCallbackInterface = instance;
             if (instance != null)
@@ -467,6 +566,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @ChangeBuildUnit.started += instance.OnChangeBuildUnit;
                 @ChangeBuildUnit.performed += instance.OnChangeBuildUnit;
                 @ChangeBuildUnit.canceled += instance.OnChangeBuildUnit;
+                @Zoom.started += instance.OnZoom;
+                @Zoom.performed += instance.OnZoom;
+                @Zoom.canceled += instance.OnZoom;
             }
         }
     }
@@ -476,6 +578,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnStartBuild(InputAction.CallbackContext context);
         void OnCheckUnitDetail(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
     }
     public interface IBuildActions
     {
@@ -484,5 +587,6 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         void OnLeftBuild(InputAction.CallbackContext context);
         void OnRotateDir(InputAction.CallbackContext context);
         void OnChangeBuildUnit(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
     }
 }
