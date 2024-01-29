@@ -7,6 +7,9 @@ public class BeltSimple : UnitObject, IShipUnit, IBelt, IBeGrabItem, IBePutDownG
     [SerializeField] private Item item;
     [SerializeField] private MonoInterface<IShipController> ship;
     [SerializeField] private bool pauseOneTick;
+    
+
+    public Dir Dir { get => dir; set => dir = value; }
 
     public bool CanInsertItem()
     {
@@ -93,6 +96,13 @@ public class BeltSimple : UnitObject, IShipUnit, IBelt, IBeGrabItem, IBePutDownG
         if (nextUnit is IBelt)
         {
             var nextBelt = nextUnit as IBelt;
+
+            // 如果下一个传送带和这个方向相反就不能传到下一个传送带
+            if (DirExtensions.GetRevers(dir) == nextBelt.Dir)
+            {
+                return;
+            }
+
             if (nextBelt.EnqueueItem(item))
             {
                 if (Console.Instance.Active) LogUtilsXY.LogOnPos("移交给下一个传送带", transform.position);

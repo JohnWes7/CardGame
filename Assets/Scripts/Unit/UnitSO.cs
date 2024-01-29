@@ -4,11 +4,42 @@ using UnityEngine;
 [CreateAssetMenu(menuName ="ScriptableObject/Unit")]
 public class UnitSO : ScriptableObject
 {
+    [System.Serializable]
+    public class ItemCost
+    {
+        public ItemSO itemSO;
+        public int cost;
+
+        public ItemCost()
+        {
+        }
+
+        public ItemCost(ItemSO itemSO, int cost)
+        {
+            this.itemSO = itemSO;
+            this.cost = cost;
+        }
+
+        public ItemCost Copy()
+        {
+            return new ItemCost(itemSO, cost);
+        }
+
+        public override string ToString()
+        {
+            return $"{itemSO} : {cost}";
+        }
+    }
+
+    [Header("创造属性")]
     public string unitName;
     public GameObject prefab;
     public Sprite fullsizeSprite;
     public List<Vector2Int> place;
     public Vector2 spriteBLtoCMOffset;
+
+    [Header("成本")]
+    public List<ItemCost> itemCostList;
 
     /// <summary>
     /// 获取根据转向

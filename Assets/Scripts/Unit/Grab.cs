@@ -15,6 +15,8 @@ public class Grab : UnitObject, IGrab
     // 尝试抓取 --(成功抓取)--> -> 旋转 -> 尝试放下 --(如果成功放下)--> 转回来(50坐地能吸土直接靠吸的) -> 尝试抓取 
     [SerializeField] private Item item;
     [SerializeField] private GrabState state;
+    [SerializeField] private int grabLenght;
+    [SerializeField] private int putDonwLenght;
 
     private void Start()
     {
@@ -57,7 +59,7 @@ public class Grab : UnitObject, IGrab
             return true;
         }
 
-        Vector2Int downPos = position + Vector2Int.up.VecterRotateByDir(dir);
+        Vector2Int downPos = position + putDonwLenght * Vector2Int.up.VecterRotateByDir(dir);
         var upsideUnit = GetUnitObjectOnGrid(downPos);
         //Debug.Log(downPos);
 
@@ -89,7 +91,7 @@ public class Grab : UnitObject, IGrab
             return true;
         }
 
-        UnitObject downSideUnit = GetUnitObjectOnGrid(position + Vector2Int.down.VecterRotateByDir(dir));
+        UnitObject downSideUnit = GetUnitObjectOnGrid(position + grabLenght * Vector2Int.down.VecterRotateByDir(dir));
 
         if (downSideUnit == null)
         {

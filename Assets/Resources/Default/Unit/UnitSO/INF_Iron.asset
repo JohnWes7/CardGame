@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: INFIron
   prefab: {fileID: 8017533352202596103, guid: f601931517e7bd746b1d309a1072eb16, type: 3}
-  fullsizeSprite: {fileID: 21300000, guid: 664e3c9a621f1b24e956817d1ac7f729, type: 3}
+  fullsizeSprite: {fileID: 21300000, guid: 59ac1859cf7341e48bdb6107b37316ad, type: 3}
   place:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
   - {x: 0, y: 1}
   - {x: 1, y: 1}
   spriteBLtoCMOffset: {x: 0.5, y: 0.5}
+  itemCostList: []

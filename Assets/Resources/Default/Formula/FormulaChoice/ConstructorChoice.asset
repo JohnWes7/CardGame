@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   formulas:
   - {fileID: 11400000, guid: d839125ee4fa6e449a0655599dabd50b, type: 2}
+  - {fileID: 11400000, guid: 25e84c4d7db9e94418708f3b3688bb7b, type: 2}
+  - {fileID: 11400000, guid: f5d1dbea3dc15cf429dc2b008fe8eaf8, type: 2}

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: Grab
   prefab: {fileID: 8151943211262720551, guid: 78663b4a9a73e2f49bbd0692f44080e9, type: 3}
-  fullsizeSprite: {fileID: 21300000, guid: d5f37f70d375fcf41917c655ebf4272b, type: 3}
+  fullsizeSprite: {fileID: 21300000, guid: 5a376acbfe016d648a1ec1d2daddecda, type: 3}
   place:
   - {x: 0, y: 0}
   spriteBLtoCMOffset: {x: 0, y: 0}
+  itemCostList: []

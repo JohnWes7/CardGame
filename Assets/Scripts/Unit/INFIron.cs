@@ -11,11 +11,29 @@ public class INFIron : UnitObject, IShipUnit
     [SerializeField] private Item buffer;
 
     // 之后提取为scriptObject
-    [SerializeField] private ItemSO ironSO;
+    [SerializeField] private ItemSO createItemSO;
     [SerializeField] private float timer;
     [SerializeField] private float creatTime;
     [SerializeField] private Vector2Int insertPos;
- 
+    [SerializeField] private GameObject centerIcon;
+    [SerializeField] private static readonly Vector3 iconPos = new Vector3(0, -0.31f, -0.1f);
+
+    private void Start()
+    {
+        RefreshCenterIcon();
+    }
+
+    public void RefreshCenterIcon()
+    {
+        if (centerIcon != null)
+        {
+            Destroy(centerIcon);
+        }
+
+        centerIcon = Instantiate<GameObject>(createItemSO.prefab, transform);
+        centerIcon.transform.localPosition = iconPos;
+        centerIcon.transform.localRotation = Quaternion.identity;
+    }
 
     public static Vector2Int TransformGridPoint(Vector2Int LeftButtomPos, Vector2Int Pos, Dir dir)
     {
@@ -61,12 +79,12 @@ public class INFIron : UnitObject, IShipUnit
             {
 
                 var belt = unit as IBelt;
-                Item item = buffer != null ? buffer : Item.CreateItemFactory(ironSO);
+                Item item = buffer != null ? buffer : Item.CreateItemFactory(createItemSO);
                 item.transform.SetParent(transform);
 
                 item.transform.localRotation = Quaternion.identity;
 
-                Vector2Int createLocalPos = (insertPos - new Vector2Int(0, 1));
+                Vector2 createLocalPos = insertPos - new Vector2(0.5f, 1.5f);
                 item.transform.localPosition = new Vector3(createLocalPos.x, createLocalPos.y);
                 bool result = belt.TryInsertItem(item);
 

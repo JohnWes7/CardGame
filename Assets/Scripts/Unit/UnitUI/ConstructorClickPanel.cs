@@ -106,6 +106,6 @@ public class ConstructorClickPanel : MonoBehaviour, IShowConstructor
 
     public GameObject GetGameObject()
     {
-        return gameObject;
+        return gameObject == null ? null : gameObject;
     }
 }

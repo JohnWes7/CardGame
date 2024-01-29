@@ -22,7 +22,7 @@ public class UnitObject : MonoBehaviour
 
         // 设置父物体和位置
         gameObject.transform.SetParent(fGridNode.transform);
-        gameObject.transform.localPosition = Vector3.zero;
+        gameObject.transform.localPosition = unitSO.spriteBLtoCMOffset.VecterRotateByDir(dir);
 
         // 根据dir转角度
         gameObject.transform.localRotation = DirExtensions.DirToQuaternion(dir);
@@ -45,7 +45,9 @@ public class UnitObject : MonoBehaviour
     [SerializeField] protected Vector2Int position;
     [SerializeField] protected Dir dir;
     [SerializeField] protected UnitSO unitSO;
-    [SerializeField] protected Grid<FGridNode> grid; 
+    [SerializeField] protected Grid<FGridNode> grid;
+
+    public UnitSO UnitSO { get => unitSO; set => unitSO = value; }
 
     /// <summary>
     /// 在自己的grid上面找到改位置的unitObject 如果没有则返回null
@@ -59,4 +61,5 @@ public class UnitObject : MonoBehaviour
         unit = unit == null ? null : unit;
         return unit;
     }
+
 }

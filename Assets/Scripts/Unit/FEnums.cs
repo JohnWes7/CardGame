@@ -12,6 +12,23 @@ public enum Dir
 
 public static class DirExtensions
 {
+    public static Dir GetRevers(Dir dir)
+    {
+        switch (dir)
+        {
+            case Dir.up:
+                return Dir.down;
+            case Dir.right:
+                return Dir.left;
+            case Dir.down:
+                return Dir.up;
+            case Dir.left:
+                return Dir.right;
+            default:
+                return Dir.up;
+        }
+    } 
+
     /// <summary>
     /// 获得下一个方向
     /// </summary>

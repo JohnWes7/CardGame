@@ -26,4 +26,13 @@ public class Enemy : MonoBehaviour
 
         return enemy;
     }
+
+    public static Enemy CreateEnemyFactory(EnemySO data, Vector3 position, Quaternion rotation)
+    {
+        Enemy enemy = CreateEnemyFactory(data);
+        enemy.transform.position = position;
+        enemy.transform.rotation = rotation;
+
+        return enemy;
+    }
 }

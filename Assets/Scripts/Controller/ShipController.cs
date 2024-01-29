@@ -9,8 +9,8 @@ public class ShipController : MonoBehaviour, IShipController
     [SerializeField] private Grid<FGridNode> grid;
 
     //grid参数
-    [SerializeField] private int gridWidth = 10;
-    [SerializeField] private int gridHeight = 10;
+    [SerializeField] private int gridWidth = 50;
+    [SerializeField] private int gridHeight = 50;
 
     [Header("Debug")]
     [SerializeField] private bool showGridLine = true;
@@ -106,11 +106,11 @@ public class ShipController : MonoBehaviour, IShipController
         backGround.transform.SetParent(go.transform);
         backGround.transform.localPosition = new Vector3(0, 0, 1);
 
-        go.AddComponent<TextMesh>();
-        TextMesh textMesh = go.GetComponent<TextMesh>();
-        textMesh.anchor = TextAnchor.MiddleCenter;
-        textMesh.text = x + "," + y;
-        textMesh.characterSize = 0.2f;
+        //go.AddComponent<TextMesh>();
+        //TextMesh textMesh = go.GetComponent<TextMesh>();
+        //textMesh.anchor = TextAnchor.MiddleCenter;
+        //textMesh.text = x + "," + y;
+        //textMesh.characterSize = 0.2f;
 
         FGridNode fGridNode = go.GetComponent<FGridNode>();
         fGridNode.SetPostion(x, y);

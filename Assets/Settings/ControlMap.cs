@@ -182,15 +182,6 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
             ""id"": ""ced9ee2f-21e7-46b9-bdaf-247f5ce477ea"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
-                    ""type"": ""Value"",
-                    ""id"": ""87ae5361-060a-4e7f-a2d2-b5cb784507f9"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""BuildUnit"",
                     ""type"": ""Button"",
                     ""id"": ""ae96a074-bf27-4f3c-872b-1ff872d02927"",
@@ -234,64 +225,18 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""0a98653d-4704-40bc-88c6-2643ff2b4b0a"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""c99c2359-3e48-42aa-bedb-3036fadf312c"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""41d6dffd-19e9-4a44-934a-6ef97956e177"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""8b7269ec-c407-46ac-b9ee-369a965452ea"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""3ef6d30e-a674-437b-978a-da020ac086a5"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""52572d13-b749-46c0-8456-9a0f87bb3425"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
                 {
                     ""name"": """",
                     ""id"": ""095dd8d7-0c76-494d-b3b3-42252481fa07"",
@@ -368,6 +313,61 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""action"": ""Zoom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""b677e1ac-e5a0-4639-a220-09c61c2a2ce8"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""1919ddae-2fe8-48f1-8a2c-09c5b967ecc9"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""73f3e2d6-58bc-4100-b61f-4525689c72c3"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""c710610c-5128-450c-9b73-62ee93429696"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""1a33bfd5-7315-446e-887b-51bed0632712"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -382,12 +382,12 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         m_Move_Zoom = m_Move.FindAction("Zoom", throwIfNotFound: true);
         // Build
         m_Build = asset.FindActionMap("Build", throwIfNotFound: true);
-        m_Build_Move = m_Build.FindAction("Move", throwIfNotFound: true);
         m_Build_BuildUnit = m_Build.FindAction("BuildUnit", throwIfNotFound: true);
         m_Build_LeftBuild = m_Build.FindAction("LeftBuild", throwIfNotFound: true);
         m_Build_RotateDir = m_Build.FindAction("RotateDir", throwIfNotFound: true);
         m_Build_ChangeBuildUnit = m_Build.FindAction("ChangeBuildUnit", throwIfNotFound: true);
         m_Build_Zoom = m_Build.FindAction("Zoom", throwIfNotFound: true);
+        m_Build_Move = m_Build.FindAction("Move", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -504,22 +504,22 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
     // Build
     private readonly InputActionMap m_Build;
     private IBuildActions m_BuildActionsCallbackInterface;
-    private readonly InputAction m_Build_Move;
     private readonly InputAction m_Build_BuildUnit;
     private readonly InputAction m_Build_LeftBuild;
     private readonly InputAction m_Build_RotateDir;
     private readonly InputAction m_Build_ChangeBuildUnit;
     private readonly InputAction m_Build_Zoom;
+    private readonly InputAction m_Build_Move;
     public struct BuildActions
     {
         private @ControlMap m_Wrapper;
         public BuildActions(@ControlMap wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Build_Move;
         public InputAction @BuildUnit => m_Wrapper.m_Build_BuildUnit;
         public InputAction @LeftBuild => m_Wrapper.m_Build_LeftBuild;
         public InputAction @RotateDir => m_Wrapper.m_Build_RotateDir;
         public InputAction @ChangeBuildUnit => m_Wrapper.m_Build_ChangeBuildUnit;
         public InputAction @Zoom => m_Wrapper.m_Build_Zoom;
+        public InputAction @Move => m_Wrapper.m_Build_Move;
         public InputActionMap Get() { return m_Wrapper.m_Build; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -529,9 +529,6 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_BuildActionsCallbackInterface != null)
             {
-                @Move.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnMove;
                 @BuildUnit.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnBuildUnit;
                 @BuildUnit.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnBuildUnit;
                 @BuildUnit.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnBuildUnit;
@@ -547,13 +544,13 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @Zoom.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnZoom;
                 @Zoom.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnZoom;
                 @Zoom.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnZoom;
+                @Move.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnMove;
             }
             m_Wrapper.m_BuildActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Move.started += instance.OnMove;
-                @Move.performed += instance.OnMove;
-                @Move.canceled += instance.OnMove;
                 @BuildUnit.started += instance.OnBuildUnit;
                 @BuildUnit.performed += instance.OnBuildUnit;
                 @BuildUnit.canceled += instance.OnBuildUnit;
@@ -569,6 +566,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @Zoom.started += instance.OnZoom;
                 @Zoom.performed += instance.OnZoom;
                 @Zoom.canceled += instance.OnZoom;
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
             }
         }
     }
@@ -582,11 +582,11 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
     }
     public interface IBuildActions
     {
-        void OnMove(InputAction.CallbackContext context);
         void OnBuildUnit(InputAction.CallbackContext context);
         void OnLeftBuild(InputAction.CallbackContext context);
         void OnRotateDir(InputAction.CallbackContext context);
         void OnChangeBuildUnit(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
     }
 }

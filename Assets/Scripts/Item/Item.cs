@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item : MonoBehaviour, IItemSO
 {
     public static Item CreateItemFactory(ItemSO itemSO)
     {
@@ -24,4 +24,9 @@ public class Item : MonoBehaviour
     [SerializeField] private ItemSO itemSO;
 
     public ItemSO ItemSO { get => itemSO; set => itemSO = value; }
+}
+
+public interface IItemSO
+{
+    ItemSO ItemSO { get; set; }
 }

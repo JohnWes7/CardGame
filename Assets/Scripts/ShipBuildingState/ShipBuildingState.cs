@@ -9,10 +9,15 @@ public class ShipBuildingState : IShipBuildingState
         Init(sbc);
     }
 
+    /// <summary>
+    /// 弃用
+    /// </summary>
+    /// <param name="sbc"></param>
+    /// <param name="index"></param>
     public void ChangeIndex(ShipBuildController sbc, int index)
     {
-        sbc.BuildIndex = index;
-        sbc.PrefabShadow.sprite = sbc.UnitCanBuild[sbc.BuildIndex].fullsizeSprite;
+        //sbc.BuildIndex = index;
+        //sbc.PrefabShadow.sprite = sbc.UnitCanBuild[sbc.BuildIndex].fullsizeSprite;
     }
 
     public void QuitBuild(ShipBuildController sbc)
@@ -32,7 +37,7 @@ public class ShipBuildingState : IShipBuildingState
         // 打开虚影 设置图像 调整方向
         sbc.PrefabShadow.gameObject.SetActive(true);
         sbc.IsBuilding = true;
-        sbc.PrefabShadow.sprite = sbc.UnitCanBuild[sbc.BuildIndex].fullsizeSprite;
+        sbc.PrefabShadow.sprite = sbc.GetCurBuildUnit().fullsizeSprite;
         sbc.PrefabShadow.transform.localRotation = DirExtensions.DirToQuaternion(sbc.BuildDir);
         // 打开底色
         sbc.Sc.InterfaceObj.SetAllFGridNodeBackGroundActive(true);
@@ -62,7 +67,7 @@ public class ShipBuildingState : IShipBuildingState
         }
 
         // 虚影跟随 v1
-        UnitSO uso = sbc.UnitCanBuild[sbc.BuildIndex];
+        UnitSO uso = sbc.GetCurBuildUnit();
         // 获取正中心到左下并且根据dir旋转的偏移值
         var offset = uso.GetSpritCMtoLBOffsetByDir(sbc.BuildDir);
 
@@ -85,7 +90,7 @@ public class ShipBuildingState : IShipBuildingState
         // 左键建造
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            UnitSO selectUnit = sbc.UnitCanBuild[sbc.BuildIndex];
+            UnitSO selectUnit = sbc.GetCurBuildUnit();
 
             // 找到所有被占据的位置
             List<FGridNode> place = sbc.Sc.InterfaceObj.Grid.GetObjectPlaceByPosList(gridXY, selectUnit.place, sbc.BuildDir);
@@ -142,10 +147,10 @@ public class ShipBuildingState : IShipBuildingState
 
     #region 新版input 提取static方法供buildcontroller用
 
-    public static void BuildUnit(ShipBuildController sbc)
+    public static UnitObject BuildUnit(ShipBuildController sbc)
     {
         // 找到所有被占据的位置
-        UnitSO selectUnit = sbc.UnitCanBuild[sbc.BuildIndex]; // 要建造的单元
+        UnitSO selectUnit = sbc.GetCurBuildUnit(); // 要建造的单元
         var offset = selectUnit.GetSpritCMtoLBOffsetByDir(sbc.BuildDir);   // 根据旋转找到图像正中心到坐下判定点的偏移值
         Vector3 mouseOffsetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition) + sbc.Sc.InterfaceObj.Grid.GetParent().transform.TransformVector(offset);
         Vector2Int gridXY = sbc.Sc.InterfaceObj.Grid.WorldPositionToGridXY(mouseOffsetPos);
@@ -186,17 +191,25 @@ public class ShipBuildingState : IShipBuildingState
             {
                 (uo as IShipUnit).SetShip(sbc.Sc.InterfaceObj);
             }
+            return uo;
         }
         else
         {
             LogUtilsXY.LogOnMousePos("不能建造");
+            return null;
         }
     }
 
     public static void ShadowPerFrame(ShipBuildController sbc)
     {
         // 找到所有被占据的位置
-        UnitSO selectUnit = sbc.UnitCanBuild[sbc.BuildIndex]; // 要建造的单元
+        UnitSO selectUnit = sbc.GetCurBuildUnit(); // 要建造的单元
+        if (selectUnit == null)
+        {
+            return;
+        }
+
+
         var offset = selectUnit.GetSpritCMtoLBOffsetByDir(sbc.BuildDir);   // 根据旋转找到图像正中心到坐下判定点的偏移值
         Vector3 mouseOffsetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition) + sbc.Sc.InterfaceObj.Grid.GetParent().transform.TransformVector(offset);
         Vector2Int gridXY = sbc.Sc.InterfaceObj.Grid.WorldPositionToGridXY(mouseOffsetPos);
@@ -222,7 +235,7 @@ public class ShipBuildingState : IShipBuildingState
         sbc.PrefabShadow.transform.localRotation = DirExtensions.DirToQuaternion(sbc.BuildDir);
     }
 
-    public static bool TryDeleteUnitOnMousePos(ShipBuildController sbc)
+    public static bool TryDeleteUnitOnMousePos(ShipBuildController sbc, out UnitObject beDestory)
     {
         Vector3 mp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2Int centerGridXY = sbc.Sc.InterfaceObj.Grid.WorldPositionToGridXY(mp);
@@ -231,10 +244,12 @@ public class ShipBuildingState : IShipBuildingState
         // 有东西删除
         if (go != null && go.GetContent() != null)
         {
-            GameObject.Destroy(go.GetContent().gameObject);
+            Object.Destroy(go.GetContent().gameObject);
+            beDestory = go.GetContent();
             return true;
         }
 
+        beDestory = null;
         return false;
     }
 

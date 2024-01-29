@@ -22,7 +22,7 @@ public class Belt : UnitObject, IShipUnit, IBelt
     //scriptObject 
     private const int beltSpeed = 1;
 
-
+    public Dir Dir { get => dir; set => dir = value; }
 
     [Serializable]
     public class ItemOnBelt
@@ -293,6 +293,8 @@ public class Belt : UnitObject, IShipUnit, IBelt
     // 之后可能需要改成tick
 
     [SerializeField] private BeltPoint[] points;
+
+
 
     [Serializable]
     public struct BeltPoint

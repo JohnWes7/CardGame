@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Gatling
   m_EditorClassIdentifier: 
   magazineInfos:
-  - magazineItem: {fileID: 11400000, guid: ac6f53da63f83fd4cbf87facc340a53f, type: 2}
+  - magazineItem: {fileID: 11400000, guid: d8f761b087507b645add5635c9b47a3a, type: 2}
     projectileInOneMagazineNum: 10
     projectileSO: {fileID: 11400000, guid: d8e99f9218b1a5142ad99398abfacb56, type: 2}
   fireGap: 0.2

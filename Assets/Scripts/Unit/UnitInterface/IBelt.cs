@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface IBelt
 {
+    Dir Dir { get; set; }
+
     // 负责传送带部分的 传送带方法
     public bool TryInsertItem(Item insertItem);
     public bool CanInsertItem();
