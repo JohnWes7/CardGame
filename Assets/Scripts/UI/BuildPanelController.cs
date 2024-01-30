@@ -34,14 +34,11 @@ public class BuildPanelController : MonoBehaviour
      * 点击之后 改变value 改变value 触发OnUnitValueChange
      * 
      */
-    //private void Awake()
-    //{
-    //    Debug.Log(transform.localPosition);
-    //}
 
-    public void OpenPanel(List<UnitSO> showUnitList, UnitSO selectIndex)
+    public void OpenPanel(List<UnitSO> showUnitList, UnitSO curUnit)
     {
         transform.DOLocalMoveX(ORINGIN_X_POS, 0.2f);
+        SetSelectFlag(curUnit);
     }
 
     public void ClosePanel()
@@ -70,12 +67,16 @@ public class BuildPanelController : MonoBehaviour
         
         if (selectFlag.gameObject.activeInHierarchy)
         {
+            selectFlag.transform.DOKill();
             selectFlag.transform.DOLocalMove(transform.InverseTransformPoint(unitIcon.transform.position), 0.2f);
         }
         else
         {
-            selectFlag.transform.localPosition = transform.InverseTransformPoint(unitIcon.transform.position);
             selectFlag.gameObject.SetActive(true);
+            selectFlag.transform.DOKill();
+            selectFlag.transform.localPosition = transform.InverseTransformPoint(unitIcon.transform.position);
+            selectFlag.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+            selectFlag.transform.DOScale(Vector3.one, 0.2f);
         }
     }
 
@@ -113,9 +114,13 @@ public class BuildPanelController : MonoBehaviour
             unitIcon.OnClick.AddListener(() => {
                 //Debug.Log(item);
                 value = item;
-                SetSelectFlag(item);
                 OnUnitValueChange?.Invoke(this, new BuildPanelEventHandler(item));
             });
         }
+    }
+
+    public void ShipBuildController_OnCurUnitChange(object sender, ShipBuildController.UnitEventargs args)
+    {
+        SetSelectFlag(args.curUnit);
     }
 }

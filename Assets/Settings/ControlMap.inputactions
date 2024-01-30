@@ -169,6 +169,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "CheckUnitDetail",
+                    "type": "Button",
+                    "id": "fae833f3-27ab-429d-a296-2cfc99bf6cd8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "LeftBuild",
                     "type": "Button",
                     "id": "b82c5972-988a-45fa-979d-8b3efa2e493d",
@@ -212,6 +221,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "5e336461-82dd-4706-8969-d3948bf5e593",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -229,7 +247,7 @@
                 {
                     "name": "",
                     "id": "89c30d51-f128-4717-a1e3-cb5109c50f83",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -346,8 +364,36 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "4bd92c26-9ee6-448f-bf89-e36a248e0522",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fce9dc6e-ea1e-400c-a194-85209682dee4",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CheckUnitDetail",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI",
+            "id": "8dac56f1-c5bc-47e4-b86c-8d17ee07f49c",
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": []

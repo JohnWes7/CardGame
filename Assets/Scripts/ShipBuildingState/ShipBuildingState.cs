@@ -206,10 +206,11 @@ public class ShipBuildingState : IShipBuildingState
         UnitSO selectUnit = sbc.GetCurBuildUnit(); // 要建造的单元
         if (selectUnit == null)
         {
+            sbc.PrefabShadow.gameObject.SetActive(false);
             return;
         }
 
-
+        sbc.PrefabShadow.gameObject.SetActive(true);
         var offset = selectUnit.GetSpritCMtoLBOffsetByDir(sbc.BuildDir);   // 根据旋转找到图像正中心到坐下判定点的偏移值
         Vector3 mouseOffsetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition) + sbc.Sc.InterfaceObj.Grid.GetParent().transform.TransformVector(offset);
         Vector2Int gridXY = sbc.Sc.InterfaceObj.Grid.WorldPositionToGridXY(mouseOffsetPos);

@@ -41,4 +41,6 @@ public struct MonoInterface<T>
             }
         }
     }
+
+    public MonoBehaviour MonoBehaviour { get => monoBehaviour; }
 }

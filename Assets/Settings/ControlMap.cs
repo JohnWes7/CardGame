@@ -191,6 +191,15 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""CheckUnitDetail"",
+                    ""type"": ""Button"",
+                    ""id"": ""fae833f3-27ab-429d-a296-2cfc99bf6cd8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""LeftBuild"",
                     ""type"": ""Button"",
                     ""id"": ""b82c5972-988a-45fa-979d-8b3efa2e493d"",
@@ -234,6 +243,15 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""5e336461-82dd-4706-8969-d3948bf5e593"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -251,7 +269,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""89c30d51-f128-4717-a1e3-cb5109c50f83"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -368,8 +386,36 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4bd92c26-9ee6-448f-bf89-e36a248e0522"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fce9dc6e-ea1e-400c-a194-85209682dee4"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CheckUnitDetail"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""8dac56f1-c5bc-47e4-b86c-8d17ee07f49c"",
+            ""actions"": [],
+            ""bindings"": []
         }
     ],
     ""controlSchemes"": []
@@ -383,11 +429,15 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         // Build
         m_Build = asset.FindActionMap("Build", throwIfNotFound: true);
         m_Build_BuildUnit = m_Build.FindAction("BuildUnit", throwIfNotFound: true);
+        m_Build_CheckUnitDetail = m_Build.FindAction("CheckUnitDetail", throwIfNotFound: true);
         m_Build_LeftBuild = m_Build.FindAction("LeftBuild", throwIfNotFound: true);
         m_Build_RotateDir = m_Build.FindAction("RotateDir", throwIfNotFound: true);
         m_Build_ChangeBuildUnit = m_Build.FindAction("ChangeBuildUnit", throwIfNotFound: true);
         m_Build_Zoom = m_Build.FindAction("Zoom", throwIfNotFound: true);
         m_Build_Move = m_Build.FindAction("Move", throwIfNotFound: true);
+        m_Build_Cancel = m_Build.FindAction("Cancel", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -505,21 +555,25 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Build;
     private IBuildActions m_BuildActionsCallbackInterface;
     private readonly InputAction m_Build_BuildUnit;
+    private readonly InputAction m_Build_CheckUnitDetail;
     private readonly InputAction m_Build_LeftBuild;
     private readonly InputAction m_Build_RotateDir;
     private readonly InputAction m_Build_ChangeBuildUnit;
     private readonly InputAction m_Build_Zoom;
     private readonly InputAction m_Build_Move;
+    private readonly InputAction m_Build_Cancel;
     public struct BuildActions
     {
         private @ControlMap m_Wrapper;
         public BuildActions(@ControlMap wrapper) { m_Wrapper = wrapper; }
         public InputAction @BuildUnit => m_Wrapper.m_Build_BuildUnit;
+        public InputAction @CheckUnitDetail => m_Wrapper.m_Build_CheckUnitDetail;
         public InputAction @LeftBuild => m_Wrapper.m_Build_LeftBuild;
         public InputAction @RotateDir => m_Wrapper.m_Build_RotateDir;
         public InputAction @ChangeBuildUnit => m_Wrapper.m_Build_ChangeBuildUnit;
         public InputAction @Zoom => m_Wrapper.m_Build_Zoom;
         public InputAction @Move => m_Wrapper.m_Build_Move;
+        public InputAction @Cancel => m_Wrapper.m_Build_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_Build; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -532,6 +586,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @BuildUnit.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnBuildUnit;
                 @BuildUnit.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnBuildUnit;
                 @BuildUnit.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnBuildUnit;
+                @CheckUnitDetail.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnCheckUnitDetail;
+                @CheckUnitDetail.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnCheckUnitDetail;
+                @CheckUnitDetail.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnCheckUnitDetail;
                 @LeftBuild.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnLeftBuild;
                 @LeftBuild.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnLeftBuild;
                 @LeftBuild.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnLeftBuild;
@@ -547,6 +604,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnMove;
+                @Cancel.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnCancel;
+                @Cancel.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnCancel;
+                @Cancel.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnCancel;
             }
             m_Wrapper.m_BuildActionsCallbackInterface = instance;
             if (instance != null)
@@ -554,6 +614,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @BuildUnit.started += instance.OnBuildUnit;
                 @BuildUnit.performed += instance.OnBuildUnit;
                 @BuildUnit.canceled += instance.OnBuildUnit;
+                @CheckUnitDetail.started += instance.OnCheckUnitDetail;
+                @CheckUnitDetail.performed += instance.OnCheckUnitDetail;
+                @CheckUnitDetail.canceled += instance.OnCheckUnitDetail;
                 @LeftBuild.started += instance.OnLeftBuild;
                 @LeftBuild.performed += instance.OnLeftBuild;
                 @LeftBuild.canceled += instance.OnLeftBuild;
@@ -569,10 +632,38 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @Cancel.started += instance.OnCancel;
+                @Cancel.performed += instance.OnCancel;
+                @Cancel.canceled += instance.OnCancel;
             }
         }
     }
     public BuildActions @Build => new BuildActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private IUIActions m_UIActionsCallbackInterface;
+    public struct UIActions
+    {
+        private @ControlMap m_Wrapper;
+        public UIActions(@ControlMap wrapper) { m_Wrapper = wrapper; }
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterface != null)
+            {
+            }
+            m_Wrapper.m_UIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+            }
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     public interface IMoveActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -583,10 +674,15 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
     public interface IBuildActions
     {
         void OnBuildUnit(InputAction.CallbackContext context);
+        void OnCheckUnitDetail(InputAction.CallbackContext context);
         void OnLeftBuild(InputAction.CallbackContext context);
         void OnRotateDir(InputAction.CallbackContext context);
         void OnChangeBuildUnit(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
     }
 }

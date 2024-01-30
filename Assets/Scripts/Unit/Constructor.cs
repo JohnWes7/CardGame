@@ -355,7 +355,7 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
 
     private void OnDestroy()
     {
-        if (constructorPanel.InterfaceObj != null)
+        if (constructorPanel.MonoBehaviour != null)
         {
             Destroy(constructorPanel.InterfaceObj.GetGameObject());
         }

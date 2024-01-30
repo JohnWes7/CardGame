@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
+using CustomInspector;
 
 /// <summary>
 /// 用来管理相机控制
@@ -33,10 +34,15 @@ public class CameraFacade : MonoBehaviour
 
     public CameraFacade Instance { get => instance; set => instance = value; }
 
+    [ForceFill]
     [SerializeField] private LookTargetByMouse byMouse;
+    [ForceFill]
     [SerializeField] private LookTargetByWASD byWASD;
+    [ForceFill]
     [SerializeField] private CinemachineVirtualCamera moveCinemachine;
+    [ForceFill]
     [SerializeField] private CinemachineVirtualCamera buildCinemachine;
+    [ForceFill]
     [SerializeField] private CameraZoomController zoomController;
 
     [SerializeField] private CameraFacadeState defaultState;
@@ -55,6 +61,9 @@ public class CameraFacade : MonoBehaviour
                 zoomController.VirtualCamera = moveCinemachine;
                 break;
             case CameraFacadeState.Build:
+                // 打开wasd移动
+                byWASD.StartWASD();
+                zoomController.VirtualCamera = buildCinemachine;
                 break;
             default:
                 break;
@@ -76,7 +85,7 @@ public class CameraFacade : MonoBehaviour
 
     public void ToBuildModel()
     {
-        Debug.Log("to build");
+        //Debug.Log("camera to build");
         if (byMouse != null)
         {
             byMouse.StopTrackMouse();
@@ -84,13 +93,18 @@ public class CameraFacade : MonoBehaviour
 
         buildCinemachine.Priority = 11;
         zoomController.VirtualCamera = buildCinemachine;
+
+        byWASD.transform.position = byMouse.transform.position;
+        byWASD.StartWASD();
     }
 
     public void ToMoveModel()
     {
-        Debug.Log("back to move");
+        //Debug.Log("camera back to move");
         buildCinemachine.Priority = 9;
         zoomController.VirtualCamera = moveCinemachine;
+
+        byWASD.StopWASD();
 
         byMouse.StartTrackMouse();
     }

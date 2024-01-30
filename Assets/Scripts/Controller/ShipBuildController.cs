@@ -2,12 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 /// <summary>
 /// 飞船建造管理类
 /// </summary>
 public class ShipBuildController : MonoBehaviour
 {
+    public class UnitEventargs : EventArgs
+    {
+        public UnitSO curUnit;
+
+        public UnitEventargs(UnitSO curUnit)
+        {
+            this.curUnit = curUnit;
+        }
+    }
+
     // 状态设计模式弃用
     [SerializeField] private IShipBuildingState state;
 
@@ -27,6 +38,9 @@ public class ShipBuildController : MonoBehaviour
     // 虚影
     [SerializeField] private SpriteRenderer prefabShadow;
     [SerializeField] private Color shadowColor;
+
+    // 当当前选择的unit变化后调用
+    public event EventHandler<UnitEventargs> OnCurBuildUnitChange;
 
     public List<UnitSO> UnitCanBuild { get => buildableUnit.unitSOList; }
     //public int BuildIndex { get => buildIndex; set => buildIndex = value; }
@@ -60,8 +74,13 @@ public class ShipBuildController : MonoBehaviour
             uiBuildPanelInstance = temp.GetComponent<BuildPanelController>();
         }
         uiBuildPanelInstance.RefreshIcon(buildableUnit.unitSOList);
+
         // 添加委托
+        // ui的值变化会 影响cur build unit
         uiBuildPanelInstance.OnUnitValueChange += UiBuildPanelInstance_OnUnitValueChange;
+        // cur unit 变化会影响ui变化
+        OnCurBuildUnitChange += uiBuildPanelInstance.ShipBuildController_OnCurUnitChange;
+
         // 初始关闭面板
         uiBuildPanelInstance.ClosePanel();
     }
@@ -70,11 +89,6 @@ public class ShipBuildController : MonoBehaviour
     {
         //Debug.Log(sender);
         ChangeCurBuildUnit(e.beClickUnit);
-
-        if (sender is BuildPanelController)
-        {
-            BuildPanelController buildPanelController = sender as BuildPanelController;
-        }
     }
 
     private void Update()
@@ -141,14 +155,13 @@ public class ShipBuildController : MonoBehaviour
     #endregion
 
 
-    // TODO: 右键删除 以及移动绑定
     #region 新版input system方法
 
     /// <summary>
     /// 进入建造
     /// </summary>
     /// <param name="callbackContext"></param>
-    public void StartBuild(InputAction.CallbackContext callbackContext)
+    public void PlayerInput_OnStartBuild(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
         {
@@ -167,42 +180,53 @@ public class ShipBuildController : MonoBehaviour
     /// 退出建造
     /// </summary>
     /// <param name="callbackContext"></param>
-    public void LeftBuild(InputAction.CallbackContext callbackContext)
+    public void PlayerInput_OnLeftBuild(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
         {
-            // 先判断是要从拆除还是退出
-            // 如果执行了拆除就不退出
-            if (ShipBuildingState.TryDeleteUnitOnMousePos(this, out UnitObject unitObject))
-            {
-                // 执行成功拆除之后退还资源
-                foreach (var item in unitObject.UnitSO.itemCostList)
-                {
-                    PlayerInventory.Instance.AddItem(item.itemSO, item.cost);
-                }
-                return;
-            }
-            
-
-            isBuilding = false;
-            PlayerControllerSingleton.Instance.SwitchCurrentActionMap("Move");
-
-            // 退出build 恢复一些值
-            prefabShadow.gameObject.SetActive(false);
-            buildDir = Dir.up;
-            sc.InterfaceObj.SetAllFGridNodeBackGroundActive(false);
-            // 关闭ui
-            uiBuildPanelInstance.ClosePanel();
-
-            Debug.Log("LeftBuild");
+            LeftBuildNow();
         }
+    }
+
+    public void LeftBuildNow()
+    {
+        // 更改map
+        PlayerControllerSingleton.Instance.SwitchCurrentActionMap("Move");
+
+        // 退出build 恢复一些值
+        isBuilding = false; // 标志退出建造
+        prefabShadow.gameObject.SetActive(false); // 关闭虚影 (虚影最好还是改为协程)
+        buildDir = Dir.up;
+        sc.InterfaceObj.SetAllFGridNodeBackGroundActive(false);
+
+        // 关闭ui
+        uiBuildPanelInstance.ClosePanel();
+
+        Debug.Log("LeftBuild");
+    }
+
+    public bool TryDelectUnit()
+    {
+        // 先判断是要从拆除还是退出
+        // 如果执行了拆除就不退出
+        if (ShipBuildingState.TryDeleteUnitOnMousePos(this, out UnitObject unitObject))
+        {
+            // 执行成功拆除之后退还资源
+            foreach (var item in unitObject.UnitSO.itemCostList)
+            {
+                PlayerInventory.Instance.AddItem(item.itemSO, item.cost);
+            }
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
     /// 旋转建造方向 顺时针
     /// </summary>
     /// <param name="callbackContext"></param>
-    public void RotateBuildDir(InputAction.CallbackContext callbackContext)
+    public void PlayerInput_OnRotateBuildDir(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
         {
@@ -215,19 +239,24 @@ public class ShipBuildController : MonoBehaviour
     /// 单点来触发有些可被点击物体的回调
     /// </summary>
     /// <param name="callbackContext"></param>
-    public void CheckUnitDetail(InputAction.CallbackContext callbackContext)
+    public void PlayerInput_OnCheckUnitDetail(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
         {
-            Debug.Log("CheckDetail");
-            Vector3 mouseOffsetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2Int gridXY = Sc.InterfaceObj.Grid.WorldPositionToGridXY(mouseOffsetPos);
-            var gridobj = sc.InterfaceObj.Grid.GetGridObject(gridXY);
-            UnitObject unit = gridobj == null ? null : gridobj.GetContent();
-            if (unit != null && unit is IBeClick)
-            {
-                (unit as IBeClick).BeClick(this);
-            }
+            CheckUnitDetail();
+        }
+    }
+
+    public void CheckUnitDetail()
+    {
+        Debug.Log("CheckDetail");
+        Vector3 mouseOffsetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2Int gridXY = Sc.InterfaceObj.Grid.WorldPositionToGridXY(mouseOffsetPos);
+        var gridobj = sc.InterfaceObj.Grid.GetGridObject(gridXY);
+        UnitObject unit = gridobj == null ? null : gridobj.GetContent();
+        if (unit != null && unit is IBeClick)
+        {
+            (unit as IBeClick).BeClick(this);
         }
     }
 
@@ -235,7 +264,7 @@ public class ShipBuildController : MonoBehaviour
     /// 建造
     /// </summary>
     /// <param name="callbackContext"></param>
-    public void BuildUnit(InputAction.CallbackContext callbackContext)
+    public void PlayerInput_OnBuildUnit(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
         {
@@ -268,26 +297,58 @@ public class ShipBuildController : MonoBehaviour
             }
         }
     }
-
-    public void ChangeBuildUnit(InputAction.CallbackContext callbackContext)
+    
+    public void PlayerInput_OnBuildStateCheckDetail(InputAction.CallbackContext callbackContext)
     {
-        #region 旧更改
-        //if (callbackContext.performed)
-        //{
-        //    int temp = buildIndex + 1;
-        //    if (temp >= unitCanBuild.Count)
-        //    {
-        //        temp = 0;
-        //    }
-        //    buildIndex = temp;
-        //    prefabShadow.sprite = unitCanBuild[BuildIndex].fullsizeSprite;
-        //}
-        #endregion
-
+        if (callbackContext.performed)
+        {
+            if (GetCurBuildUnit() == null)
+            {
+                CheckUnitDetail();
+            }
+        }
     }
 
     /// <summary>
-    /// 建造模式开启后
+    /// 取消当前建造的物品
+    /// </summary>
+    /// <param name="callbackContext"></param>
+    public void PlayerInput_OnCancel(InputAction.CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            ChangeCurBuildUnit(null);
+        }
+    }
+
+    public void ResetCurBuildUnit()
+    {
+        curUnit = null;
+    }
+
+    /// <summary>
+    /// 弃用 不在使用按下某个键来改变build的选择改用ui选择
+    /// </summary>
+    /// <param name="callbackContext"></param>
+    //public void ChangeBuildUnit(InputAction.CallbackContext callbackContext)
+    //{
+    //    #region 旧更改
+    //    //if (callbackContext.performed)
+    //    //{
+    //    //    int temp = buildIndex + 1;
+    //    //    if (temp >= unitCanBuild.Count)
+    //    //    {
+    //    //        temp = 0;
+    //    //    }
+    //    //    buildIndex = temp;
+    //    //    prefabShadow.sprite = unitCanBuild[BuildIndex].fullsizeSprite;
+    //    //}
+    //    #endregion
+
+    //}
+
+    /// <summary>
+    /// 建造模式开启后显示虚影
     /// </summary>
     public void ShadowFollowPerFrame()
     {
@@ -301,9 +362,17 @@ public class ShipBuildController : MonoBehaviour
 
     public void ChangeCurBuildUnit(UnitSO unitSO)
     {
+        if (unitSO == null)
+        {
+            curUnit = null;
+            OnCurBuildUnitChange?.Invoke(this, new UnitEventargs(curUnit));
+            return;
+        }
+
         if (buildableUnit.unitSOList.Contains(unitSO))
         {
             curUnit = unitSO;
+            OnCurBuildUnitChange?.Invoke(this, new UnitEventargs(curUnit));
         }
     }
 
