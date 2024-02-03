@@ -9,8 +9,6 @@ public class BeltSimple : UnitObject, IShipUnit, IBelt, IBeGrabItem, IBePutDownG
     [SerializeField] private bool pauseOneTick;
     
 
-    public Dir Dir { get => dir; set => dir = value; }
-
     public bool CanInsertItem()
     {
         return item == null;

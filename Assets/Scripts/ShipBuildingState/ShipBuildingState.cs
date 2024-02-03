@@ -207,6 +207,7 @@ public class ShipBuildingState : IShipBuildingState
         if (selectUnit == null)
         {
             sbc.PrefabShadow.gameObject.SetActive(false);
+            sbc.UiShadowCostShower.gameObject.SetActive(false);
             return;
         }
 
@@ -222,11 +223,18 @@ public class ShipBuildingState : IShipBuildingState
             var shadowPos = gridobj.transform.TransformPoint(-offset) - Vector3.forward;
             sbc.PrefabShadow.gameObject.transform.position = shadowPos;
             sbc.PrefabShadow.transform.localRotation = DirExtensions.DirToQuaternion(sbc.BuildDir);
-            //sbc.PrefabShadow.gameObject.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + Vector3.forward;
+
+            // 触发shadow移动事件
+            // EventCenter.Instance.TriggerEvent("BuildShadowMove", sbc, sbc.PrefabShadow.transform.position);
+            // sbc.PrefabShadow.gameObject.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + Vector3.forward;
+            // 这里还是直接移动
+            sbc.UiShadowCostShower.gameObject.SetActive(true);
+            sbc.UiShadowCostShower.RefreshPosition(sbc.PrefabShadow.transform.position);
         }
         else
         {
             sbc.PrefabShadow.sprite = null;
+            sbc.UiShadowCostShower.gameObject.SetActive(false);
         }
     }
 

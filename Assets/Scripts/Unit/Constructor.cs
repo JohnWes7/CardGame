@@ -129,7 +129,7 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
     [SerializeField] private GameObject panelPrefab;
 
     // 进行制造 数据为 ItemSOvalue代表需要的物品和执行一次所需要的个数, 后面的值代表拥有的个数
-    // 明天还是改为用一个内部类来表示
+    // 明天还是改为用一个内部类来表示 现在可以用
     //[SerializeField] private Dictionary<FormulaSO.ItemSOValue, int> rawMatNum;
     //[SerializeField] private Dictionary<FormulaSO.ItemSOValue, int> outPutNum;
     [SerializeField] private ConstructorFormulaMatInfo matInfo;
@@ -248,36 +248,7 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
 
         return false;
 
-        //if (rawMatNum == null)
-        //{
-        //    return false;
-        //}
-
-        //if (outPutNum == null)
-        //{
-        //    return false;
-        //}
-
-        //foreach (var rawItem in rawMatNum.Keys)
-        //{
-        //    Debug.Log(rawItem.item + " " + item.ItemSO);
-        //    // 判断类别是否一样
-        //    if (rawItem.item == item.ItemSO)
-        //    {
-        //        if (rawMatNum[rawItem] >= rawItem.value * ITEM_CAP_COEFFICIENT)
-        //        {
-        //            return false;
-        //        }
-        //        else
-        //        {
-        //            rawMatNum[rawItem] += 1;
-        //            Destroy(item.gameObject);
-        //            return true;
-        //        }
-        //    }
-        //}
-
-        //return false;
+        
     }
 
     public List<ItemSO> ItemSOInNeed()

@@ -22,8 +22,6 @@ public class Belt : UnitObject, IShipUnit, IBelt
     //scriptObject 
     private const int beltSpeed = 1;
 
-    public Dir Dir { get => dir; set => dir = value; }
-
     [Serializable]
     public class ItemOnBelt
     {

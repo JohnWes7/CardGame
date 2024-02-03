@@ -781,8 +781,8 @@ MonoBehaviour:
       myString: notSelected
       _: 0
     asRangeAttributeExamples:
-      positiveRange: {x: 0, y: 3.1415927}
-      negativeRange: {x: 5, y: 1}
+      positiveRange: {x: 4.1194644, y: 7.2610574}
+      negativeRange: {x: 7.7075186, y: 3.7075186}
     assetsOnlyAttributeExamples:
       gob1: {fileID: 0}
       gob2: {fileID: 0}
@@ -799,10 +799,10 @@ MonoBehaviour:
       _number: 0
     copyPasteAttributeExamples:
       v1: {x: 0, y: 0, z: 1}
-      v2: {x: 1, y: 1, z: 1}
+      v2: {x: 0, y: 0, z: 1}
       c1: {r: 1, g: 1, b: 1, a: 1}
       c2: {r: 0.5, g: 0.4, b: 0.2, a: 1}
-      _string: Hello World!
+      _string: RGBA(1.000, 1.000, 1.000, 1.000)
       b: 0
     decimalsAttributeExamples:
       oneDecimal: 0.1
@@ -810,8 +810,8 @@ MonoBehaviour:
       onlyTens: 20
       onlyHundreds: 300
     delayed2AttributeExamples:
-      delayed: Edit Here
-      instant: Edit Here
+      delayed: 3
+      instant: 41
       b2: 0
     displayAutoPropertyAttributeExamples:
       _: 0
@@ -830,8 +830,8 @@ MonoBehaviour:
       f: -1
       gob: {fileID: 0}
     getSetAttributeExamples:
-      position: {x: 0, y: 0, z: 0}
-      evenNumber: 66
+      position: {x: 0.27, y: 0, z: 5}
+      evenNumber: 0
     gUIColorAttributeExamples:
       a: 0
       b: 0
@@ -852,7 +852,7 @@ MonoBehaviour:
       b1: 0
       b2: 0
     hookAttributeExamples:
-      value: 0
+      value: 4
     horizontalGroupAttributeExamples:
       offlineScene:
         name: start Scene
@@ -931,7 +931,7 @@ MonoBehaviour:
       myCappedValue: 5
       stringMin: 5
     multipleOfAttributeExamples:
-      _int: 6
+      _int: 3
       _float: 1.2
       step: 0.74
       multipleOfStep: -0.74
@@ -1093,7 +1093,7 @@ MonoBehaviour:
         - elements: 000000000000000000000000000000000000000000000000
     dynamicSliderExamples:
       sliderValue:
-        value: 5
+        value: 4.92
         min: 1
         max: 10
       value2:
@@ -1297,9 +1297,9 @@ MonoBehaviour:
       _float: 0
     spaceAttributeExamples:
       int1: 0
-      int2: 0
+      int2: 3211
       float1: 0
-      float2: 0
+      float2: 32.1
     tooltipAttributeExamples:
       _int: 0
       someClass:

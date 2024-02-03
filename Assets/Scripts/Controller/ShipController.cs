@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CustomInspector;
+using System.IO;
 
 public class ShipController : MonoBehaviour, IShipController
 {
@@ -24,16 +26,28 @@ public class ShipController : MonoBehaviour, IShipController
     [Header("属性")]
     [SerializeField] private float speed;
 
+    [HorizontalLine("dubug方法")]
+    [Button(nameof(DebugSaveShipJson))]
+    [HideField]
+    public bool _bool;
+
+
 
     public Grid<FGridNode> Grid { get => grid; set => grid = value; }
 
-    private void Start()
+    private void Awake()
     {
-        grid = new Grid<FGridNode>(gridWidth, gridHeight, 1, FGridNodeConstructorFunc, Vector3.zero);
+        EventCenter.Instance.AddEventListener("PlayerMementoLoad", EventCenter_OnPlayerMementoLoad);
+    }
 
-        // grid实体设置到飞船下面
-        grid.GetParent().transform.SetParent(transform);
-        grid.GetParent().transform.localPosition = new Vector3(-grid.GetRealWorldWidth() / 2, -grid.GetRealWorldHeight() / 2);
+    //private void Start()
+    //{
+    //    //DefaultInit();
+    //}
+
+    public void DefaultInit()
+    {
+        CreateGrid();
 
         // 生成核心
         Vector2Int coreInitPos = new((gridWidth / 2) - 1, (gridHeight / 2) - 1);
@@ -43,8 +57,47 @@ public class ShipController : MonoBehaviour, IShipController
         {
             item.SetContent(coreUnit);
         }
+    }
 
+    private void CreateGrid()
+    {
+        grid = new Grid<FGridNode>(gridWidth, gridHeight, 1, FGridNodeConstructorFunc, Vector3.zero);
+
+        // grid实体设置到飞船下面
+        grid.GetParent().transform.SetParent(transform);
+        grid.GetParent().transform.localPosition = new Vector3(-grid.GetRealWorldWidth() / 2, -grid.GetRealWorldHeight() / 2);
+
+        // 关闭地面显示
         SetAllFGridNodeBackGroundActive(false);
+    }
+
+    public void InitByPlayerMemento(PlayerMemento playerMemento)
+    {
+        ShipMemento shipMemento = playerMemento.shipMemento;
+        gridHeight = shipMemento.gridHeightSize;
+        gridWidth = shipMemento.gridWidthSize;
+
+        if (grid != null)
+        {
+            Destroy(grid.GetParent());
+            grid = null;
+        }
+
+        CreateGrid();
+
+        // 按照json生成所有的unit
+        foreach (var item in shipMemento.mementoUnitInfoList)
+        {
+            UnitSO unitSO = UnitInfoModel.Instance.GetUnit(item.unitName);
+            if (unitSO == null)
+            {
+                Debug.LogError("Can not find this unit: " + item.unitName);
+                continue;
+            }
+
+            // 生成unit
+            UnitObject.UnitFactoryCreate(unitSO, new Vector2Int(item.x, item.y), item.dir, grid);
+        }
     }
 
     private void Update()
@@ -118,6 +171,13 @@ public class ShipController : MonoBehaviour, IShipController
         return fGridNode;
     }
 
+    public void DebugSaveShipJson()
+    {
+        PlayerMemento playerMemento = new PlayerMemento(this, PlayerInventory.Instance.GetInventory());
+        string jsonpath = Path.Combine(Application.persistentDataPath, "test.json");
+        playerMemento.SaveMemento(jsonpath);
+    }
+
     public void SetAllFGridNodeBackGroundActive(bool value)
     {
         foreach (List<FGridNode> fgndoeList in grid.Content)
@@ -130,5 +190,22 @@ public class ShipController : MonoBehaviour, IShipController
                 }
             }
         }
+    }
+
+    public void EventCenter_OnPlayerMementoLoad(object sender, object playerMemento)
+    {
+        if (playerMemento is PlayerMemento)
+        {
+            InitByPlayerMemento(playerMemento as PlayerMemento);
+            return;
+        }
+
+        Debug.LogError("EventCenter_OnPlayerMementoLoad 传入参数无法转换为 PlayerMemento");
+        //DefaultInit();
+    }
+
+    private void OnDestroy()
+    {
+        EventCenter.Instance.RemoveEventListener("PlayerMementoLoad", EventCenter_OnPlayerMementoLoad);
     }
 }

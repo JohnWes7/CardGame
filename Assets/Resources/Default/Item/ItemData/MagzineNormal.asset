@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: MagzineNormal
   m_EditorClassIdentifier: 
   mainSprite: {fileID: 21300000, guid: fd349a2866edfd44aa3277c561ad7815, type: 3}
-  prefab: {fileID: 4284919561576364251, guid: 94a13464539a4e9449a4aba50a3b1201, type: 3}
+  prefab: {fileID: 140744533170390575, guid: 0a6ac9958d78d3c49873992098e784d8, type: 3}

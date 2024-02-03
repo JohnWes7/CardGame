@@ -48,6 +48,8 @@ public class UnitObject : MonoBehaviour
     [SerializeField] protected Grid<FGridNode> grid;
 
     public UnitSO UnitSO { get => unitSO; set => unitSO = value; }
+    public Dir Dir { get => dir; set => dir = value; }
+    public Vector2Int Position { get => position; set => position = value; }
 
     /// <summary>
     /// 在自己的grid上面找到改位置的unitObject 如果没有则返回null

@@ -134,4 +134,13 @@ public class PlayerInventory
 
         Debug.LogError($"not this key in inventory {itemSO}");
     }
+
+    public int GetItemNum(ItemSO itemSO)
+    {
+        if (inventory.ContainsKey(itemSO))
+        {
+            return inventory[itemSO];
+        }
+        return 0;
+    }
 }

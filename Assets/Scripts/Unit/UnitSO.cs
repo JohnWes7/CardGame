@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using CustomInspector;
 
 [CreateAssetMenu(menuName ="ScriptableObject/Unit")]
 public class UnitSO : ScriptableObject
@@ -31,14 +32,16 @@ public class UnitSO : ScriptableObject
         }
     }
 
-    [Header("创造属性")]
+    [HorizontalLine("创造属性")]
     public string unitName;
+    [Preview, AssetsOnly]
     public GameObject prefab;
+    [Preview, AssetsOnly]
     public Sprite fullsizeSprite;
     public List<Vector2Int> place;
     public Vector2 spriteBLtoCMOffset;
 
-    [Header("成本")]
+    [HorizontalLine("成本")]
     public List<ItemCost> itemCostList;
 
     /// <summary>

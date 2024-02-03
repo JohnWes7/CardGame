@@ -2,19 +2,85 @@ TODO
 
 美化
 
-建造与建造面板
-建造的时候显示提示框 (资源提示 位置提示)
-建造器的 点击panel美化 
-如果可以拉一个菜单出来的话 在ui中的时候不能进行建造
+建造器的 点击panel美化
+建造的时候可以在右下角显示当前建造物品的详细信息
 
 移动的时候会卡顿 不知道是不是cinemachine的锅
+constructor 现在可以用可序列化的字典了
 
-OnProcess
+无人机敌人的炮塔
+组件扣血
+
+?
+建造的时候旁边显示要建造什么东西可能需要事件中心
+
+
+剩余的一些必要的基础物件:
+    墙体
+    护盾
+    范围收集器
+    
+
+游戏的保存和结束回港
+
+游戏大体逻辑:
+    [loop]
+    1 停泊 港口 
+    2 副本 获得资源
+    3 港口 解锁科技 购买buff 
 
 开始继续游戏内容
 
+    保存 与 场景切换
+
+
+接入steam的sdk
+    
+
+
+OnProcess
+
+港口 和选择任务场景
+
 
 Done
+
+2024-2-2
+
+new
+本地存档内容
+ship memento
+保存使用json 但是如果直接保存的Vector2Int 当作 grid 的位置 会把模长那些全部保存过去 还是直接用 x 和 y 吧
+
+playerMemento
+保存飞船也保存仓库
+
+读取
+战斗场景读取
+逻辑: 暂时的
+先是game manager需要读取玩家存档 PlayerMemento
+读取了之后触发读取EventCenter事件 PlayerMementoLoad
+飞船带有事件回调会根据事件中的值来加载飞船
+
+飞船要根据shipmemento 里面的值来加载数据
+就需要一个model类字典来管理所有的unitSO 负责根据存档里面的unitname来索引全部的
+
+2024-2-1
+保存飞船和仓库的json
+
+2024-1-31
+
+new
+事件中心写了一个 : EventCenter
+
+建造的时候旁边显示要建造需要什么东西 (这个需要用事件中心吗?)
+显示的面板 监听 shipbuildController 的curbuild 如果curbuild 换了就 refresh
+并且监听inventory的inventory change 如果inventory里面有物品增加或者减少也会显示在建造的详细面板上面
+没用事件中心
+
+fix
+建造的时候不能删除
+
 
 2024-1-30
 

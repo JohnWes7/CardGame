@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using CustomInspector;
 
 /// <summary>
 /// 飞船建造管理类
@@ -23,21 +24,27 @@ public class ShipBuildController : MonoBehaviour
     [SerializeField] private IShipBuildingState state;
 
     // 建造面板
-    [SerializeField] private GameObject uiBuildPanelPrefab;
-    [SerializeField] private BuildPanelController uiBuildPanelInstance;
+    [HorizontalLine("建造时候打开的面板")]
+    [SerializeField, AssetsOnly, ForceFill] private GameObject uiBuildPanelPrefab;
+    [SerializeField, ReadOnly] private BuildPanelController uiBuildPanelInstance;
 
     // 单元建造
     //[SerializeField] private List<UnitSO> unitCanBuild;
     //[SerializeField] private int buildIndex;
-    [SerializeField] private UnitListSO buildableUnit;
-    [SerializeField] private UnitSO curUnit;
-    [SerializeField] private Dir buildDir;
-    [SerializeField] private MonoInterface<IShipController> sc;
-    [SerializeField] private bool isBuilding;
+    [HorizontalLine("建造需要的字段")]
+    [SerializeField, ForceFill] private UnitListSO buildableUnit;
+    [SerializeField, ReadOnly] private UnitSO curUnit;
+    [SerializeField, ReadOnly] private Dir buildDir;
+    [SerializeField, ReadOnly] private MonoInterface<IShipController> sc;
+    [SerializeField, ReadOnly] private bool isBuilding;
 
-    // 虚影
-    [SerializeField] private SpriteRenderer prefabShadow;
+    [HorizontalLine("建造的时候的虚影")]
+    [SerializeField, ReadOnly] private SpriteRenderer prefabShadow;
     [SerializeField] private Color shadowColor;
+    [HorizontalLine("虚影旁边显示造价")]
+    [SerializeField, AssetsOnly, ForceFill] private GameObject uiShadowCostShowerPrefab;
+    [SerializeField, ReadOnly] private BuildCostPanel uiShadowCostShower;
+
 
     // 当当前选择的unit变化后调用
     public event EventHandler<UnitEventargs> OnCurBuildUnitChange;
@@ -49,6 +56,28 @@ public class ShipBuildController : MonoBehaviour
     public SpriteRenderer PrefabShadow { get => prefabShadow; set => prefabShadow = value; }
     public IShipBuildingState State { get => state; set => state = value; }
     public bool IsBuilding { get => isBuilding; set => isBuilding = value; }
+    public BuildCostPanel UiShadowCostShower { get => uiShadowCostShower; set => uiShadowCostShower = value; }
+
+
+
+    //private void Awake()
+    //{
+    //    // delegate 能存多个方法 而且不需要 new 初始化 如果是有返回值的方法则只会保留最后一个
+    //    //delegate int test();
+    //    //private test testd;
+
+    //    //testd += () =>
+    //    //{
+    //    //    Debug.Log("m1");
+    //    //    return 1;
+    //    //};
+    //    //testd += () =>
+    //    //{
+    //    //    Debug.Log("m2");
+    //    //    return 2;
+    //    //};
+    //    //Debug.Log(testd());
+    //}
 
     private void Start()
     {
@@ -67,7 +96,7 @@ public class ShipBuildController : MonoBehaviour
         prefabShadow.color = shadowColor;
         go.SetActive(false);
 
-        // 初始化面板
+        // 初始化建造选择面板
         if (uiBuildPanelInstance == null)
         {
             GameObject temp = Instantiate(uiBuildPanelPrefab, GameObject.Find("Canvas").transform);
@@ -83,6 +112,13 @@ public class ShipBuildController : MonoBehaviour
 
         // 初始关闭面板
         uiBuildPanelInstance.ClosePanel();
+
+
+        // 初始化uiShadowCostShowerPrefab
+        var uiShadowCostShowerGO = Instantiate(uiShadowCostShowerPrefab, GameObject.Find("Canvas").transform);
+        uiShadowCostShower = uiShadowCostShowerGO.GetComponent<BuildCostPanel>();
+        uiShadowCostShower.gameObject.SetActive(false);
+        OnCurBuildUnitChange += UiShadowCostShower.ShipBuildController_OnCurBuildChange;
     }
 
     private void UiBuildPanelInstance_OnUnitValueChange(object sender, BuildPanelController.BuildPanelEventHandler e)
@@ -272,10 +308,10 @@ public class ShipBuildController : MonoBehaviour
             {
                 return;
             }
-            
+
             if (!PlayerInventory.Instance.HaveEnoughItem(GetCurBuildUnit().itemCostList, out List<UnitSO.ItemCost> missingItem))
             {
-                List<string> debugString = new List<string>(); 
+                List<string> debugString = new List<string>();
                 foreach (var item in missingItem)
                 {
                     debugString.Add(item.ToString());
@@ -283,8 +319,8 @@ public class ShipBuildController : MonoBehaviour
                 LogUtilsXY.LogOnMousePos($"缺少物品无法建造:\n{string.Join("\n", debugString)}");
                 return;
             }
-            
-            Debug.Log($"Build Unit: {GetCurBuildUnit().name}");
+
+            //Debug.Log($"Build Unit: {GetCurBuildUnit().name}");
             UnitObject unitObject = ShipBuildingState.BuildUnit(this);
 
             if (unitObject != null)
@@ -297,7 +333,7 @@ public class ShipBuildController : MonoBehaviour
             }
         }
     }
-    
+
     public void PlayerInput_OnBuildStateCheckDetail(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
@@ -317,7 +353,11 @@ public class ShipBuildController : MonoBehaviour
     {
         if (callbackContext.performed)
         {
-            ChangeCurBuildUnit(null);
+            // 先判断是否需要拆除
+            if (!TryDelectUnit())
+            {
+                ChangeCurBuildUnit(null);
+            }
         }
     }
 

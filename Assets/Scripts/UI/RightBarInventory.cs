@@ -1,24 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CustomInspector;
 
 public class RightBarInventory : MonoBehaviour
 {
     [SerializeField] private Transform itemContext;
     [SerializeField] private GameObject itemPrefab;
     [SerializeField] private List<RightBarInventoryItemIcon> iconList;
-    [SerializeField] private Dictionary<ItemSO, RightBarInventoryItemIcon> iconDict;
+    [SerializeField] private SerializableDictionary<ItemSO, RightBarInventoryItemIcon> iconDict;
     [SerializeField] private ItemSO test;
 
     private void Awake()
     {
-        iconDict = new Dictionary<ItemSO, RightBarInventoryItemIcon>();
+        iconDict = new SerializableDictionary<ItemSO, RightBarInventoryItemIcon>();
     }
 
     private void Start()
     {
         PlayerInventory.Instance.OnInventoryChange += Instance_OnInventoryChange;
-        PlayerInventory.Instance.AddItem(test, 5);
+        PlayerInventory.Instance.AddItem(test, 50);
     }
 
     private void Instance_OnInventoryChange(object sender, PlayerInventory.InventoryEventArgs e)

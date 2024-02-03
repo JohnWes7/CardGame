@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
-using UnityEngine.Tilemaps;
+using CustomInspector;
 
 /// <summary>
 /// 古希腊掌管敌人生成的神
@@ -21,9 +22,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int spawnNumPerTime;
     [SerializeField] private Transform spawnCenter;
 
+    [HorizontalLine("这里gamemanager当 memento caretaker 可能需要单独分一个类出去")]
+    [SerializeField, ReadOnly] private PlayerMemento playerMemento;
+
     private void Awake()
     {
         instance = this;
+    }
+
+    private void Start()
+    {
+        playerMemento = LoadLocalMemento();
+        EventCenter.Instance.TriggerEvent("PlayerMementoLoad", this, playerMemento);
     }
 
     private void Update()
@@ -55,4 +65,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public PlayerMemento LoadLocalMemento()
+    {
+        return PlayerMemento.LoadMemento(Path.Combine(Application.persistentDataPath, "test.json"));
+    }
 }

@@ -21,4 +21,6 @@ MonoBehaviour:
   - {x: 1, y: 0}
   - {x: 1, y: 1}
   spriteBLtoCMOffset: {x: 0.5, y: 0.5}
-  itemCostList: []
+  itemCostList:
+  - itemSO: {fileID: 11400000, guid: ac6f53da63f83fd4cbf87facc340a53f, type: 2}
+    cost: 5
