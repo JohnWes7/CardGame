@@ -15,12 +15,12 @@ public class BuildCostItem : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerInventory.Instance.OnInventoryChange += Instance_OnInventoryChange;
+        PlayerModel.Instance.GetInventory().OnInventoryChange += Instance_OnInventoryChange;
     }
 
     private void OnDisable()
     {
-        PlayerInventory.Instance.OnInventoryChange -= Instance_OnInventoryChange;
+        PlayerModel.Instance.GetInventory().OnInventoryChange -= Instance_OnInventoryChange;
     }
 
     private void Instance_OnInventoryChange(object sender, PlayerInventory.InventoryEventArgs e)
@@ -39,7 +39,7 @@ public class BuildCostItem : MonoBehaviour
 
         itemSprite.sprite = itemCost.itemSO.mainSprite;
 
-        int inventoryNum = PlayerInventory.Instance.GetItemNum(itemCost.itemSO);
+        int inventoryNum = PlayerModel.Instance.GetInventory().GetItemNum(itemCost.itemSO);
         int cost = itemCost.cost;
 
         string textShow = $"{inventoryNum}/{cost}";

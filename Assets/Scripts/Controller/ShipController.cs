@@ -37,7 +37,7 @@ public class ShipController : MonoBehaviour, IShipController
 
     private void Awake()
     {
-        EventCenter.Instance.AddEventListener("PlayerMementoLoad", EventCenter_OnPlayerMementoLoad);
+        EventCenter.Instance.AddEventListener("ShipMementoLoad", EventCenter_OnPlayerMementoLoad);
     }
 
     //private void Start()
@@ -71,9 +71,8 @@ public class ShipController : MonoBehaviour, IShipController
         SetAllFGridNodeBackGroundActive(false);
     }
 
-    public void InitByPlayerMemento(PlayerMemento playerMemento)
+    public void InitByPlayerMemento(ShipMemento shipMemento)
     {
-        ShipMemento shipMemento = playerMemento.shipMemento;
         gridHeight = shipMemento.gridHeightSize;
         gridWidth = shipMemento.gridWidthSize;
 
@@ -173,9 +172,8 @@ public class ShipController : MonoBehaviour, IShipController
 
     public void DebugSaveShipJson()
     {
-        PlayerMemento playerMemento = new PlayerMemento(this, PlayerInventory.Instance.GetInventory());
-        string jsonpath = Path.Combine(Application.persistentDataPath, "test.json");
-        playerMemento.SaveMemento(jsonpath);
+        PlayerModel.Instance.SetPlayerMemento(this);
+        PlayerModel.Instance.SaveToLocal();
     }
 
     public void SetAllFGridNodeBackGroundActive(bool value)
@@ -192,16 +190,16 @@ public class ShipController : MonoBehaviour, IShipController
         }
     }
 
-    public void EventCenter_OnPlayerMementoLoad(object sender, object playerMemento)
+    public void EventCenter_OnPlayerMementoLoad(object sender, object args)
     {
-        if (playerMemento is PlayerMemento)
+        if (args is ShipMemento)
         {
-            InitByPlayerMemento(playerMemento as PlayerMemento);
+            InitByPlayerMemento(args as ShipMemento);
             return;
         }
 
-        Debug.LogError("EventCenter_OnPlayerMementoLoad 传入参数无法转换为 PlayerMemento");
-        //DefaultInit();
+        Debug.LogError("EventCenter_OnPlayerMementoLoad 传入参数无法转换为 PlayerMemento 执行默认初始化");
+        DefaultInit();
     }
 
     private void OnDestroy()

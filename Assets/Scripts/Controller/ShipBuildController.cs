@@ -250,7 +250,7 @@ public class ShipBuildController : MonoBehaviour
             // 执行成功拆除之后退还资源
             foreach (var item in unitObject.UnitSO.itemCostList)
             {
-                PlayerInventory.Instance.AddItem(item.itemSO, item.cost);
+                PlayerModel.Instance.GetInventory()?.AddItem(item.itemSO, item.cost);
             }
             return true;
         }
@@ -309,7 +309,7 @@ public class ShipBuildController : MonoBehaviour
                 return;
             }
 
-            if (!PlayerInventory.Instance.HaveEnoughItem(GetCurBuildUnit().itemCostList, out List<UnitSO.ItemCost> missingItem))
+            if (!PlayerModel.Instance.GetInventory().HaveEnoughItem(GetCurBuildUnit().itemCostList, out List<UnitSO.ItemCost> missingItem))
             {
                 List<string> debugString = new List<string>();
                 foreach (var item in missingItem)
@@ -328,7 +328,7 @@ public class ShipBuildController : MonoBehaviour
                 //建造成功 扣除资源
                 foreach (var item in GetCurBuildUnit().itemCostList)
                 {
-                    PlayerInventory.Instance.CostItem(item.itemSO, item.cost);
+                    PlayerModel.Instance.GetInventory()?.CostItem(item.itemSO, item.cost);
                 }
             }
         }

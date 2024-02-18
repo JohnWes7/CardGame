@@ -46,6 +46,10 @@ public class ShipMemento
             foreach (var gridobj in item)
             {
                 UnitObject unitObject = gridobj != null ? gridobj.GetContent() : null;
+                if (unitObject != null)
+                {
+                    Debug.Log(unitObject);
+                }
                 if (unitObject != null && !unitList.ContainsKey(unitObject))
                 {
                     unitList.Add(unitObject, new MementoUnitInfo(unitObject.UnitSO.name, unitObject.Dir, unitObject.Position));
@@ -60,23 +64,5 @@ public class ShipMemento
         {
             mementoUnitInfoList.Add(item.Value);
         }
-    }
-
-    /// <summary>
-    /// 将纪念品保存到本地
-    /// </summary>
-    public void SaveMemento(string filePath)
-    {
-        string json = JsonConvert.SerializeObject(this);
-        try
-        {
-            File.WriteAllText(filePath, json);
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("写入失败\n" + e.Message);
-        }
-
-        Debug.Log("保存成功");
     }
 }

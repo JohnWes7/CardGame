@@ -22,8 +22,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int spawnNumPerTime;
     [SerializeField] private Transform spawnCenter;
 
-    [HorizontalLine("这里gamemanager当 memento caretaker 可能需要单独分一个类出去")]
-    [SerializeField, ReadOnly] private PlayerMemento playerMemento;
+    //[HorizontalLine("这里gamemanager当 memento caretaker 可能需要单独分一个类出去")]
+    //[SerializeField, ReadOnly] private PlayerMemento playerMemento;
 
     private void Awake()
     {
@@ -32,8 +32,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        playerMemento = LoadLocalMemento();
-        EventCenter.Instance.TriggerEvent("PlayerMementoLoad", this, playerMemento);
+        PlayerModel.Instance.LoadLocalSave();
+        EventCenter.Instance.TriggerEvent("ShipMementoLoad", this, PlayerModel.Instance.GetShipMemento());
     }
 
     private void Update()
@@ -63,10 +63,5 @@ public class GameManager : MonoBehaviour
                 Enemy.CreateEnemyFactory(enemySO, transform.position + offset, Quaternion.identity);
             }
         }
-    }
-
-    public PlayerMemento LoadLocalMemento()
-    {
-        return PlayerMemento.LoadMemento(Path.Combine(Application.persistentDataPath, "test.json"));
     }
 }

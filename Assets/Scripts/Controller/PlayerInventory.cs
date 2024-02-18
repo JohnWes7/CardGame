@@ -17,25 +17,25 @@ public class PlayerInventory
         }
     }
 
-    // 单例
-    private static PlayerInventory instance;
+    //// 单例
+    //private static PlayerInventory instance;
 
     public event EventHandler<InventoryEventArgs> OnInventoryChange;
 
     [SerializeField] private Dictionary<ItemSO, int> inventory = new Dictionary<ItemSO, int>();
 
-    public static PlayerInventory Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new PlayerInventory();
-            }
-            return instance;
-        }
-        set => instance = value;
-    }
+    //public static PlayerInventory Instance
+    //{
+    //    get
+    //    {
+    //        if (instance == null)
+    //        {
+    //            instance = new PlayerInventory();
+    //        }
+    //        return instance;
+    //    }
+    //    set => instance = value;
+    //}
 
     public void AddItem(ItemSO itemType, int num)
     {
@@ -110,8 +110,8 @@ public class PlayerInventory
         {
             if (!inventory.ContainsKey(item.itemSO))
             {
-                UnitSO.ItemCost temp = new UnitSO.ItemCost();
                 missingItemLiost.Add(item.Copy());
+                continue;
             }
 
             if (inventory[item.itemSO] < item.cost)

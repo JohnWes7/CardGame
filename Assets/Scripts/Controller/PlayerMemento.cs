@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+/// <summary>
+/// 弃用
+/// </summary>
 [System.Serializable]
 public class PlayerMemento
 {
     public ShipMemento shipMemento;
-
+    
     public Dictionary<string, int> inventoryMemento;
 
     public PlayerMemento(IShipController ship, Dictionary<ItemSO, int> inventory)
@@ -32,11 +35,27 @@ public class PlayerMemento
         string json = JsonConvert.SerializeObject(this);
         try
         {
-            File.WriteAllText(filePath, json);
+            if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+            }
+
+
+            if (File.Exists(filePath))
+            {
+                Debug.Log("文件存在 开始写入");
+                File.WriteAllText(filePath, json);
+            }
+            else
+            {
+                Debug.Log("文件不存在 创建文件");
+                File.AppendAllText(filePath, json);
+            }
         }
         catch (System.Exception e)
         {
             Debug.LogError("write fail\n" + e.Message);
+            return;
         }
 
         Debug.Log("save successful");

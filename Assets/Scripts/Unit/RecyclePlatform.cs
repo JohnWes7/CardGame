@@ -81,7 +81,7 @@ public class RecyclePlatform : UnitObject, IShipUnit
     public void ReceiveDropItem(DropItem dropItem)
     {
         Debug.Log($"receive drop item: {dropItem.ItemSO} {dropItem.Num}");
-        PlayerInventory.Instance.AddItem(dropItem.ItemSO, dropItem.Num);
+        PlayerModel.Instance.GetInventory()?.AddItem(dropItem.ItemSO, dropItem.Num);
         Destroy(dropItem.gameObject);
     }
 

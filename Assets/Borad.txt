@@ -40,10 +40,24 @@ constructor 现在可以用可序列化的字典了
 
 OnProcess
 
-港口 和选择任务场景
+港口
+港口可以购买解锁新的升级和蓝图
 
+fix
+
+飞船有时候save 的时候没有任何组件
 
 Done
+
+2024-2-17
+建立了Player model单例
+uml类图
+https://www.processon.com/diagraming/65d0570cc928476241774147
+
+fix
+player model 结构改变
+
+
 
 2024-2-2
 

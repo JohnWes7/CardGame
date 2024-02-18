@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
 
-public class RightBarInventory : MonoBehaviour
+public class RightBarInventoryPanel : MonoBehaviour
 {
     [SerializeField] private Transform itemContext;
     [SerializeField] private GameObject itemPrefab;
@@ -18,8 +18,9 @@ public class RightBarInventory : MonoBehaviour
 
     private void Start()
     {
-        PlayerInventory.Instance.OnInventoryChange += Instance_OnInventoryChange;
-        PlayerInventory.Instance.AddItem(test, 50);
+        PlayerModel.Instance.GetInventory().OnInventoryChange += Instance_OnInventoryChange;
+        //PlayerInventory.Instance.AddItem(test, 50);
+        RefreshIcon(PlayerModel.Instance.GetInventory().GetInventory());
     }
 
     private void Instance_OnInventoryChange(object sender, PlayerInventory.InventoryEventArgs e)
@@ -50,6 +51,6 @@ public class RightBarInventory : MonoBehaviour
     [ContextMenu("LogAllInventory")]
     public void LogAllInventory()
     {
-        Debug.Log(PlayerInventory.Instance);
+        Debug.Log(PlayerModel.Instance.GetInventory());
     }
 }

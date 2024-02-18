@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
 
+//归 shipbuildcontroller 调用
 public class BuildCostPanel : MonoBehaviour
 {
     [SerializeField, AssetsOnly, ForceFill] private GameObject uiCostItemPrefab;

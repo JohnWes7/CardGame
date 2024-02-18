@@ -9,7 +9,7 @@ public class DebugTool
     [MenuItem("YLuoDebugTool/LogInventory")]
     public static void LogInventory()
     {
-        Debug.Log(PlayerInventory.Instance.ToString());
+        Debug.Log(PlayerModel.Instance.GetInventory().ToString());
     }
 
     [MenuItem("YLuoDebugTool/LogPath")]
