@@ -205,7 +205,7 @@ public class ShipBuildController : MonoBehaviour
             PlayerControllerSingleton.Instance.SwitchCurrentActionMap("Build");
             prefabShadow.gameObject.SetActive(true);
             sc.InterfaceObj.SetAllFGridNodeBackGroundActive(true);
-            Debug.Log("startBuild");
+            Johnwest.JWUniversalTool.LogWithClassMethodName("startBuild", System.Reflection.MethodBase.GetCurrentMethod());
 
             // 显示ui
             uiBuildPanelInstance.OpenPanel(UnitCanBuild, GetCurBuildUnit());
@@ -238,7 +238,7 @@ public class ShipBuildController : MonoBehaviour
         // 关闭ui
         uiBuildPanelInstance.ClosePanel();
 
-        Debug.Log("LeftBuild");
+        Johnwest.JWUniversalTool.LogWithClassMethodName("LeftBuild", System.Reflection.MethodBase.GetCurrentMethod());
     }
 
     public bool TryDelectUnit()

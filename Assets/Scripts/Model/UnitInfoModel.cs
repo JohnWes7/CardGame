@@ -41,6 +41,8 @@ public class UnitInfoModel : Singleton<UnitInfoModel>
         {
             return unitSO;
         }
+
+        Johnwest.JWUniversalTool.LogWarningWithClassMethodName($"no this unit, name: {unitName}", System.Reflection.MethodBase.GetCurrentMethod());
         return null;
     }
 }

@@ -17,11 +17,13 @@ public class AutoSwitchInputAction : MonoBehaviour, IPointerEnterHandler, IPoint
     {
         originMapName = PlayerControllerSingleton.Instance.currentActionMap.name;
         PlayerControllerSingleton.Instance.SwitchCurrentActionMap(targetMapName);
+        Debug.Log($"now action map: {PlayerControllerSingleton.Instance.currentActionMap.name}");
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         PlayerControllerSingleton.Instance.SwitchCurrentActionMap(originMapName);
+        Debug.Log($"now action map: {PlayerControllerSingleton.Instance.currentActionMap.name}");
     }
 
 }

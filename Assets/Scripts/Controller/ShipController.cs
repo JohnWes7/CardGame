@@ -71,7 +71,7 @@ public class ShipController : MonoBehaviour, IShipController
         SetAllFGridNodeBackGroundActive(false);
     }
 
-    public void InitByPlayerMemento(ShipMemento shipMemento)
+    public void InitByMemento(ShipMemento shipMemento)
     {
         gridHeight = shipMemento.gridHeightSize;
         gridWidth = shipMemento.gridWidthSize;
@@ -102,20 +102,20 @@ public class ShipController : MonoBehaviour, IShipController
     private void Update()
     {
         // debug
-        if (showGridLine)
-        {
-            for (int i = 0; i < grid.GetHeight(); i++)
-            {
-                for (int j = 0; j < grid.GetWidth(); j++)
-                {
-                    Vector3 lb = grid.GetWorldPositionLeftBottom(j, i);
-                    Vector3 lu = grid.GetWorldPositionLeftBottom(j, i + 1);
-                    Vector3 rb = grid.GetWorldPositionLeftBottom(j + 1, i);
-                    Debug.DrawLine(lb, lu, Color.white);
-                    Debug.DrawLine(lb, rb, Color.white);
-                }
-            }
-        }
+        //if (showGridLine)
+        //{
+        //    for (int i = 0; i < grid.GetHeight(); i++)
+        //    {
+        //        for (int j = 0; j < grid.GetWidth(); j++)
+        //        {
+        //            Vector3 lb = grid.GetWorldPositionLeftBottom(j, i);
+        //            Vector3 lu = grid.GetWorldPositionLeftBottom(j, i + 1);
+        //            Vector3 rb = grid.GetWorldPositionLeftBottom(j + 1, i);
+        //            Debug.DrawLine(lb, lu, Color.white);
+        //            Debug.DrawLine(lb, rb, Color.white);
+        //        }
+        //    }
+        //}
     }
 
     public static TextMesh TextMeshConstructorFunc(Grid<TextMesh> grid, int x, int y, float cellsize, GameObject parent)
@@ -172,7 +172,7 @@ public class ShipController : MonoBehaviour, IShipController
 
     public void DebugSaveShipJson()
     {
-        PlayerModel.Instance.SetPlayerMemento(this);
+        PlayerModel.Instance.SetShipMemento(this);
         PlayerModel.Instance.SaveToLocal();
     }
 
@@ -194,7 +194,7 @@ public class ShipController : MonoBehaviour, IShipController
     {
         if (args is ShipMemento)
         {
-            InitByPlayerMemento(args as ShipMemento);
+            InitByMemento(args as ShipMemento);
             return;
         }
 

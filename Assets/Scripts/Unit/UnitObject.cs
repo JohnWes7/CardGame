@@ -39,6 +39,16 @@ public class UnitObject : MonoBehaviour
         unitObject.dir = dir;
         unitObject.grid = grid;
 
+        // 设置索引
+        var nodelist = grid.GetObjectPlaceByPosList(position, unitSO.place, dir);
+        foreach (var item in nodelist)
+        {
+            if (item != null)
+            {
+                item.SetContent(unitObject);
+            }
+        }
+
         return unitObject;
     }
 

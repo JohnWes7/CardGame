@@ -27,6 +27,7 @@ constructor 现在可以用可序列化的字典了
     [loop]
     1 停泊 港口 
     2 副本 获得资源
+        副本中采用坚持3分钟 应对不断来袭的敌人 获得资源
     3 港口 解锁科技 购买buff 
 
 开始继续游戏内容
@@ -40,14 +41,29 @@ constructor 现在可以用可序列化的字典了
 
 OnProcess
 
+fix
+costItem ui 会导致 unity 光线投射目标改变从变回 build action map
+
+new
 港口
 港口可以购买解锁新的升级和蓝图
 
-fix
+港口显示资源和进入关卡选择
 
-飞船有时候save 的时候没有任何组件
+飞船
+
+
 
 Done
+
+2024-2-18
+unitInfoModel 负责索引全部的unitSO
+itemInfoModel 负责索引全部的itemSO
+通用 工具类增加了可以log 带类名和方法名的方法 
+
+fix
+飞船有时候save 的时候没有任何组件
+bug 原因是load的时候组件生成没有绑定到 
 
 2024-2-17
 建立了Player model单例

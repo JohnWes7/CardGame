@@ -181,10 +181,10 @@ public class ShipBuildingState : IShipBuildingState
             // 创造
             UnitObject uo = UnitObject.UnitFactoryCreate(selectUnit, gridXY, sbc.BuildDir, sbc.Sc.InterfaceObj.Grid);
 
-            foreach (var item in place)
-            {
-                item.SetContent(uo);
-            }
+            //foreach (var item in place)
+            //{
+            //    item.SetContent(uo);
+            //}
 
             // 如果是飞船unit 设置为创造这个的飞船
             if (uo is IShipUnit)

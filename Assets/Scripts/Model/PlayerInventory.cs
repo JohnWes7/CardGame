@@ -39,6 +39,12 @@ public class PlayerInventory
 
     public void AddItem(ItemSO itemType, int num)
     {
+        if (itemType == null)
+        {
+            Johnwest.JWUniversalTool.LogWarningWithClassMethodName("item type need add which is null", System.Reflection.MethodBase.GetCurrentMethod());
+            return;
+        }
+
         if (num < 0)
         {
             CostItem(itemType, -num);
@@ -70,7 +76,7 @@ public class PlayerInventory
             result.Add($"{item.Key} : {item.Value}");
         }
 
-        return string.Join("\n", result);
+        return $"total num: {inventory.Count}\n{string.Join("\n", result)}";
     }
 
     public bool HaveEnoughItem(List<UnitSO.ItemCost> itemCostList)
@@ -123,6 +129,27 @@ public class PlayerInventory
         return result;
     }
 
+    public Dictionary<string, int> ToItemNameNumPairs()
+    {
+        Dictionary<string, int> itemNameNumPairs = new Dictionary<string, int>();
+        foreach (var item in inventory)
+        {
+            itemNameNumPairs.Add(item.Key.name, item.Value);
+        }
+
+        return itemNameNumPairs;
+    }
+
+    public void LoadFromItemNameNumPairs(Dictionary<string, int> itemNameNumPairs)
+    {
+        Clear();
+        foreach (var item in itemNameNumPairs)
+        {
+            ItemSO itemSO = ItemInfoModel.Instance.GetItem(item.Key);
+            AddItem(itemSO, item.Value);
+        }
+    }
+
     public void CostItem(ItemSO itemSO, int num)
     {
         if (inventory.ContainsKey(itemSO))
@@ -142,5 +169,10 @@ public class PlayerInventory
             return inventory[itemSO];
         }
         return 0;
+    }
+
+    public void Clear()
+    {
+        inventory.Clear();
     }
 }

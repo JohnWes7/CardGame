@@ -64,7 +64,8 @@ public class Grid<T>
     }
 
     /// <summary>
-    /// 以最左下角为基准计算所有需要的位置并返回位置的 T
+    /// 以最左下角为基准计算所有需要的位置并返回位置的
+    /// 如果找不到的位置则返回defaut(T)
     /// </summary>
     /// <param name="leftButtomPos"></param>
     /// <param name="placePoint"></param>
