@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-/// <summary>
-/// 弃用
-/// </summary>
 [System.Serializable]
+[System.Obsolete]
 public class PlayerMemento
 {
     public ShipMemento shipMemento;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUnit, IBeClick
+public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUnit, IBeClick, IExtraUnitObjectData
 {
     public const int ITEM_CAP_COEFFICIENT = 10;
 
@@ -128,11 +128,8 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
     [SerializeField] private MonoInterface<IShowConstructor> constructorPanel;
     [SerializeField] private GameObject panelPrefab;
 
-    // 进行制造 数据为 ItemSOvalue代表需要的物品和执行一次所需要的个数, 后面的值代表拥有的个数
-    // 明天还是改为用一个内部类来表示 现在可以用
-    //[SerializeField] private Dictionary<FormulaSO.ItemSOValue, int> rawMatNum;
-    //[SerializeField] private Dictionary<FormulaSO.ItemSOValue, int> outPutNum;
-    [SerializeField] private ConstructorFormulaMatInfo matInfo;
+    // 进行制造
+    [SerializeField] private ConstructorFormulaMatInfo matInfo; // 当前制造的配方
     [SerializeField] private float timer;
 
     private void Start()
@@ -283,6 +280,11 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
 
     }
 
+
+    /// <summary>
+    /// 更改制造机制造的 物品
+    /// </summary>
+    /// <param name="index"></param>
     public void ChangeFormula(int index)
     {
         // 如果是越界说明change到null
@@ -300,19 +302,6 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
 
         // 如果配方改动则清除之前里面的东西 (后续可能要缓存成把还有的物品收回背包)
         matInfo.ChangeFormula(allFormula.formulas[index]);
-
-        //rawMatNum.Clear();
-        //outPutNum.Clear();
-
-        //foreach (var item in curFormula.rawMat)
-        //{
-        //    rawMatNum.Add(item, 0);
-        //}
-
-        //foreach (var item in curFormula.outPut)
-        //{
-        //    outPutNum.Add(item, 0);
-        //}
     }
 
     private string DataToString()
@@ -348,5 +337,26 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
         }
 
         return null;
+    }
+
+    // 实现 IExtraUnitObjectData
+
+    public Dictionary<string, object> GetExtraData()
+    {
+        // 如果当前没有配方 则直接返回null
+        if (matInfo.CurFormula == null)
+        {
+            return null;
+        }
+
+        // 如果有配方保存配方名字
+        Dictionary<string, object> result = new Dictionary<string, object>();
+        result.Add("formulaName", matInfo.CurFormula.name);
+        return result;
+    }
+
+    public void SetExtraData(Dictionary<string, object> data)
+    {
+        Debug.Log(Johnwest.JWUniversalTool.DictToString(data));
     }
 }

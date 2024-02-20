@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("开始初始化");
+
         PlayerModel.Instance.LoadLocalSave();
         EventCenter.Instance.TriggerEvent("ShipMementoLoad", this, PlayerModel.Instance.GetShipMemento());
     }

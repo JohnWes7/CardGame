@@ -10,12 +10,43 @@ public class BuildCostPanel : MonoBehaviour
     [SerializeField, ForceFill] private Transform context;
     [SerializeField] private List<BuildCostItem> buildCostItemList;
 
+
+    public void ClosePanel()
+    {
+        UIHoriOpenCloseAni uIHoriOpenCloseAni = GetComponent<UIHoriOpenCloseAni>();
+        if (uIHoriOpenCloseAni)
+        {
+            uIHoriOpenCloseAni.PlayCloseAni();
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void OpenPanel()
+    {
+        //Debug.Log("open");
+        gameObject.SetActive(true);
+        UIHoriOpenCloseAni uIHoriOpenCloseAni = GetComponent<UIHoriOpenCloseAni>();
+        if (uIHoriOpenCloseAni)
+        {
+            uIHoriOpenCloseAni.PlayOpenAni();
+        }
+    }
+
     public void RefreshUnit(UnitSO unitSO)
     {
         if (unitSO == null)
         {
-            gameObject.SetActive(false);
+            ClosePanel();
             return;
+        }
+
+        // 如果自己是关闭状态的就打开
+        if (!gameObject.activeInHierarchy)
+        {
+            OpenPanel();
         }
 
         foreach (var item in buildCostItemList)
@@ -23,8 +54,6 @@ public class BuildCostPanel : MonoBehaviour
             Destroy(item.gameObject);
         }
         buildCostItemList.Clear();
-
-
 
         // 读取unitso 里面需要多少材料
         if (unitSO.itemCostList.Count < 1)

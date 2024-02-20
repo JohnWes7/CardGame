@@ -21,7 +21,7 @@ public class RightBarInventoryPanel : MonoBehaviour
         PlayerModel.Instance.GetInventory().OnInventoryChange += Instance_OnInventoryChange;
         //PlayerInventory.Instance.AddItem(test, 50);
         RefreshIcon(PlayerModel.Instance.GetInventory().GetInventory());
-        Johnwest.JWUniversalTool.LogWithClassMethodName(PlayerModel.Instance.GetInventory(), System.Reflection.MethodBase.GetCurrentMethod());
+        //Johnwest.JWUniversalTool.LogWithClassMethodName(PlayerModel.Instance.GetInventory(), System.Reflection.MethodBase.GetCurrentMethod());
     }
 
     private void Instance_OnInventoryChange(object sender, PlayerInventory.InventoryEventArgs e)

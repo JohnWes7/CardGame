@@ -23,7 +23,7 @@ public class BeltSimple : UnitObject, IShipUnit, IBelt, IBeGrabItem, IBePutDownG
             // 设置位置
             enqueueItem.transform.SetParent(transform);
             enqueueItem.transform.localPosition = Vector3.zero;
-            if (Console.Instance.Active) LogUtilsXY.LogOnPos("添加成功", transform.position);
+            //LogUtilsXY.LogOnPos("添加成功", transform.position);
             pauseOneTick = true;
 
             return true;
@@ -103,7 +103,7 @@ public class BeltSimple : UnitObject, IShipUnit, IBelt, IBeGrabItem, IBePutDownG
 
             if (nextBelt.EnqueueItem(item))
             {
-                if (Console.Instance.Active) LogUtilsXY.LogOnPos("移交给下一个传送带", transform.position);
+                //if (Console.Instance.Active) LogUtilsXY.LogOnPos("移交给下一个传送带", transform.position);
                 item = null;
             }
         }

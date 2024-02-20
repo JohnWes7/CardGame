@@ -13,6 +13,30 @@ public class LookTargetByWASD : MonoBehaviour
 
     private Coroutine wasdCorotine;
 
+    private void Awake()
+    {
+        EventCenter.Instance.AddEventListener("StartWASDTarget", EventCenter_StartWASDTarget);
+        EventCenter.Instance.AddEventListener("StopWASDTarget", EventCenter_StopWASDTarget);
+    }
+
+    private void OnDestroy()
+    {
+        EventCenter.Instance.RemoveEventListener("StartWASDTarget", EventCenter_StartWASDTarget);
+        EventCenter.Instance.RemoveEventListener("StopWASDTarget", EventCenter_StopWASDTarget);
+    }
+
+    private void EventCenter_StartWASDTarget(object sender, object obj)
+    {
+        Debug.Log("recive event center: StartWASDTarget");
+        StartWASD();
+    }
+
+    private void EventCenter_StopWASDTarget(object sender, object obj)
+    {
+        Debug.Log("recive event center: StopWASDTarget");
+        StopWASD();
+    }
+
     public IEnumerator MoveByWASD()
     {
         while (true)
@@ -24,17 +48,20 @@ public class LookTargetByWASD : MonoBehaviour
 
     public void StartWASD()
     {
+        // 检查之前有没有开启协程 避免重复开启
         if (wasdCorotine != null)
         {
             StopCoroutine(wasdCorotine);
             wasdCorotine = null;
         }
 
+        // 开启协程
         wasdCorotine = StartCoroutine(MoveByWASD());
     }
 
     public void StopWASD()
     {
+        // 检查如果之前有开启协程 就关闭 如果没有开启过协程就什么也不干
         if (wasdCorotine != null)
         {
             StopCoroutine(wasdCorotine);
@@ -42,6 +69,10 @@ public class LookTargetByWASD : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 收到playerinput 的move 回调后根据用户输入的值进行移动
+    /// </summary>
+    /// <param name="callbackContext"></param>
     public void PlayerInput_OnBuildWASD(InputAction.CallbackContext callbackContext)
     {
         inputVector = callbackContext.ReadValue<Vector2>();

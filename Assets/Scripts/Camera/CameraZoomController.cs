@@ -21,12 +21,14 @@ public class CameraZoomController : MonoBehaviour
     {
         if (virtualCamera)
         {
+            Debug.Log(virtualCamera.m_Lens.OrthographicSize);
             orthoSizeSpecified = virtualCamera.m_Lens.OrthographicSize;
         }
     }
 
     private void FixedUpdate()
     {
+        //Debug.Log(orthoSizeSpecified + " " + virtualCamera.m_Lens.OrthographicSize);
         if (orthoSizeSpecified > maxOrthoSize)
         {
             orthoSizeSpecified = Mathf.Lerp(orthoSizeSpecified, maxOrthoSize, lerpT);

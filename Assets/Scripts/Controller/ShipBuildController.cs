@@ -209,6 +209,8 @@ public class ShipBuildController : MonoBehaviour
 
             // 显示ui
             uiBuildPanelInstance.OpenPanel(UnitCanBuild, GetCurBuildUnit());
+            uiShadowCostShower.OpenPanel();
+            uiShadowCostShower.RefreshUnit(curUnit);
         }
     }
 
@@ -237,6 +239,7 @@ public class ShipBuildController : MonoBehaviour
 
         // 关闭ui
         uiBuildPanelInstance.ClosePanel();
+        uiShadowCostShower.ClosePanel();
 
         Johnwest.JWUniversalTool.LogWithClassMethodName("LeftBuild", System.Reflection.MethodBase.GetCurrentMethod());
     }
@@ -275,7 +278,7 @@ public class ShipBuildController : MonoBehaviour
     /// 单点来触发有些可被点击物体的回调
     /// </summary>
     /// <param name="callbackContext"></param>
-    public void PlayerInput_OnCheckUnitDetail(InputAction.CallbackContext callbackContext)
+    public void PlayerInput_OnMoveCheckUnitDetail(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
         {
@@ -334,7 +337,7 @@ public class ShipBuildController : MonoBehaviour
         }
     }
 
-    public void PlayerInput_OnBuildStateCheckDetail(InputAction.CallbackContext callbackContext)
+    public void PlayerInput_OnBuildCheckDetail(InputAction.CallbackContext callbackContext)
     {
         if (callbackContext.performed)
         {

@@ -14,8 +14,8 @@ public class ShipController : MonoBehaviour, IShipController
     [SerializeField] private int gridWidth = 50;
     [SerializeField] private int gridHeight = 50;
 
-    [Header("Debug")]
-    [SerializeField] private bool showGridLine = true;
+    //[Header("Debug")]
+    //[SerializeField] private bool _showGridLine = true;
 
     [Header("初始化")]
     [SerializeField] private UnitSO coreSO;
@@ -192,6 +192,7 @@ public class ShipController : MonoBehaviour, IShipController
 
     public void EventCenter_OnPlayerMementoLoad(object sender, object args)
     {
+        Debug.Log("Ship start load");
         if (args is ShipMemento)
         {
             InitByMemento(args as ShipMemento);
@@ -204,6 +205,6 @@ public class ShipController : MonoBehaviour, IShipController
 
     private void OnDestroy()
     {
-        EventCenter.Instance.RemoveEventListener("PlayerMementoLoad", EventCenter_OnPlayerMementoLoad);
+        EventCenter.Instance.RemoveEventListener("ShipMementoLoad", EventCenter_OnPlayerMementoLoad);
     }
 }

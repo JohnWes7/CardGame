@@ -75,7 +75,7 @@ public class Grab : UnitObject, IGrab
             if (upsidePutDownUnit.TryPutDownItem(this.item))
             {
                 item = null;
-                if (Console.Instance.Active) LogUtilsXY.LogOnPos("放下物品", transform.position);
+                LogUtilsXY.LogOnPos("放下物品", transform.position);
                 return true;
             }
         }
@@ -114,7 +114,7 @@ public class Grab : UnitObject, IGrab
                 {
                     this.item = item;
                     item.transform.SetParent(transform);
-                    if (Console.Instance.Active) LogUtilsXY.LogOnPos("抓取到物品", transform.position);
+                    LogUtilsXY.LogOnPos("抓取到物品", transform.position);
                     return true;
                 }
             }
