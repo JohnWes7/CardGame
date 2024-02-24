@@ -55,13 +55,11 @@ public class ShipMemento
             foreach (FGridNode gridobj in item)
             {
                 UnitObject unitObject = gridobj != null ? gridobj.GetContent() : null;
-                if (unitObject != null)
-                {
-                    Debug.Log(unitObject);
-                }
+
                 if (unitObject != null && !unitList.Contains(unitObject))
                 {
                     unitList.Add(unitObject);
+                    Debug.Log(unitObject);
                 }
             }
         }

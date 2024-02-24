@@ -230,6 +230,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "BuildTransportLine",
+                    "type": "Value",
+                    "id": "c86bccbf-477d-4ee3-b19f-9bf5a62f1b15",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -384,6 +393,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "CheckUnitDetail",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8def552f-6a72-4d5b-a774-9016f705b33d",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildTransportLine",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

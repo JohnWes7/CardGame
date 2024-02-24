@@ -41,6 +41,13 @@ public class Grid<T>
         }
     }
 
+    public T GetGridObjectByMousePosition()
+    {
+        Vector3 mouseOffsetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2Int gridXY = WorldPositionToGridXY(mouseOffsetPos);
+        return GetGridObject(gridXY);
+    }
+
     public Vector3 GetWorldPositionLeftBottom(int x, int y)
     {
         return GetLocalPositionLeftBottom(x, y) + parent.transform.position;

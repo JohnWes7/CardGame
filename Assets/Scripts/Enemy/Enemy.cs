@@ -5,11 +5,10 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] protected int bodyHP;
-    [SerializeField] protected float speed;
     [SerializeField] protected EnemySO enemySO;
+    [SerializeField] protected Transform target;
 
     public int BodyHP { get => bodyHP; set => bodyHP = value; }
-    public float Speed { get => speed; set => speed = value; }
     public EnemySO Data { get => enemySO; set => enemySO = value; }
 
     public static Enemy CreateEnemyFactory(EnemySO data)
@@ -22,7 +21,6 @@ public class Enemy : MonoBehaviour
         enemy = enemy == null ? gameObject.AddComponent<Enemy>() : enemy;
 
         enemy.bodyHP = data.maxHP;
-        enemy.speed = data.speed;
 
         return enemy;
     }
@@ -34,5 +32,10 @@ public class Enemy : MonoBehaviour
         enemy.transform.rotation = rotation;
 
         return enemy;
+    }
+
+    public void SetTarget(Transform transform)
+    {
+        target = transform;
     }
 }

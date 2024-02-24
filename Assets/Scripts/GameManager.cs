@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float spawnRange;
     [SerializeField] private int spawnNumPerTime;
     [SerializeField] private Transform spawnCenter;
+    [SerializeField] private Transform initTarget;
 
     //[HorizontalLine("这里gamemanager当 memento caretaker 可能需要单独分一个类出去")]
     //[SerializeField, ReadOnly] private PlayerMemento playerMemento;
@@ -62,7 +63,11 @@ public class GameManager : MonoBehaviour
                 int randomIndex = Random.Range(0, enemySOList.Count);
                 EnemySO enemySO = enemySOList[randomIndex];
                 Vector3 offset = Random.insideUnitCircle.normalized * spawnRange;
-                Enemy.CreateEnemyFactory(enemySO, transform.position + offset, Quaternion.identity);
+                Enemy enemy = Enemy.CreateEnemyFactory(enemySO, transform.position + offset, Quaternion.identity);
+                if (initTarget)
+                {
+                    enemy.SetTarget(initTarget);
+                }
             }
         }
     }

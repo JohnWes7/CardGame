@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,11 @@ namespace Johnwest
     {
         public static string DictToString<TKey, TValue>(Dictionary<TKey, TValue> dict)
         {
+            if (dict is null)
+            {
+                return "null";
+            }
+
             List<string> result = new List<string>();
             foreach (var item in dict)
             {

@@ -312,7 +312,7 @@ public class ShipBuildController : MonoBehaviour
                 return;
             }
 
-            if (!PlayerModel.Instance.GetInventory().HaveEnoughItem(GetCurBuildUnit().itemCostList, out List<UnitSO.ItemCost> missingItem))
+            if (!PlayerModel.Instance.GetInventory().HaveEnoughItems(GetCurBuildUnit().itemCostList, out List<UnitSO.ItemCost> missingItem))
             {
                 List<string> debugString = new List<string>();
                 foreach (var item in missingItem)
@@ -419,6 +419,30 @@ public class ShipBuildController : MonoBehaviour
         }
     }
 
+    public void PlayerInput_OnBuildTransportLine(InputAction.CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            // 获取点击的单元
+            FGridNode obj = sc.InterfaceObj.Grid.GetGridObjectByMousePosition();
+            UnitObject unit = null;
+            // 判空
+            if (obj != null) unit = obj.GetContent();
+            if (unit == null) return;
+
+            // 如果是可以连接
+            if (unit is ITransportLineStart @transportLineStart)
+            {
+                    
+            }
+        }
+        else if(callbackContext.canceled)
+        {
+
+        }
+        //Debug.Log(callbackContext);
+
+    }
     #endregion
 
 }

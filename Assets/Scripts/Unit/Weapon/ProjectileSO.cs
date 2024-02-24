@@ -9,6 +9,7 @@ public class ProjectileSO : ScriptableObject
 {
     public int damage;
     public float speed;
+    public float explosionRange;
     public float shieldCoefficient;
     public float armourCoefficient;
     public float bodyCoefficient;

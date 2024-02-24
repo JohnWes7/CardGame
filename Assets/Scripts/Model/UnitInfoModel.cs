@@ -16,12 +16,17 @@ public class UnitInfoModel : Singleton<UnitInfoModel>
     public void Refresh()
     {
         allUnitDict = new Dictionary<string, UnitSO>();
+        LoadInResourcePath("Default/Unit/UnitSO");
+        LoadInResourcePath("Default/Weapon/WeaponUnitSO");
 
-        var allUnit = Resources.LoadAll<UnitSO>("Default/Unit/UnitSO");
-
-        foreach (var item in allUnit)
+        void LoadInResourcePath(string path)
         {
-            allUnitDict[item.name] = item;
+            var allUnit = Resources.LoadAll<UnitSO>(path);
+
+            foreach (var item in allUnit)
+            {
+                allUnitDict[item.name] = item;
+            }
         }
     }
 

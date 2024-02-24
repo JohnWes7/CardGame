@@ -252,6 +252,15 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BuildTransportLine"",
+                    ""type"": ""Value"",
+                    ""id"": ""c86bccbf-477d-4ee3-b19f-9bf5a62f1b15"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -408,6 +417,17 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""action"": ""CheckUnitDetail"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8def552f-6a72-4d5b-a774-9016f705b33d"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BuildTransportLine"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -436,6 +456,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         m_Build_Zoom = m_Build.FindAction("Zoom", throwIfNotFound: true);
         m_Build_Move = m_Build.FindAction("Move", throwIfNotFound: true);
         m_Build_Cancel = m_Build.FindAction("Cancel", throwIfNotFound: true);
+        m_Build_BuildTransportLine = m_Build.FindAction("BuildTransportLine", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
     }
@@ -562,6 +583,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
     private readonly InputAction m_Build_Zoom;
     private readonly InputAction m_Build_Move;
     private readonly InputAction m_Build_Cancel;
+    private readonly InputAction m_Build_BuildTransportLine;
     public struct BuildActions
     {
         private @ControlMap m_Wrapper;
@@ -574,6 +596,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         public InputAction @Zoom => m_Wrapper.m_Build_Zoom;
         public InputAction @Move => m_Wrapper.m_Build_Move;
         public InputAction @Cancel => m_Wrapper.m_Build_Cancel;
+        public InputAction @BuildTransportLine => m_Wrapper.m_Build_BuildTransportLine;
         public InputActionMap Get() { return m_Wrapper.m_Build; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -607,6 +630,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @Cancel.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnCancel;
                 @Cancel.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnCancel;
                 @Cancel.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnCancel;
+                @BuildTransportLine.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnBuildTransportLine;
+                @BuildTransportLine.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnBuildTransportLine;
+                @BuildTransportLine.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnBuildTransportLine;
             }
             m_Wrapper.m_BuildActionsCallbackInterface = instance;
             if (instance != null)
@@ -635,6 +661,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @Cancel.started += instance.OnCancel;
                 @Cancel.performed += instance.OnCancel;
                 @Cancel.canceled += instance.OnCancel;
+                @BuildTransportLine.started += instance.OnBuildTransportLine;
+                @BuildTransportLine.performed += instance.OnBuildTransportLine;
+                @BuildTransportLine.canceled += instance.OnBuildTransportLine;
             }
         }
     }
@@ -681,6 +710,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         void OnZoom(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnBuildTransportLine(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

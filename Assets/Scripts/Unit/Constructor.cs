@@ -35,6 +35,7 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
 
         public void ChangeFormula(FormulaSO formulaSO)
         {
+            Debug.Log($"change f : {formulaSO}");
             curFormula = formulaSO;
             rawMat ??= new List<ItemInfo>();
             outPut ??= new List<ItemInfo>();
@@ -119,23 +120,18 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
     }
 
 
-    [SerializeField] private MonoInterface<IShipController> ship;
+    [SerializeField] protected MonoInterface<IShipController> ship;
 
     // 配方选择
-    [SerializeField] private FormulaChoiceSO allFormula;
+    [SerializeField] protected FormulaChoiceSO allFormula;
     //[SerializeField] private FormulaSO curFormula;
     // 点击后选择配方的ui
-    [SerializeField] private MonoInterface<IShowConstructor> constructorPanel;
-    [SerializeField] private GameObject panelPrefab;
+    [SerializeField] protected MonoInterface<IShowConstructor> constructorPanel;
+    [SerializeField] protected GameObject panelPrefab;
 
     // 进行制造
-    [SerializeField] private ConstructorFormulaMatInfo matInfo; // 当前制造的配方
-    [SerializeField] private float timer;
-
-    private void Start()
-    {
-        matInfo = new ConstructorFormulaMatInfo(null);
-    }
+    [SerializeField] protected ConstructorFormulaMatInfo matInfo; // 当前制造的配方
+    [SerializeField] protected float timer;
 
     private void Update()
     {
@@ -357,6 +353,23 @@ public class Constructor : UnitObject, IBeGrabItem, IBePutDownGrabItem, IShipUni
 
     public void SetExtraData(Dictionary<string, object> data)
     {
-        Debug.Log(Johnwest.JWUniversalTool.DictToString(data));
+        Debug.Log("Construct:SetExtraData: data : " + Johnwest.JWUniversalTool.DictToString(data));
+        if (data is null)
+        {
+            return;
+        }
+
+        if (data.TryGetValue("formulaName", out object name))
+        {
+            if (name is string @string)
+            {
+                Debug.Log($"更改配方: {allFormula.GetFormula(@string)}");
+                matInfo.ChangeFormula(allFormula.GetFormula(@string));
+            }
+            else
+            {
+                Debug.LogError("Construct:SetExtraData: can not get formula name: " + Johnwest.JWUniversalTool.DictToString(data));
+            }
+        }
     }
 }

@@ -79,7 +79,12 @@ public class PlayerInventory
         return $"total num: {inventory.Count}\n{string.Join("\n", result)}";
     }
 
-    public bool HaveEnoughItem(List<UnitSO.ItemCost> itemCostList)
+    /// <summary>
+    /// 判断还有没有这些资源 如果itemcostlist 是null 则返回true
+    /// </summary>
+    /// <param name="itemCostList"></param>
+    /// <returns></returns>
+    public bool HaveEnoughItems(List<UnitSO.ItemCost> itemCostList)
     {
         if (itemCostList == null)
         {
@@ -102,9 +107,16 @@ public class PlayerInventory
         return true;
     }
 
-    public bool HaveEnoughItem(List<UnitSO.ItemCost> itemCostList, out List<UnitSO.ItemCost> missingItemLiost)
+    /// <summary>
+    /// 判断有没有这些资源并返回 如果itemcostlist 是null 则返回true,
+    /// 如果返回false 该种item不够 还会out 出需求的差量
+    /// </summary>
+    /// <param name="itemCostList"></param>
+    /// <param name="missingItemLiost"></param>
+    /// <returns></returns>
+    public bool HaveEnoughItems(List<UnitSO.ItemCost> itemCostList, out List<UnitSO.ItemCost> missingItemLiost)
     {
-        bool result = HaveEnoughItem(itemCostList);
+        bool result = HaveEnoughItems(itemCostList);
         if (result)
         {
             missingItemLiost = null;
@@ -127,6 +139,30 @@ public class PlayerInventory
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// 判断该种item是否大于等于一定数量
+    /// </summary>
+    /// <param name="unitSO"></param>
+    /// <param name="num"></param>
+    /// <returns></returns>
+    public bool HaveEnoughItem(ItemSO itemSO, int num = 1)
+    {
+        if (itemSO == null)
+        {
+            return true;
+        }
+
+        // 如果有该项物品并且大于num才返回true
+        if (inventory.TryGetValue(itemSO, out int value))
+        {
+            if (value >= num)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Dictionary<string, int> ToItemNameNumPairs()
@@ -160,6 +196,20 @@ public class PlayerInventory
         }
 
         Debug.LogError($"not this key in inventory {itemSO}");
+    }
+
+    public bool TryCostItem(ItemSO itemSO, int num = 1)
+    {
+        if (inventory.TryGetValue(itemSO, out int value))
+        {
+            if (value >= num)
+            {
+                inventory[itemSO] = Mathf.Clamp(inventory[itemSO] - num, 0, int.MaxValue);
+                OnInventoryChange.Invoke(this, new InventoryEventArgs(inventory, itemSO));
+                return true;
+            }
+        }
+        return false;
     }
 
     public int GetItemNum(ItemSO itemSO)

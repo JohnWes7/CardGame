@@ -7,4 +7,21 @@ using UnityEngine;
 public class FormulaChoiceSO : ScriptableObject
 {
     [SerializeField] public List<FormulaSO> formulas;
+
+    public FormulaSO GetFormula(string name)
+    {
+        if (formulas == null)
+        {
+            return null;
+        }
+
+        foreach (FormulaSO item in formulas)
+        {
+            if (item.name == name)
+            {
+                return item;
+            }
+        }
+        return null;
+    } 
 }

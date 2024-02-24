@@ -71,6 +71,10 @@ public class ShipController : MonoBehaviour, IShipController
         SetAllFGridNodeBackGroundActive(false);
     }
 
+    /// <summary>
+    /// 通过shipmemento来初始化ship
+    /// </summary>
+    /// <param name="shipMemento"></param>
     public void InitByMemento(ShipMemento shipMemento)
     {
         gridHeight = shipMemento.gridHeightSize;
@@ -85,17 +89,23 @@ public class ShipController : MonoBehaviour, IShipController
         CreateGrid();
 
         // 按照json生成所有的unit
-        foreach (var item in shipMemento.mementoUnitInfoList)
+        foreach (ShipMemento.MementoUnitInfo unitInfo in shipMemento.mementoUnitInfoList)
         {
-            UnitSO unitSO = UnitInfoModel.Instance.GetUnit(item.unitName);
+            UnitSO unitSO = UnitInfoModel.Instance.GetUnit(unitInfo.unitName);
             if (unitSO == null)
             {
-                Debug.LogError("Can not find this unit: " + item.unitName);
+                Debug.LogError("Can not find this unit: " + unitInfo.unitName);
                 continue;
             }
 
             // 生成unit
-            UnitObject.UnitFactoryCreate(unitSO, new Vector2Int(item.x, item.y), item.dir, grid);
+            UnitObject unit = UnitObject.UnitFactoryCreate(unitSO, new Vector2Int(unitInfo.x, unitInfo.y), unitInfo.dir, grid);
+
+            // 如果unit 是 IExtraData就把额外数据也填进去
+            if (unit is IExtraUnitObjectData)
+            {
+                (unit as IExtraUnitObjectData).SetExtraData(unitInfo.extraData);
+            }
         }
     }
 
@@ -195,6 +205,7 @@ public class ShipController : MonoBehaviour, IShipController
         Debug.Log("Ship start load");
         if (args is ShipMemento)
         {
+            // 执行用 shipmemento 还原ship
             InitByMemento(args as ShipMemento);
             return;
         }

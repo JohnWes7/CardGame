@@ -6,7 +6,6 @@ public class DroneEnemy : Enemy, IBeDamage
 {
     [SerializeField] private GameObject turret;
     [SerializeField] private Rigidbody2D rigi2D;
-    [SerializeField] private Transform target;
     [SerializeField] private float LerpT;
 
     // 如果没有设定目标 有一个警戒范围如果有物体进入了警戒返回 就朝这个物体移动
@@ -66,8 +65,6 @@ public class DroneEnemy : Enemy, IBeDamage
         return null;
     }
 
-
-
     public void BeDamage(Projectile projectile)
     {
         bodyHP -= projectile.ProjectileSO.damage;
@@ -76,6 +73,8 @@ public class DroneEnemy : Enemy, IBeDamage
             DropItemBySO();
             Destroy(gameObject);
         }
+
+        LogUtilsXY.LogOnPos(projectile.ProjectileSO.damage.ToString(), transform.position, 0.5f);
     }
 
     [ContextMenu("TestDropItemBySO")]

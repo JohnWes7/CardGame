@@ -4,33 +4,23 @@ using UnityEngine;
 
 public class KineticProjectile : Projectile
 {
-    [SerializeField] private Vector2 velocity;
-    [SerializeField] private IProjectileTriggerStrategy triggerStrategy;
-    [SerializeField] private float durationTimer;
+    private IProjectileTriggerStrategy triggerStrategy;
+    private IProjectileBehaviorStg behaviorStg;
 
     private void Start()
     {
-        Debug.Log($"create projectile: {projectileSO} target: {target}");
-        // 计算打击的方向
-        velocity = target.position - transform.position;
-        
-        float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg - 90f;
-        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = rotation;
-
-        velocity = velocity.normalized;
+        behaviorStg = new NormalBehavior(this);
         triggerStrategy = new CollisionTriggeredCommonFuzesStg();
+
+        behaviorStg.Initialize();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        durationTimer += Time.fixedDeltaTime;
-        if (durationTimer > PROJECTILE_DURATION)
-        {
-            Destroy(gameObject);
-        }
-        transform.position += new Vector3(velocity.x, velocity.y) * projectileSO.speed;
+        behaviorStg.UpdatePreDeltaTime(Time.deltaTime);
     }
+
+
 
     /// <summary>
     /// 现在这里用SO里面的tag来判断是否击中 如果之后需要更多的方法因为SO 不好绑定策略模式

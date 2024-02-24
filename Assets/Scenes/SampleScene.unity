@@ -1565,6 +1565,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: fae833f3-27ab-429d-a296-2cfc99bf6cd8
     m_ActionName: Build/CheckUnitDetail[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c86bccbf-477d-4ee3-b19f-9bf5a62f1b15
+    m_ActionName: Build/BuildTransportLine[/Mouse/position]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Move
@@ -1801,10 +1805,11 @@ MonoBehaviour:
   enemySOList:
   - {fileID: 11400000, guid: 581ec668b19ec444baf12bdb44ae5b51, type: 2}
   timer: 0
-  timeForSpawn: 5
-  spawnRange: 35
+  timeForSpawn: 0.2
+  spawnRange: 20
   spawnNumPerTime: 1
   spawnCenter: {fileID: 49091055}
+  initTarget: {fileID: 49091055}
 --- !u!1 &1907460436
 GameObject:
   m_ObjectHideFlags: 0

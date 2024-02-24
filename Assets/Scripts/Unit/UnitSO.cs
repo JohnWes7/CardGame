@@ -33,7 +33,6 @@ public class UnitSO : ScriptableObject
     }
 
     [HorizontalLine("创造属性")]
-    public string unitName;
     [Preview, AssetsOnly]
     public GameObject prefab;
     [Preview, AssetsOnly]

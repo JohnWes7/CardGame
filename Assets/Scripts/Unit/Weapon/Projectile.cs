@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] protected UnitObject creater;
     [SerializeField] protected ProjectileSO projectileSO;
     [SerializeField] protected Transform target;
-    [SerializeField] protected const float PROJECTILE_DURATION = 5f;
+    public const float PROJECTILE_DURATION = 5f;
 
     public ProjectileSO ProjectileSO { get => projectileSO; set => projectileSO = value; }
     public Transform Target { get => target; set => target = value; }

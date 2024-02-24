@@ -50,6 +50,10 @@ public class PlayerModel : Singleton<PlayerModel>
         this.shipMemento = shipMemento;
     }
 
+    /// <summary>
+    /// 用来更新当前保存的ship
+    /// </summary>
+    /// <param name="ship"></param>
     public void SetShipMemento(IShipController ship)
     {
         this.shipMemento = new ShipMemento(ship);

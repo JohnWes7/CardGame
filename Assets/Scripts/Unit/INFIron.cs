@@ -1,22 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CustomInspector;
 
 /// <summary>
 /// 无限出铁机器
 /// </summary>
 public class INFIron : UnitObject, IShipUnit
 {
-    [SerializeField] private MonoInterface<IShipController> shipController;
-    [SerializeField] private Item buffer;
+    [SerializeField] protected MonoInterface<IShipController> shipController;
+    [SerializeField, ReadOnly] protected Item buffer;
 
     // 之后提取为scriptObject
-    [SerializeField] private ItemSO createItemSO;
-    [SerializeField] private float timer;
-    [SerializeField] private float creatTime;
-    [SerializeField] private Vector2Int insertPos;
-    [SerializeField] private GameObject centerIcon;
-    [SerializeField] private static readonly Vector3 iconPos = new Vector3(0, -0.31f, -0.1f);
+    [SerializeField, ForceFill] protected ItemSO createItemSO;
+    [SerializeField, ReadOnly] protected float timer;
+    [SerializeField] protected float creatTime;
+    [SerializeField] protected Vector2Int insertPos;
+    [SerializeField] protected GameObject centerIcon;
+    protected static readonly Vector3 iconPos = new Vector3(0, -0.31f, -0.1f);
 
     private void Start()
     {
@@ -50,12 +51,7 @@ public class INFIron : UnitObject, IShipUnit
         shipController.InterfaceObj = sc;
     }
 
-    protected bool CheckBagItemValue()
-    {
-        return true;
-    }
-
-    private void Update()
+    protected virtual void Update()
     {
         // 生成矿物
         if (timer < creatTime)
@@ -66,9 +62,13 @@ public class INFIron : UnitObject, IShipUnit
         {
             timer = 0;
 
+
+
+
+            #region 通过传送带运输
             // 检测出口位置
             Vector2Int insertPosWithDir = TransformGridPoint(position, insertPos, dir);
-            LogUtilsXY.LogOnPos($"Try Create IRON On {insertPosWithDir}", transform.position - Vector3.forward);
+            LogUtilsXY.LogOnPos($"Try Create {createItemSO.name} On {insertPosWithDir}", transform.position - Vector3.forward);
 
 
             var gridobj = grid?.GetGridObject(insertPosWithDir);
@@ -97,6 +97,11 @@ public class INFIron : UnitObject, IShipUnit
                     buffer = null;
                 }
             }
+            return;
+            #endregion
+
         }
     }
+
+
 }
