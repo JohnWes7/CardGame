@@ -59,6 +59,11 @@ namespace Johnwest
             LogSpriteLocal(worldPos, Vector3.up, sprite, 1f, parent, offsetZ1);
         }
 
+        public void LogCircleAni(Vector3 worlPos, Vector3 EndScale, float duration)
+        {
+            
+        }
+
         public void GetPrefabName()
         {
             Debug.Log(spritePrefab.name);

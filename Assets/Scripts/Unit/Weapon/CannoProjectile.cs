@@ -1,48 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CustomInspector;
 
 public class CannoProjectile : Projectile
 {
-    [SerializeField] private Vector2 velocity;
-    [SerializeField] private float durationTimer;
-    [SerializeField] private IProjectileTriggerStrategy triggerStrategy;
+    private IProjectileTriggerStrategy triggerStrategy;
+    private IProjectileBehaviorStg behaviorStg;
+    [SerializeField, AssetsOnly, ForceFill]
+    private GameObject fxPrefab;
+    [SerializeField]
+    private GameObject fxInstance;
 
-    private void Start()
+    public override void Initialize()
     {
-        StartInit();
-        triggerStrategy = new CollisionTriggeredCommonFuzesStg();
-    }
+        base.Initialize();
 
-    private void StartInit()
-    {
-        Debug.Log($"create projectile: {projectileSO} target: {target}");
-        // 计算打击的方向
-        velocity = target.position - transform.position;
+        behaviorStg ??= new NormalBehavior(this);
+        triggerStrategy ??= new CollisionTriggeredExplosionFuzesStg();
 
-        // 调整朝向
-        float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg - 90f;
-        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = rotation;
-
-        // 归一化速度向量
-        velocity = velocity.normalized;
+        behaviorStg.Initialize();
     }
 
     private void Update()
     {
-        UpdatePreDeltaTime(Time.deltaTime);
+        behaviorStg.UpdatePreDeltaTime(Time.deltaTime);
     }
 
-    private void UpdatePreDeltaTime(float deltatime)
-    {
-        durationTimer += deltatime;
-        if (durationTimer > PROJECTILE_DURATION)
-        {
-            Destroy(gameObject);
-        }
-        transform.position += new Vector3(velocity.x, velocity.y) * projectileSO.speed * deltatime;
-    }
 
     /// <summary>
     /// 现在这里用SO里面的tag来判断是否击中 如果之后需要更多的方法因为SO 不好绑定策略模式
@@ -55,7 +39,30 @@ public class CannoProjectile : Projectile
     /// <param name="other"></param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        triggerStrategy.OnTriggerEnter(this, collision);
+        triggerStrategy.OnTriggerEnter(this, collision, () => {
+            if (fxPrefab)
+            {
+                //Debug.Log("生成fx");
+                // 从对象池中拿取实体
+                fxInstance = Johnwest.ObjectPoolManager.Instance.GetPool(fxPrefab).Get();
+                fxInstance.transform.position = transform.position;
+
+                var setRange = fxInstance.GetComponent<Johnwest.ISetFXRange>();
+                if (setRange != null)
+                {
+                    setRange.SetFXRange(projectileSO.explosionRange);
+                }
+            }
+        });
+    }
+
+    private void FxReturnPool()
+    {
+        if (fxInstance)
+        {
+            Johnwest.ObjectPoolManager.Instance.GetPool(fxPrefab).ReturnToPool(fxInstance);
+            fxInstance = null;
+        }
     }
 }
 

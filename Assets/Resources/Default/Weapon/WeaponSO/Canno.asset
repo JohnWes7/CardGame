@@ -15,7 +15,7 @@ MonoBehaviour:
   magazineInfos:
   - magazineItem: {fileID: 11400000, guid: 52a7cae7d9043bd4bb63bc2821dd5c91, type: 2}
     projectileInOneMagazineNum: 2
-    projectileSO: {fileID: 11400000, guid: d8e99f9218b1a5142ad99398abfacb56, type: 2}
+    projectileSO: {fileID: 11400000, guid: 2178b5f0b7b9a1b45b0fd86ab738857d, type: 2}
   fireGap: 1
   range: 15
   rotateSpeed: 10

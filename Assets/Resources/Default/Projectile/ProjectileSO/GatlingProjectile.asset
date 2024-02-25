@@ -21,3 +21,6 @@ MonoBehaviour:
   prefab: {fileID: 4335248104715333383, guid: 4e3b0a4f2525b6d41b7f090af162a700, type: 3}
   targetTag:
   - Enemy
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64

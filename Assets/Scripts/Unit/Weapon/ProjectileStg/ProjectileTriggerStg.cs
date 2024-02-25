@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public interface IProjectileTriggerStrategy
 {
-    public void OnTriggerEnter(Projectile projectile, Collider2D other);
+    public void OnTriggerEnter(Projectile projectile, Collider2D other, Action triggerFX = null);
 
 }
 
@@ -15,13 +16,13 @@ public interface IProjectileBehaviorStg
 }
 
 /// <summary>
-/// 普通子弹移动
+/// 普通子弹移动策略
 /// </summary>
 public class NormalBehavior : IProjectileBehaviorStg
 {
     private Projectile context;
     private Vector2 velocity;
-    private float durationTimer = 0f;
+    private float durationTimer;
 
     public NormalBehavior(Projectile projectile)
     {
@@ -31,6 +32,9 @@ public class NormalBehavior : IProjectileBehaviorStg
     public void Initialize()
     {
         Debug.Log($"create projectile: {context.ProjectileSO} target: {context.Target}");
+        // 初始化值
+        durationTimer = 0;
+
         // 计算打击的方向
         velocity = context.Target.position - context.transform.position;
 
@@ -43,12 +47,16 @@ public class NormalBehavior : IProjectileBehaviorStg
         velocity = velocity.normalized;
     }
 
+    /// <summary>
+    /// 每一个时间节点调用一次 传入时间节点之间的间隔
+    /// </summary>
+    /// <param name="deltaTime"></param>
     public void UpdatePreDeltaTime(float deltaTime)
     {
         durationTimer += deltaTime;
         if (durationTimer > Projectile.PROJECTILE_DURATION)
         {
-            Object.Destroy(context);
+            context.Destroy();
         }
         context.transform.position += new Vector3(velocity.x, velocity.y) * context.ProjectileSO.speed * deltaTime;
     }
@@ -59,18 +67,50 @@ public class NormalBehavior : IProjectileBehaviorStg
 /// </summary>
 public class CollisionTriggeredCommonFuzesStg : IProjectileTriggerStrategy
 {
-    public void OnTriggerEnter(Projectile projectile, Collider2D other)
+    public void OnTriggerEnter(Projectile projectile, Collider2D other, Action triggerFX = null)
     {
         if (projectile.ProjectileSO.targetTag.Contains(other.tag))
         {
-            LogUtilsXY.LogOnPos($"Hit tag:{other.tag}", projectile.transform.position);
+            // LogUtilsXY.LogOnPos($"Hit tag:{other.tag}", projectile.transform.position);
             // 执行攻击
             var bedamgage = other.GetComponent<IBeDamage>();
             if (bedamgage != null)
             {
                 bedamgage.BeDamage(projectile);
-                Object.Destroy(projectile.gameObject);
+                triggerFX?.Invoke();
+                projectile.Destroy();
             }
+        }
+    }
+}
+
+/// <summary>
+/// 碰撞后触发爆炸的引信
+/// </summary>
+public class CollisionTriggeredExplosionFuzesStg : IProjectileTriggerStrategy
+{
+    public void OnTriggerEnter(Projectile projectile, Collider2D other, Action triggerFX = null)
+    {
+        // 接触到敌人
+        if (projectile.ProjectileSO.targetTag.Contains(other.tag))
+        {
+            // 触发爆炸
+            // 检索爆炸范围所有的敌人
+            RaycastHit2D[] result = Physics2D.CircleCastAll(projectile.transform.position, projectile.ProjectileSO.explosionRange, Vector2.zero, 0f, projectile.ProjectileSO.targetLayer);
+            foreach (RaycastHit2D item in result)
+            {
+                var beDamage = item.collider.gameObject.GetComponent<IBeDamage>();
+                if (beDamage != null)
+                {
+                    beDamage.BeDamage(projectile);
+                }
+            }
+
+            // 触发特效
+            triggerFX?.Invoke();
+
+            // 销毁子弹
+            projectile.Destroy();
         }
     }
 }

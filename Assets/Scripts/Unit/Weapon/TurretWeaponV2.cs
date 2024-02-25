@@ -46,7 +46,7 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
 
     private void Update()
     {
-        FireStretagePreFrame();
+        FireStretagePreFrame(Time.deltaTime);
     }
 
     public IShipController GetShip()
@@ -59,7 +59,7 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         ship.InterfaceObj = sc;
     }
 
-    public void FireStretagePreFrame()
+    public void FireStretagePreFrame(float deltaTime)
     {
         // 如果没有turretSO 就不进行射击
         if (turretSO == null)
@@ -70,10 +70,10 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
 
         if (timer < turretSO.fireGap)
         {
-            timer += Time.deltaTime;
+            timer += deltaTime;
             if (target != null)
             {
-                RotateTurret(target.position - turret.transform.position);
+                RotateTurret(target.position - turret.transform.position, deltaTime);
             }
             return;
         }
@@ -96,7 +96,7 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         if (target != null)
         {
             // 瞄准
-            RotateTurret(target.position - turret.transform.position);
+            RotateTurret(target.position - turret.transform.position, deltaTime);
             // 检查是否瞄准了
             if (CheckTakeAim())
             {
@@ -114,11 +114,11 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         }
     }
 
-    private void RotateTurret(Vector3 dest)
+    private void RotateTurret(Vector3 dest, float deltaTime)
     {
         float angle = Mathf.Atan2(dest.y, dest.x) * Mathf.Rad2Deg - 90f;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        turret.transform.rotation = Quaternion.Slerp(turret.transform.rotation, rotation, TurretSO.rotateSpeed * Time.deltaTime);
+        turret.transform.rotation = Quaternion.Slerp(turret.transform.rotation, rotation, TurretSO.rotateSpeed * deltaTime);
     }
 
     #region 如果要按照一定的角度旋转
@@ -151,7 +151,6 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
     //        }
     //    }
     //}
-
     #endregion
 
     private bool CheckTakeAim()

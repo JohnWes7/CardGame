@@ -7,10 +7,13 @@ public class KineticProjectile : Projectile
     private IProjectileTriggerStrategy triggerStrategy;
     private IProjectileBehaviorStg behaviorStg;
 
-    private void Start()
+
+    public override void Initialize()
     {
-        behaviorStg = new NormalBehavior(this);
-        triggerStrategy = new CollisionTriggeredCommonFuzesStg();
+        base.Initialize();
+
+        behaviorStg ??= new NormalBehavior(this);
+        triggerStrategy ??= new CollisionTriggeredCommonFuzesStg();
 
         behaviorStg.Initialize();
     }

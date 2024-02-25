@@ -15,4 +15,5 @@ public class ProjectileSO : ScriptableObject
     public float bodyCoefficient;
     public GameObject prefab;
     public List<string> targetTag;
+    public LayerMask targetLayer;
 }
