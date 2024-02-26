@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CustomInspector;
 
 public class TurretWeaponV2 : UnitObject, IShipUnit
 {
@@ -23,21 +24,20 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
     // 炮塔属性
     [SerializeField] private TurretSO turretSO;
     [SerializeField] private GameObject turret;
-    [SerializeField] private Transform target;
-    [SerializeField] private float timer;
+    [SerializeField, ReadOnly] private Transform target;
+    [SerializeField, ReadOnly] private float timer;
     private const float TURRET_ROTATE_SPEED = 2f;
 
     // 弹药
-
     // 激发区
     /// <summary>
     /// 表示当前装填的弹夹的余量
     /// </summary>
-    [SerializeField] private int curProjectilNum;
+    [SerializeField, ReadOnly] private int curProjectilNum;
     /// <summary>
     /// 当前装填弹夹的种类
     /// </summary>
-    [SerializeField] private TurretSO.MagazineInfo curMagzineData;
+    [SerializeField, ReadOnly] private TurretSO.MagazineInfo curMagzineData;
 
 
     public GameObject Turret { get => turret; set => turret = value; }
@@ -79,7 +79,7 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         }
 
         // 如果有目标判断目标有没有超过射击范围
-        if (target != null && (target.transform.position - turret.transform.position).magnitude > turretSO.range)
+        if (target != null && (target.transform.position - turret.transform.position).magnitude > turretSO.radius)
         {
             target = null; // 超过射击范围就不再索敌
             timer = 0;
@@ -88,7 +88,7 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         // 如果炮塔当前没有目标 尝试获取目标
         if (target == null)
         {
-            RaycastHit2D enemy = Physics2D.CircleCast(Turret.transform.position, turretSO.range, Vector2.zero, 0.0f, LayerMask.GetMask("Enemy"));
+            RaycastHit2D enemy = Physics2D.CircleCast(Turret.transform.position, turretSO.radius, Vector2.zero, 0.0f, LayerMask.GetMask("Enemy"));
             target = enemy.transform;
         }
 

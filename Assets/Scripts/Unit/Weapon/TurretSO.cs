@@ -16,6 +16,6 @@ public class TurretSO : ScriptableObject
 
     public List<MagazineInfo> magazineInfos;
     public float fireGap;
-    public float range;
+    public float radius;
     public float rotateSpeed;
 }

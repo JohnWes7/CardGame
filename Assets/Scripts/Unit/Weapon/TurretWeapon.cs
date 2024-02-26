@@ -78,7 +78,7 @@ public class TurretWeapon : UnitObject, IShipUnit, ITurretWeapon, IBePutDownGrab
         }
 
         // 如果有目标判断目标有没有超过射击范围
-        if (target != null && (target.transform.position - turret.transform.position).magnitude > turretSO.range)
+        if (target != null && (target.transform.position - turret.transform.position).magnitude > turretSO.radius)
         {
             target = null; // 超过射击范围就不再索敌
             timer = 0;
@@ -87,7 +87,7 @@ public class TurretWeapon : UnitObject, IShipUnit, ITurretWeapon, IBePutDownGrab
         // 如果炮塔当前没有目标 尝试获取目标
         if (target == null)
         {
-            RaycastHit2D enemy = Physics2D.CircleCast(Turret.transform.position, turretSO.range, Vector2.zero, 0.0f, LayerMask.GetMask("Enemy"));
+            RaycastHit2D enemy = Physics2D.CircleCast(Turret.transform.position, turretSO.radius, Vector2.zero, 0.0f, LayerMask.GetMask("Enemy"));
             target = enemy.transform;
         }
 

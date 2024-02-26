@@ -53,9 +53,9 @@ public class UnitSO : ScriptableObject
         return dir switch
         {
             Dir.up => -spriteBLtoCMOffset,
-            Dir.right => new Vector2(-spriteBLtoCMOffset.x, spriteBLtoCMOffset.y),
+            Dir.right => new Vector2(-spriteBLtoCMOffset.y, spriteBLtoCMOffset.x),
             Dir.down => spriteBLtoCMOffset,
-            Dir.left => new Vector2(spriteBLtoCMOffset.x, -spriteBLtoCMOffset.y),
+            Dir.left => new Vector2(spriteBLtoCMOffset.y, -spriteBLtoCMOffset.x),
             _ => Vector2.zero,
         };
     }

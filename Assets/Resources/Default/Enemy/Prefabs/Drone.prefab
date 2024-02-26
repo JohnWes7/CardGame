@@ -265,11 +265,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodyHP: 1000
-  speed: 0
   enemySO: {fileID: 11400000, guid: 581ec668b19ec444baf12bdb44ae5b51, type: 2}
+  target: {fileID: 0}
   turret: {fileID: 0}
   rigi2D: {fileID: 0}
-  target: {fileID: 0}
+  LerpT: 0
 --- !u!114 &612251289
 MonoBehaviour:
   m_ObjectHideFlags: 0

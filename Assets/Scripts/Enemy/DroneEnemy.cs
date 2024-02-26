@@ -65,16 +65,16 @@ public class DroneEnemy : Enemy, IBeDamage
         return null;
     }
 
-    public void BeDamage(Projectile projectile)
+    public void BeDamage(DamageInfo damageInfo)
     {
-        bodyHP -= projectile.ProjectileSO.damage;
+        bodyHP -= damageInfo.GetDamageAmount();
         if (bodyHP <= 0)
         {
             DropItemBySO();
             Destroy(gameObject);
         }
 
-        LogUtilsXY.LogOnPos(projectile.ProjectileSO.damage.ToString(), transform.position, 0.5f);
+        LogUtilsXY.LogOnPos(damageInfo.GetDamageAmount().ToString(), transform.position, 0.5f);
     }
 
     [ContextMenu("TestDropItemBySO")]

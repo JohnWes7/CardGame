@@ -50,7 +50,7 @@ public class CannoProjectile : Projectile
                 var setRange = fxInstance.GetComponent<Johnwest.ISetFXRange>();
                 if (setRange != null)
                 {
-                    setRange.SetFXRange(projectileSO.explosionRange);
+                    setRange.SetFXRange(projectileSO.explosionRadius * 2);
                 }
             }
         });

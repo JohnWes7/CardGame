@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 30
   speed: 20
-  explosionRange: 5
+  explosionRadius: 5
   shieldCoefficient: 1
   armourCoefficient: 1
   bodyCoefficient: 1

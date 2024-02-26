@@ -220,6 +220,7 @@ public class ShipBuildingState : IShipBuildingState
         {
             sbc.PrefabShadow.sprite = selectUnit.fullsizeSprite;
             var shadowPos = gridobj.transform.TransformPoint(-offset) - Vector3.forward;
+            Debug.Log(shadowPos);
             sbc.PrefabShadow.gameObject.transform.position = shadowPos;
             sbc.PrefabShadow.transform.localRotation = DirExtensions.DirToQuaternion(sbc.BuildDir);
 

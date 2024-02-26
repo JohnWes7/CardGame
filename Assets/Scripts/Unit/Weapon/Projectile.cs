@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] protected UnitObject creater;
+    [SerializeField] protected object creater;
     [SerializeField] protected ProjectileSO projectileSO;
     [SerializeField] protected Transform target;
 
@@ -12,13 +12,14 @@ public class Projectile : MonoBehaviour
 
     public ProjectileSO ProjectileSO { get => projectileSO; set => projectileSO = value; }
     public Transform Target { get => target; set => target = value; }
+    public object Creater { get => creater; }
 
     public static Projectile ProjectileCreateFactory(ProjectileSO projectileSO, Transform target)
     {
         return ProjectileCreateFactory(projectileSO, target, Vector3.zero);
     }
 
-    public static Projectile ProjectileCreateFactory(ProjectileSO projectileSO, Transform target, Vector3 originPos, UnitObject creater = null)
+    public static Projectile ProjectileCreateFactory(ProjectileSO projectileSO, Transform target, Vector3 originPos, object creater = null)
     {
         // 子弹使用对象池来创建
         //GameObject go = Instantiate<GameObject>(projectileSO.prefab);

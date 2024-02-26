@@ -76,7 +76,10 @@ public class CollisionTriggeredCommonFuzesStg : IProjectileTriggerStrategy
             var bedamgage = other.GetComponent<IBeDamage>();
             if (bedamgage != null)
             {
-                bedamgage.BeDamage(projectile);
+                // 创造damageInfo
+                DamageInfo damageInfo = new DamageInfo(projectile.ProjectileSO.damage, projectile.Creater);
+
+                bedamgage.BeDamage(damageInfo);
                 triggerFX?.Invoke();
                 projectile.Destroy();
             }
@@ -96,13 +99,15 @@ public class CollisionTriggeredExplosionFuzesStg : IProjectileTriggerStrategy
         {
             // 触发爆炸
             // 检索爆炸范围所有的敌人
-            RaycastHit2D[] result = Physics2D.CircleCastAll(projectile.transform.position, projectile.ProjectileSO.explosionRange, Vector2.zero, 0f, projectile.ProjectileSO.targetLayer);
+            RaycastHit2D[] result = Physics2D.CircleCastAll(projectile.transform.position, projectile.ProjectileSO.explosionRadius, Vector2.zero, 0f, projectile.ProjectileSO.targetLayer);
             foreach (RaycastHit2D item in result)
             {
                 var beDamage = item.collider.gameObject.GetComponent<IBeDamage>();
                 if (beDamage != null)
                 {
-                    beDamage.BeDamage(projectile);
+                    DamageInfo damageInfo = new DamageInfo(projectile.ProjectileSO.damage, projectile.Creater);
+
+                    beDamage.BeDamage(damageInfo);
                 }
             }
 

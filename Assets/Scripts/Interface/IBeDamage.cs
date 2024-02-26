@@ -2,7 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public class DamageInfo
+{
+    public int damageAmount;
+    public object Creater;
+
+    public DamageInfo(int damage, object Creater)
+    {
+        this.damageAmount = damage;
+        this.Creater = Creater;
+    }
+
+    public int GetDamageAmount()
+    {
+        return damageAmount;
+    }
+}
+
 public interface IBeDamage
 {
-    void BeDamage(Projectile projectile);
+    void BeDamage(DamageInfo projectile);
 }
