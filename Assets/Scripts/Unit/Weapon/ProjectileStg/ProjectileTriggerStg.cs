@@ -69,7 +69,8 @@ public class CollisionTriggeredCommonFuzesStg : IProjectileTriggerStrategy
 {
     public void OnTriggerEnter(Projectile projectile, Collider2D other, Action triggerFX = null)
     {
-        if (projectile.ProjectileSO.targetTag.Contains(other.tag))
+        // 如果碰撞对象的 Layer 包含在目标 Layer 中
+        if (((1 << other.gameObject.layer) & projectile.ProjectileSO.targetLayer.value) != 0)
         {
             // LogUtilsXY.LogOnPos($"Hit tag:{other.tag}", projectile.transform.position);
             // 执行攻击
@@ -94,8 +95,8 @@ public class CollisionTriggeredExplosionFuzesStg : IProjectileTriggerStrategy
 {
     public void OnTriggerEnter(Projectile projectile, Collider2D other, Action triggerFX = null)
     {
-        // 接触到敌人
-        if (projectile.ProjectileSO.targetTag.Contains(other.tag))
+        // 如果碰撞对象的 Layer 包含在目标 Layer 中
+        if (((1 << other.gameObject.layer) & projectile.ProjectileSO.targetLayer.value) != 0)
         {
             // 触发爆炸
             // 检索爆炸范围所有的敌人

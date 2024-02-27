@@ -10,17 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1321d76951fb9a54ea33594c5cd8d7b9, type: 3}
-  m_Name: ShellProjectile
+  m_Name: DroneProjectile
   m_EditorClassIdentifier: 
-  damage: 30
-  speed: 20
-  explosionRadius: 3
-  shieldCoefficient: 1
-  armourCoefficient: 1
-  bodyCoefficient: 1
-  prefab: {fileID: 2333906761941424712, guid: 251a33cc3d084bb44a3935463a0ea41c, type: 3}
-  targetTag:
-  - Enemy
+  damage: 5
+  speed: 50
+  explosionRadius: 0
+  shieldCoefficient: 0
+  armourCoefficient: 0
+  bodyCoefficient: 0
+  prefab: {fileID: 2882416178190949384, guid: 8d361c4d446f2a349ad7897368c58cec, type: 3}
   targetLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 128

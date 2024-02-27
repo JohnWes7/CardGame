@@ -67,8 +67,8 @@ public class DroneEnemy : Enemy, IBeDamage
 
     public void BeDamage(DamageInfo damageInfo)
     {
-        bodyHP -= damageInfo.GetDamageAmount();
-        if (bodyHP <= 0)
+        curHp -= damageInfo.GetDamageAmount();
+        if (curHp <= 0)
         {
             DropItemBySO();
             Destroy(gameObject);

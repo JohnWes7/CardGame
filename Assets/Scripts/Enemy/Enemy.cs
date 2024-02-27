@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CustomInspector;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] protected int bodyHP;
+    [SerializeField, ReadOnly] protected int curHp;
+    [SerializeField, ReadOnly] protected int maxHP;
     [SerializeField] protected EnemySO enemySO;
     [SerializeField] protected Transform target;
 
-    public int BodyHP { get => bodyHP; set => bodyHP = value; }
+    public int CurHP { get => curHp; set => curHp = value; }
     public EnemySO Data { get => enemySO; set => enemySO = value; }
+    public int MaxHP { get => maxHP; set => maxHP = value; }
 
     public static Enemy CreateEnemyFactory(EnemySO data)
     {
@@ -20,7 +23,8 @@ public class Enemy : MonoBehaviour
         // 没有的话就安装一个
         enemy = enemy == null ? gameObject.AddComponent<Enemy>() : enemy;
 
-        enemy.bodyHP = data.maxHP;
+        enemy.maxHP = data.maxHP;
+        enemy.curHp = data.maxHP;
 
         return enemy;
     }

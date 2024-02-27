@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_Test1
-  m_Shader: {fileID: -6465566751694194690, guid: a14acddce7e519c4a94da62cc33adf56, type: 3}
+  m_Name: Shader Graphs_HDRUnitUnlitHDR3
+  m_Shader: {fileID: -6465566751694194690, guid: 2cc49d44ca525a348b5050497dcd95b2, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -40,5 +40,6 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    m_Colors:
+    - _Color: {r: 8, g: 8, b: 8, a: 1}
   m_BuildTextureStacks: []

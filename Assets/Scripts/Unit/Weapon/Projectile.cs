@@ -23,7 +23,18 @@ public class Projectile : MonoBehaviour
     {
         // 子弹使用对象池来创建
         //GameObject go = Instantiate<GameObject>(projectileSO.prefab);
-        GameObject go = Johnwest.ObjectPoolManager.Instance.GetPool(projectileSO.prefab).Get();
+        // 如果没有对象池则直接创建
+        GameObject go = null;
+        if (Johnwest.ObjectPoolManager.Instance)
+        {
+            go = Johnwest.ObjectPoolManager.Instance.GetPool(projectileSO.prefab).Get();
+        }
+        if (!go)
+        {
+            go = Instantiate<GameObject>(projectileSO.prefab);
+        }
+        
+         
 
         Projectile projectile = go.GetComponent<Projectile>();
         projectile = projectile != null ? projectile : go.AddComponent<Projectile>();
