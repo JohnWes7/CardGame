@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5097571763079812565}
   - component: {fileID: 5097571763079812570}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TurretSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3861180963745456727}
   - component: {fileID: 3450809046350354649}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CannoTurret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6969829431902473880}
   - component: {fileID: 5951298150989949996}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TurretBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -237,7 +237,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4191445853349823196}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}

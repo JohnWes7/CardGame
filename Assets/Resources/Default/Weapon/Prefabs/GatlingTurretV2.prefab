@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2740432067103380636}
   - component: {fileID: 1452820593021072936}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TurretBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8298899515614246995}
   - component: {fileID: 7592376321167033053}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GatlingTurretV2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +154,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8977142219901638872}
   - component: {fileID: 7439901886490053347}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GatlingTurret
   m_TagString: Untagged
   m_Icon: {fileID: 0}

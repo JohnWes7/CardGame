@@ -37,6 +37,15 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""MousePos"",
+                    ""type"": ""Value"",
+                    ""id"": ""18d532a4-e182-4127-a47a-473e8d5ec72c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""StartBuild"",
                     ""type"": ""Button"",
                     ""id"": ""1a8cb26c-d87d-4f8d-aae7-bbd839a93d0d"",
@@ -174,6 +183,17 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""action"": ""Zoom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d75ddbc-aef1-4994-814e-3456865c8932"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePos"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -254,7 +274,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""BuildTransportLine"",
+                    ""name"": ""MousePos"",
                     ""type"": ""Value"",
                     ""id"": ""c86bccbf-477d-4ee3-b19f-9bf5a62f1b15"",
                     ""expectedControlType"": ""Vector2"",
@@ -425,7 +445,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""BuildTransportLine"",
+                    ""action"": ""MousePos"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -443,6 +463,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         // Move
         m_Move = asset.FindActionMap("Move", throwIfNotFound: true);
         m_Move_Move = m_Move.FindAction("Move", throwIfNotFound: true);
+        m_Move_MousePos = m_Move.FindAction("MousePos", throwIfNotFound: true);
         m_Move_StartBuild = m_Move.FindAction("StartBuild", throwIfNotFound: true);
         m_Move_CheckUnitDetail = m_Move.FindAction("CheckUnitDetail", throwIfNotFound: true);
         m_Move_Zoom = m_Move.FindAction("Zoom", throwIfNotFound: true);
@@ -456,7 +477,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         m_Build_Zoom = m_Build.FindAction("Zoom", throwIfNotFound: true);
         m_Build_Move = m_Build.FindAction("Move", throwIfNotFound: true);
         m_Build_Cancel = m_Build.FindAction("Cancel", throwIfNotFound: true);
-        m_Build_BuildTransportLine = m_Build.FindAction("BuildTransportLine", throwIfNotFound: true);
+        m_Build_MousePos = m_Build.FindAction("MousePos", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
     }
@@ -519,6 +540,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Move;
     private IMoveActions m_MoveActionsCallbackInterface;
     private readonly InputAction m_Move_Move;
+    private readonly InputAction m_Move_MousePos;
     private readonly InputAction m_Move_StartBuild;
     private readonly InputAction m_Move_CheckUnitDetail;
     private readonly InputAction m_Move_Zoom;
@@ -527,6 +549,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         private @ControlMap m_Wrapper;
         public MoveActions(@ControlMap wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Move_Move;
+        public InputAction @MousePos => m_Wrapper.m_Move_MousePos;
         public InputAction @StartBuild => m_Wrapper.m_Move_StartBuild;
         public InputAction @CheckUnitDetail => m_Wrapper.m_Move_CheckUnitDetail;
         public InputAction @Zoom => m_Wrapper.m_Move_Zoom;
@@ -542,6 +565,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_MoveActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_MoveActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_MoveActionsCallbackInterface.OnMove;
+                @MousePos.started -= m_Wrapper.m_MoveActionsCallbackInterface.OnMousePos;
+                @MousePos.performed -= m_Wrapper.m_MoveActionsCallbackInterface.OnMousePos;
+                @MousePos.canceled -= m_Wrapper.m_MoveActionsCallbackInterface.OnMousePos;
                 @StartBuild.started -= m_Wrapper.m_MoveActionsCallbackInterface.OnStartBuild;
                 @StartBuild.performed -= m_Wrapper.m_MoveActionsCallbackInterface.OnStartBuild;
                 @StartBuild.canceled -= m_Wrapper.m_MoveActionsCallbackInterface.OnStartBuild;
@@ -558,6 +584,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @MousePos.started += instance.OnMousePos;
+                @MousePos.performed += instance.OnMousePos;
+                @MousePos.canceled += instance.OnMousePos;
                 @StartBuild.started += instance.OnStartBuild;
                 @StartBuild.performed += instance.OnStartBuild;
                 @StartBuild.canceled += instance.OnStartBuild;
@@ -583,7 +612,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
     private readonly InputAction m_Build_Zoom;
     private readonly InputAction m_Build_Move;
     private readonly InputAction m_Build_Cancel;
-    private readonly InputAction m_Build_BuildTransportLine;
+    private readonly InputAction m_Build_MousePos;
     public struct BuildActions
     {
         private @ControlMap m_Wrapper;
@@ -596,7 +625,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         public InputAction @Zoom => m_Wrapper.m_Build_Zoom;
         public InputAction @Move => m_Wrapper.m_Build_Move;
         public InputAction @Cancel => m_Wrapper.m_Build_Cancel;
-        public InputAction @BuildTransportLine => m_Wrapper.m_Build_BuildTransportLine;
+        public InputAction @MousePos => m_Wrapper.m_Build_MousePos;
         public InputActionMap Get() { return m_Wrapper.m_Build; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -630,9 +659,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @Cancel.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnCancel;
                 @Cancel.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnCancel;
                 @Cancel.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnCancel;
-                @BuildTransportLine.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnBuildTransportLine;
-                @BuildTransportLine.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnBuildTransportLine;
-                @BuildTransportLine.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnBuildTransportLine;
+                @MousePos.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnMousePos;
+                @MousePos.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnMousePos;
+                @MousePos.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnMousePos;
             }
             m_Wrapper.m_BuildActionsCallbackInterface = instance;
             if (instance != null)
@@ -661,9 +690,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @Cancel.started += instance.OnCancel;
                 @Cancel.performed += instance.OnCancel;
                 @Cancel.canceled += instance.OnCancel;
-                @BuildTransportLine.started += instance.OnBuildTransportLine;
-                @BuildTransportLine.performed += instance.OnBuildTransportLine;
-                @BuildTransportLine.canceled += instance.OnBuildTransportLine;
+                @MousePos.started += instance.OnMousePos;
+                @MousePos.performed += instance.OnMousePos;
+                @MousePos.canceled += instance.OnMousePos;
             }
         }
     }
@@ -696,6 +725,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
     public interface IMoveActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnMousePos(InputAction.CallbackContext context);
         void OnStartBuild(InputAction.CallbackContext context);
         void OnCheckUnitDetail(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
@@ -710,7 +740,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         void OnZoom(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
-        void OnBuildTransportLine(InputAction.CallbackContext context);
+        void OnMousePos(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

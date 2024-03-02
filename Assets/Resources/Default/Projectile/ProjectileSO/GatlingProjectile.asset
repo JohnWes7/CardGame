@@ -13,14 +13,12 @@ MonoBehaviour:
   m_Name: GatlingProjectile
   m_EditorClassIdentifier: 
   damage: 15
-  speed: 40
-  explosionRange: 0
+  speed: 60
+  explosionRadius: 0
   shieldCoefficient: 1
   armourCoefficient: 1
   bodyCoefficient: 1
   prefab: {fileID: 4335248104715333383, guid: 4e3b0a4f2525b6d41b7f090af162a700, type: 3}
-  targetTag:
-  - Enemy
   targetLayer:
     serializedVersion: 2
     m_Bits: 64

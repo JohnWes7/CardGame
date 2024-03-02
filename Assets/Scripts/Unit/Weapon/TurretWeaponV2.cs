@@ -200,4 +200,16 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         return null;
 
     }
+
+    public override string GetInfo()
+    {
+
+        string ammo_consum_rate = "弹药消耗速率:";
+        // 消耗速率计算 弹夹子弹数量/每秒发射量 = 弹药item消耗量/s
+        float rate = (1 / turretSO.fireGap) / turretSO.magazineInfos[0].projectileInOneMagazineNum;
+
+        return base.GetInfo() + 
+            $"\n{ammo_consum_rate}\n" +
+            $"{rate}/s";
+    }
 }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6340820977781590943}
   - component: {fileID: 8918074277950804690}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RecyclePlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2715076519912095642}
   - component: {fileID: 2512612022518160117}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RecyclePlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 6551682569979986034}
   - component: {fileID: 1023549918555504908}
   - component: {fileID: 548487229970013125}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RecycleDrone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2943403588643884787}
   - component: {fileID: 4780451630189521753}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RecyclePlatformHDR
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Drone
   m_EditorClassIdentifier: 
   maxHP: 100
-  speed: 1
   prefab: {fileID: 4527690551980483622, guid: 76c71a26586ba1647b293205221e5e1a, type: 3}
   warningRange: 20
   warningLayer:
     serializedVersion: 2
     m_Bits: 128
+  maxTurnRate: 60
+  maxSpeed: 10
   enemyDropItemInfos:
   - itemSO: {fileID: 11400000, guid: ac6f53da63f83fd4cbf87facc340a53f, type: 2}
     maxNum: 2

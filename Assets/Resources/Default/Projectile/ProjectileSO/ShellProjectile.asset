@@ -13,14 +13,12 @@ MonoBehaviour:
   m_Name: ShellProjectile
   m_EditorClassIdentifier: 
   damage: 30
-  speed: 20
+  speed: 40
   explosionRadius: 3
   shieldCoefficient: 1
   armourCoefficient: 1
   bodyCoefficient: 1
   prefab: {fileID: 2333906761941424712, guid: 251a33cc3d084bb44a3935463a0ea41c, type: 3}
-  targetTag:
-  - Enemy
   targetLayer:
     serializedVersion: 2
     m_Bits: 64

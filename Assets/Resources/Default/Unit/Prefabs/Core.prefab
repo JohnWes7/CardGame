@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1791437649546041527}
   - component: {fileID: 77090773381762486}
+  - component: {fileID: 4522804392143973469}
   m_Layer: 7
   m_Name: Core
   m_TagString: Untagged
@@ -59,6 +60,29 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &4522804392143973469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5085188227027225970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3936df6c2b6ccd647b000acef9b9f8e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: {x: 0, y: 0}
+  dir: 0
+  unitSO: {fileID: 11400000, guid: a6f9a26e2971c3c46becf1a4a71bc99c, type: 2}
+  curHP: 0
+  ship:
+    monoBehaviour: {fileID: 0}
+  repairGap: 1
+  repairTimer: 0
+  repairAmount: 5
+  repairRadius: 10
+  droneFXPrefab: {fileID: 7734506002071998643, guid: 0939da8d4d16e28488dc2aaeee679ac7, type: 3}
 --- !u!1 &6128053879244189703
 GameObject:
   m_ObjectHideFlags: 0

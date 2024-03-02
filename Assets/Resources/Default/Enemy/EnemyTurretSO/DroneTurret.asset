@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileSO: {fileID: 11400000, guid: b753ee0b77f5416489ff12f792438aaa, type: 2}
   radius: 10
-  fireGap: 0
-  rotateSpeed: 0
+  fireGap: 2
+  rotateSpeed: 45
   searchTargetLayer:
     serializedVersion: 2
     m_Bits: 128

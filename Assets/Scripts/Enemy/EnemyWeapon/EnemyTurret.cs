@@ -32,7 +32,7 @@ public abstract class EnemyTurret : MonoBehaviour
             {
                 return false;
             }
-           
+
         }
 
         return true;
@@ -63,23 +63,22 @@ public abstract class EnemyTurret : MonoBehaviour
             directionToTarget.z = 0f; // 将Z轴置为0，使得炮塔只在水平方向旋转
 
             // 计算当前方向与目标方向之间的角度
-            Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
-            float angleToTarget = Quaternion.Angle(transform.rotation, targetRotation);
+            float angleToTarget = Vector3.Angle(transform.up, directionToTarget);
+
+            // 计算目标方向的旋转
+            Quaternion targetRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg - 90f);
+
+            // 使用 Quaternion.RotateTowards 来平滑地调整旋转
+            Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, enemyTurretSO.rotateSpeed * deltaTime);
+
+            // 应用新的旋转
+            transform.rotation = newRotation;
 
             // 如果角度小于5度，表示已经对准目标
-            if (angleToTarget < 5f)
+            if (angleToTarget < 3f)
             {
                 // 应用新的旋转
-                transform.rotation = targetRotation;
                 return true;
-            }
-            else
-            {
-                // 使用 Quaternion.RotateTowards 来平滑地调整旋转
-                Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, targetRotation, enemyTurretSO.rotateSpeed * deltaTime);
-
-                // 应用新的旋转
-                transform.rotation = newRotation;
             }
         }
         return false; // 如果没有目标，则返回false
@@ -87,6 +86,11 @@ public abstract class EnemyTurret : MonoBehaviour
 
     public virtual void ShootPreTimeTick(float deltaTime)
     {
+        if (!enemyTurretSO)
+        {
+            return;
+        }
+
         if (fireGapTimer < enemyTurretSO.fireGap)
         {
             fireGapTimer += deltaTime;

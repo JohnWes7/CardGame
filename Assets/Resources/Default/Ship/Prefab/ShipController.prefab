@@ -59,6 +59,7 @@ GameObject:
   - component: {fileID: 4812679209807983744}
   - component: {fileID: 4812679209807983747}
   - component: {fileID: 4812679209807983746}
+  - component: {fileID: 1102193360}
   m_Layer: 0
   m_Name: ShipController
   m_TagString: PlayerShip
@@ -73,7 +74,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4812679209807983772}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -98,7 +99,6 @@ MonoBehaviour:
   HP: 100
   gridWidth: 50
   gridHeight: 50
-  showGridLine: 1
   coreSO: {fileID: 11400000, guid: a6f9a26e2971c3c46becf1a4a71bc99c, type: 2}
   coreUnit: {fileID: 0}
   fgNodeSprite: {fileID: 21300000, guid: 8e575a12dbf5f3a4a98d9d39613fcb5a, type: 3}
@@ -168,6 +168,18 @@ MonoBehaviour:
   moveSpeed: 5
   rotateSpeed: 100
   moveVectorDeadZoneMin: 0.05
+--- !u!114 &1102193360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4812679209807983772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d41127665503cb40a72eb9727328434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4812679210057573846
 GameObject:
   m_ObjectHideFlags: 0

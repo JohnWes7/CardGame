@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CustomInspector;
 
 
 [System.Serializable]
@@ -18,10 +19,24 @@ public class EnemySO : ScriptableObject
     }
 
     public int maxHP;
-    public float speed;
+    [AssetsOnly, Preview]
     public GameObject prefab;
     public float warningRange;
     public LayerMask warningLayer;
+
+    [HorizontalLine("运动数据")]
+    public float maxTurnRate = 60f; // 每秒最大转速度, 单位为度
+    public float maxSpeed = 5f; // 最大速度
+
+    // 额外数据因为每个移动的代码逻辑可能不一样 需要 立一个新的SO
+
+    //[HorizontalLine("额外数据不一定有用")]
+    //public float slowDownDistance = 10f; // 减速距离
+
+    //public float maxAcceleration = 10f; // 最大施加的力
+    //public float slowDamping = 0.01f;
+
+
 
     [Header("死亡掉落")]
     public List<EnemyDropItemInfo> enemyDropItemInfos;

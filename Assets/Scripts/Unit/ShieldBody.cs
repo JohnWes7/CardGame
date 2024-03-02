@@ -8,8 +8,11 @@ public class ShieldBody : MonoBehaviour, IBeDamage
     [SerializeField, ForceFill]
     private ShieldUnit shieldUnit;
 
-    public void BeDamage(DamageInfo projectile)
+    public void BeDamage(DamageInfo damageInfo)
     {
-        
+        if (shieldUnit)
+        {
+            shieldUnit.ShieldBeDamage(damageInfo);
+        }
     }
 }

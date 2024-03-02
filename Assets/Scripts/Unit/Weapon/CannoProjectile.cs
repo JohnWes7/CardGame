@@ -44,6 +44,12 @@ public class CannoProjectile : Projectile
             {
                 //Debug.Log("生成fx");
                 // 从对象池中拿取实体
+                if (fxInstance != null)
+                {
+                    Destroy(fxInstance);
+                    fxInstance = null;
+                }
+
                 fxInstance = Johnwest.ObjectPoolManager.Instance.GetPool(fxPrefab).Get();
                 fxInstance.transform.position = transform.position;
 
@@ -52,6 +58,7 @@ public class CannoProjectile : Projectile
                 {
                     setRange.SetFXRange(projectileSO.explosionRadius * 2);
                 }
+                Invoke("FxReturnPool", 5f);
             }
         });
     }

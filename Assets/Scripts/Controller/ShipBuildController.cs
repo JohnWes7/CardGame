@@ -58,36 +58,11 @@ public class ShipBuildController : MonoBehaviour
     public bool IsBuilding { get => isBuilding; set => isBuilding = value; }
     public BuildCostPanel UiShadowCostShower { get => uiShadowCostShower; set => uiShadowCostShower = value; }
 
-
-
-    //private void Awake()
-    //{
-    //    // delegate 能存多个方法 而且不需要 new 初始化 如果是有返回值的方法则只会保留最后一个
-    //    //delegate int test();
-    //    //private test testd;
-
-    //    //testd += () =>
-    //    //{
-    //    //    Debug.Log("m1");
-    //    //    return 1;
-    //    //};
-    //    //testd += () =>
-    //    //{
-    //    //    Debug.Log("m2");
-    //    //    return 2;
-    //    //};
-    //    //Debug.Log(testd());
-    //}
-
     private void Start()
     {
-        //buildIndex = 0;
         buildDir = default;
         sc.InterfaceObj = GetComponent<IShipController>();
         isBuilding = false;
-
-        // 初始状态
-        // state = new ShipNotBuildingState(this);
 
         // 初始化虚影
         GameObject go = new GameObject("shipUnitPrefabShadow", typeof(SpriteRenderer));
@@ -172,27 +147,26 @@ public class ShipBuildController : MonoBehaviour
     }
 
     #region 老state模式
-    public void QuitBuild()
-    {
-        isBuilding = false;
-        state.QuitBuild(this);
-    }
+    //public void QuitBuild()
+    //{
+    //    isBuilding = false;
+    //    state.QuitBuild(this);
+    //}
 
-    public void StartBuild()
-    {
-        isBuilding = true;
-        state.StartBuild(this);
-    }
+    //public void StartBuild()
+    //{
+    //    isBuilding = true;
+    //    state.StartBuild(this);
+    //}
 
-    public void ChangeIndex(int index)
-    {
-        state.ChangeIndex(this, index);
-    }
+    //public void ChangeIndex(int index)
+    //{
+    //    state.ChangeIndex(this, index);
+    //}
     #endregion
 
 
     #region 新版input system方法
-
     /// <summary>
     /// 进入建造
     /// </summary>
@@ -403,6 +377,10 @@ public class ShipBuildController : MonoBehaviour
         return curUnit;
     }
 
+    /// <summary>
+    /// ui元素调用 更改当前
+    /// </summary>
+    /// <param name="unitSO"></param>
     public void ChangeCurBuildUnit(UnitSO unitSO)
     {
         if (unitSO == null)
@@ -418,31 +396,7 @@ public class ShipBuildController : MonoBehaviour
             OnCurBuildUnitChange?.Invoke(this, new UnitEventargs(curUnit));
         }
     }
-
-    public void PlayerInput_OnBuildTransportLine(InputAction.CallbackContext callbackContext)
-    {
-        if (callbackContext.performed)
-        {
-            // 获取点击的单元
-            FGridNode obj = sc.InterfaceObj.Grid.GetGridObjectByMousePosition();
-            UnitObject unit = null;
-            // 判空
-            if (obj != null) unit = obj.GetContent();
-            if (unit == null) return;
-
-            // 如果是可以连接
-            if (unit is ITransportLineStart @transportLineStart)
-            {
-                    
-            }
-        }
-        else if(callbackContext.canceled)
-        {
-
-        }
-        //Debug.Log(callbackContext);
-
-    }
+    
     #endregion
 
 }

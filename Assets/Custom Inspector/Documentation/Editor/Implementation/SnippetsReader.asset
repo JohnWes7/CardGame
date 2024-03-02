@@ -819,8 +819,8 @@ MonoBehaviour:
       integer: 1
       name: Bob
     foldoutAttributeExamples:
-      scriptable1: {fileID: 0}
-      scriptable2: {fileID: 0}
+      scriptable1: {fileID: 11400000, guid: 0573bffa7d8cd3849b42ab44ad6ecb37, type: 2}
+      scriptable2: {fileID: 11400000, guid: f5d1dbea3dc15cf429dc2b008fe8eaf8, type: 2}
     forceFillAttributeExamples:
       gob1: {fileID: 0}
       s2: 
@@ -943,7 +943,7 @@ MonoBehaviour:
       value1: 0.6
       value2: 20
       value3: 2
-      min: 1
+      min: 0.12
       max: 3
     readOnlyAttributeExamples:
       n: 0

@@ -15,6 +15,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "MousePos",
+                    "type": "Value",
+                    "id": "18d532a4-e182-4127-a47a-473e8d5ec72c",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "StartBuild",
                     "type": "Button",
                     "id": "1a8cb26c-d87d-4f8d-aae7-bbd839a93d0d",
@@ -152,6 +161,17 @@
                     "action": "Zoom",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "3d75ddbc-aef1-4994-814e-3456865c8932",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePos",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -232,7 +252,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "BuildTransportLine",
+                    "name": "MousePos",
                     "type": "Value",
                     "id": "c86bccbf-477d-4ee3-b19f-9bf5a62f1b15",
                     "expectedControlType": "Vector2",
@@ -403,7 +423,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "BuildTransportLine",
+                    "action": "MousePos",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

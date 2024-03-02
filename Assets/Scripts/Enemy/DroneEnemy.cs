@@ -36,7 +36,7 @@ public class DroneEnemy : Enemy, IBeDamage
             target = CheckWarningRange();
         }
 
-        // 如果有目标就直接冲上去和他爆了
+        // 如果有目标就靠近目标
         if (target != null)
         {
             // 如果距离太近就不动了
@@ -47,7 +47,7 @@ public class DroneEnemy : Enemy, IBeDamage
             }
 
             dir.z = 0;
-            rigi2D.velocity = enemySO.speed * dir.normalized;
+            rigi2D.velocity = enemySO.maxSpeed * dir.normalized;
 
             //Quaternion todir = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(Vector3.zero, dir), 0.2f);
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
@@ -74,7 +74,7 @@ public class DroneEnemy : Enemy, IBeDamage
             Destroy(gameObject);
         }
 
-        LogUtilsXY.LogOnPos(damageInfo.GetDamageAmount().ToString(), transform.position, 0.5f);
+        LogUtilsXY.LogOnPos(damageInfo.GetDamageAmount().ToString(), transform.position, 12f);
     }
 
     [ContextMenu("TestDropItemBySO")]

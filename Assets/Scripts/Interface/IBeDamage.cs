@@ -18,6 +18,11 @@ public class DamageInfo
     {
         return damageAmount;
     }
+
+    public override string ToString()
+    {
+        return $"damage: {damageAmount}, creater: {Creater}";
+    }
 }
 
 public interface IBeDamage

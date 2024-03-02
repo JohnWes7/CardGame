@@ -2,59 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using CustomInspector;
 
 public class ShipMoveController : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rigi2D;
-
-    // 理想中的移动
-    // 应该是靠力 但姑且先用设置速度 然后有的组件应该能使得速度增加
-    [SerializeField] private Vector2 moveVectorInput;
-    [SerializeField] private Vector2 lerpMoveVector;
-    [SerializeField] private float lerpT;
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float rotateSpeed;
-    [SerializeField] private float moveVectorDeadZoneMin;
+    [SerializeField, SelfFill] private Rigidbody2D rigi2D;
+    [SerializeField, ReadOnly] private Vector2 moveVectorInput;
+    [SerializeField] private float maxMoveSpeed;
+    [SerializeField] private float maxRotateSpeed;
 
 
-    private void Start()
-    {
-        rigi2D = GetComponent<Rigidbody2D>();
-    }
-
-    private void Update()
-    {
-        #region 老input
-        //// 获取WASD输入值，这里仅处理W键作为加速/减速的例子  
-        //float horizontalInput = Input.GetAxis("Horizontal");
-        //float verticalInput = Input.GetAxis("Vertical");
-
-        //rigi2D.velocity = 5 * verticalInput * transform.up;
-        //rigi2D.angularVelocity = horizontalInput * -180;
-
-        //Debug.Log($"h:{horizontalInput}  v:{verticalInput}");
-        #endregion
-
-
-        //var action = playerInput.currentActionMap.FindAction("Move");
-        //Debug.Log(action?.ReadValue<Vector2>());
-    }
-
+    [HorizontalLine("力")]
+    [SerializeField] private float forwardForce = 10f;
+    [SerializeField] private float turnTorque = 10f;
 
     private void FixedUpdate()
     {
-        // vector 进行lerp
-        lerpMoveVector = Vector2.Lerp(lerpMoveVector, moveVectorInput, lerpT);
-        //Debug.Log(lerpMoveVector);
+        
+        MovePerDeltaTime(Time.fixedDeltaTime);
+        LimitSpeed();
+    }
 
-        if (lerpMoveVector.magnitude < moveVectorDeadZoneMin)
+    public void MovePerDeltaTime(float deltaTime)
+    {
+        // 前进和后退
+        if (Mathf.Abs(moveVectorInput.y) > 0f)
         {
-            lerpMoveVector = Vector2.zero;
+            rigi2D.AddForce(forwardForce * moveVectorInput.y * transform.up);
         }
 
-        // 移动和旋转
-        rigi2D.velocity = moveSpeed * lerpMoveVector.y * transform.up;
-        rigi2D.angularVelocity = -rotateSpeed * lerpMoveVector.x;
+        // 左右转向
+        if (Mathf.Abs(moveVectorInput.x) > 0f)
+        {
+            rigi2D.AddTorque(-moveVectorInput.x * turnTorque);
+        }
+    }
+
+    private void LimitSpeed()
+    {
+        if (rigi2D.velocity.magnitude > maxMoveSpeed)
+        {
+            rigi2D.velocity = rigi2D.velocity.normalized * maxMoveSpeed;
+        }
     }
 
     public void Move(InputAction.CallbackContext context)

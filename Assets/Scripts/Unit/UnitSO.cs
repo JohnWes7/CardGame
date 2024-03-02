@@ -40,6 +40,9 @@ public class UnitSO : ScriptableObject
     public List<Vector2Int> place;
     public Vector2 spriteBLtoCMOffset;
 
+    [HorizontalLine("战斗属性")]
+    public int maxHP = 100;
+
     [HorizontalLine("成本")]
     public List<ItemCost> itemCostList;
 
