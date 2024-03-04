@@ -92,7 +92,7 @@ public class DroneEnemyV2 : Enemy, IBeDamage
             Destroy(gameObject);
         }
 
-        LogUtilsXY.LogOnPos(damageInfo.GetDamageAmount().ToString(), transform.position, 12f);
+        LogUtilsXY.LogOnPos(damageInfo.GetDamageAmount().ToString(), transform.position, 0.5f, 12f);
     }
 
     [ContextMenu("TestDropItemBySO")]

@@ -121,13 +121,25 @@ public class ShieldUnit : UnitObject, ITextInfoDisplay
         shieldState = true;
     }
 
-
     public void TurnOffShield()
     {
         restatrTimer = 0;
         rechargeTimer = 0;
         shieldBody.gameObject.SetActive(false);
         shieldState = false;
+    }
+
+    public override void SetState(bool value)
+    {
+        base.SetState(value);
+        if (value)
+        {
+            TurnOnShield();
+        }
+        else
+        {
+            TurnOffShield();
+        }
     }
 
     public override string GetInfo()

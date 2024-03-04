@@ -134,6 +134,7 @@ MonoBehaviour:
   position: {x: 0, y: 0}
   dir: 0
   unitSO: {fileID: 0}
+  curHP: 0
   shipController:
     monoBehaviour: {fileID: 0}
   scanRange: 30
@@ -151,7 +152,7 @@ GameObject:
   - component: {fileID: 6551682569979986034}
   - component: {fileID: 1023549918555504908}
   - component: {fileID: 548487229970013125}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: RecycleDrone
   m_TagString: Untagged
   m_Icon: {fileID: 0}

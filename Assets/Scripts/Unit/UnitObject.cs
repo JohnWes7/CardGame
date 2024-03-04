@@ -60,9 +60,9 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
     [SerializeField] protected Dir dir;
     [SerializeField, Foldout] protected UnitSO unitSO;
     [SerializeField] protected Grid<FGridNode> grid;
-    [HorizontalLine("当前hp")]
+    [HorizontalLine("当前hp 和 状态")]
     [SerializeField] protected int curHP;
-    
+    [SerializeField] protected bool isOnline = true;
 
     public UnitSO UnitSO { get => unitSO; set => unitSO = value; }
     public Dir Dir { get => dir; set => dir = value; }
@@ -85,40 +85,76 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
     {
         // 初始设置为满血
         curHP = unitSO.maxHP;
+        // 初始是在线的
+        isOnline = true;
     }
 
-    
+
 
     public virtual string GetInfo()
     {
         string name = unitSO.name;
+        string onlineflag = isOnline ? "<color=#00ff00>Online</color>" : "<color=#ff0000>Offline</color>";
         // 之后需要做多语言字典
         string curHPText = "组件完整度:";
 
         return $"{name}\n" +
             $"-------------\n" +
+            $"{onlineflag}\n" +
             $"{curHPText}\n" +
             $"{curHP}/{unitSO.maxHP}";
     }
 
-    public void BeDamage(DamageInfo projectile)
+    public virtual void BeDamage(DamageInfo projectile)
     {
         curHP -= projectile.damageAmount;
+        curHP = Mathf.Clamp(curHP, 0, unitSO.maxHP);
+
+        // 如果血量小于0则设置为离线并且关闭update
+        if (curHP <= 0)
+        {
+            SetState(false);
+        }
     }
 
-    public float GetHPScale()
+    /// <summary>
+    /// 打开和关闭unit
+    /// </summary>
+    /// <param name="value"></param>
+    public virtual void SetState(bool value)
+    {
+        isOnline = value;
+        enabled = value;
+        if (value)
+        { 
+            gameObject.layer = LayerMask.NameToLayer("Ship");
+        }
+        else
+        {
+            gameObject.layer = LayerMask.NameToLayer("ShipOffline");
+        }
+        
+    }
+
+    public virtual float GetHPScale()
     {
         return unitSO.maxHP == 0 ? 1 : (float)curHP / unitSO.maxHP;
     }
 
-    public void Repair(int amount)
+    public virtual void Repair(int amount)
     {
         LogUtilsXY.LogOnPos(amount.ToString(), transform.position, Color.green);
         curHP += amount;
         curHP = Mathf.Clamp(curHP, 0, unitSO.maxHP);
+
+        // 如果修复满血了则设置为在线并且开启update
+        if (!isOnline && curHP >= unitSO.maxHP)
+        {
+            SetState(true);
+        }
     }
 
-    public Transform GetTransform()
+    public virtual Transform GetTransform()
     {
         return transform;
     }

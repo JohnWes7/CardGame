@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
+using Unity.VisualScripting;
 
 public class TurretWeaponV2 : UnitObject, IShipUnit
 {
@@ -22,7 +23,7 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
      */
 
     // 炮塔属性
-    [SerializeField] private TurretSO turretSO;
+    [SerializeField, Foldout] private TurretSO turretSO;
     [SerializeField] private GameObject turret;
     [SerializeField, ReadOnly] private Transform target;
     [SerializeField, ReadOnly] private float timer;
@@ -121,38 +122,6 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         turret.transform.rotation = Quaternion.Slerp(turret.transform.rotation, rotation, TurretSO.rotateSpeed * deltaTime);
     }
 
-    #region 如果要按照一定的角度旋转
-    //    using UnityEngine;
-
-    //public class TurretController : MonoBehaviour
-    //{
-    //    public Transform target; // 目标的 Transform
-    //    public float maxRotationSpeed = 20f; // 最大旋转速度，每秒度数
-
-    //    void Update()
-    //    {
-    //        if (target != null)
-    //        {
-    //            // 获取炮塔当前的朝向和目标的朝向
-    //            Vector3 direction = target.position - transform.position;
-    //            float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-    //            // 将角度限制在 -180 到 180 之间
-    //            float currentAngle = Mathf.Repeat(transform.eulerAngles.z, 360);
-    //            float angleDiff = Mathf.DeltaAngle(currentAngle, targetAngle);
-
-    //            // 计算每帧旋转的角度
-    //            float maxRotationDelta = maxRotationSpeed * Time.deltaTime;
-    //            float rotationAmount = Mathf.Clamp(angleDiff, -maxRotationDelta, maxRotationDelta);
-
-    //            // 使用 Quaternion.Slerp 进行平滑旋转
-    //            Quaternion targetRotation = Quaternion.Euler(0, 0, currentAngle + rotationAmount);
-    //            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * maxRotationSpeed);
-    //        }
-    //    }
-    //}
-    #endregion
-
     private bool CheckTakeAim()
     {
         if (target != null)
@@ -211,5 +180,14 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         return base.GetInfo() + 
             $"\n{ammo_consum_rate}\n" +
             $"{rate}/s";
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (turretSO)
+        {
+            Gizmos.color = Color.white; // 设置 Gizmos 颜色
+            Gizmos.DrawWireSphere(transform.position, turretSO.radius); // 绘制表示射程范围的圆形
+        }
     }
 }

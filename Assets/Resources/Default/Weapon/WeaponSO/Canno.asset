@@ -17,5 +17,5 @@ MonoBehaviour:
     projectileInOneMagazineNum: 2
     projectileSO: {fileID: 11400000, guid: 2178b5f0b7b9a1b45b0fd86ab738857d, type: 2}
   fireGap: 1
-  radius: 15
+  radius: 20
   rotateSpeed: 10

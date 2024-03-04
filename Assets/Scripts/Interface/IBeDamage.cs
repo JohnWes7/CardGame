@@ -7,6 +7,7 @@ public class DamageInfo
 {
     public int damageAmount;
     public object Creater;
+    public Vector3 hitPosition;
 
     public DamageInfo(int damage, object Creater)
     {

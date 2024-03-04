@@ -27,7 +27,8 @@ public class RepairCenter : UnitObject, IShipUnit
         RepairUpdate(Time.deltaTime);
     }
 
-    public void RepairUpdate(float deltaTime){
+    public void RepairUpdate(float deltaTime)
+    {
         // 如果repaireTimer小于repairGap，就继续累加
         if (repairTimer < repairGap)
         {
@@ -51,18 +52,30 @@ public class RepairCenter : UnitObject, IShipUnit
         {
             // 生成一个特效
             GameObject fx = Instantiate(droneFXPrefab, transform.position, Quaternion.FromToRotation(transform.position, target.GetTransform().position), transform);
-            Debug.Log(transform.InverseTransformPoint(target.GetTransform().position));
-            fx.transform.DOLocalMove(transform.InverseTransformPoint(target.GetTransform().position), 1).SetEase(Ease.InBack).OnComplete(() => { 
-                target.Repair(repairAmount);
-                Destroy(fx); });
-            
+            // Debug.Log(transform.InverseTransformPoint(target.GetTransform().position));
+            fx.transform.DOLocalMove(transform.InverseTransformPoint(target.GetTransform().position), 1).SetEase(Ease.InBack).OnComplete(() =>
+            {
+                try
+                {
+                    target.Repair(repairAmount);
+                }
+                catch (System.Exception)
+                {
+                    Debug.Log("target is null");
+                }
+                finally
+                {
+                    Destroy(fx);
+                }
+            });
+
         }
     }
 
     public IBeRepairUnitObject FindRepairTarget()
     {
         // 通过物理搜索半径内layer是Ship的物体
-        var results = Physics2D.CircleCastAll(transform.position, repairRadius, Vector2.zero, 0, LayerMask.GetMask("Ship"));
+        var results = Physics2D.CircleCastAll(transform.position, repairRadius, Vector2.zero, 0, LayerMask.GetMask("Ship", "ShipOffline"));
 
         // 拿取所有IBeRepairUnitObject
         List<IBeRepairUnitObject> repairUnitObjects = new List<IBeRepairUnitObject>();

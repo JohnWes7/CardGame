@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3861180963745456727}
   - component: {fileID: 3450809046350354649}
+  - component: {fileID: 3070001810694125936}
   m_Layer: 7
   m_Name: CannoTurret
   m_TagString: Untagged
@@ -132,6 +133,7 @@ MonoBehaviour:
   position: {x: 0, y: 0}
   dir: 0
   unitSO: {fileID: 0}
+  curHP: 0
   ship:
     monoBehaviour: {fileID: 0}
   turretSO: {fileID: 11400000, guid: 88e1b609758458044ae335c9c6928ad3, type: 2}
@@ -143,6 +145,32 @@ MonoBehaviour:
     magazineItem: {fileID: 0}
     projectileInOneMagazineNum: 0
     projectileSO: {fileID: 0}
+--- !u!61 &3070001810694125936
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6433775927285313010}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2}
+  m_EdgeRadius: 0
 --- !u!1 &6494381214210154615
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,7 +14,7 @@ public class LogUtilsXY : MonoBehaviour
         LogOnPos(text, Camera.main.ScreenToWorldPoint(Input.mousePosition) + 2 * Vector3.forward, charSize);
     }
 
-    public static void LogOnPos(string text, Vector3 position, Color color, float charSize = 10f, float zOffset = -1, float duration = 1f)
+    public static GameObject LogOnPos(string text, Vector3 position, Color color, float ramdomRadius = 0.5f, float charSize = 10f, float zOffset = -1, float duration = 1f)
     {
         // 初始化生成
         if (textPrefab == null)
@@ -24,7 +24,7 @@ public class LogUtilsXY : MonoBehaviour
         GameObject obj = Instantiate<GameObject>(textPrefab);
 
         // 调整位置
-        obj.transform.SetPositionAndRotation(position + new Vector3(0, 0, zOffset), Quaternion.identity);
+        obj.transform.SetPositionAndRotation(position + new Vector3(0, 0, zOffset) + (Vector3)Random.insideUnitCircle, Quaternion.identity);
 
         // 设置 文字和颜色
         TextMeshPro tmp = obj.GetComponent<TextMeshPro>();
@@ -36,11 +36,13 @@ public class LogUtilsXY : MonoBehaviour
         tmp.transform.DOLocalMoveY(tmp.transform.localPosition.y + 1f, duration).OnComplete(() => {
             Destroy(obj);
         });
+
+        return obj;
     }
 
-    public static void LogOnPos(string text, Vector3 position, float charSize = 10f, float zOffset = -1, float duration = 1f)
+    public static GameObject LogOnPos(string text, Vector3 position, float ramdomRadius = 0.5f, float charSize = 10f, float zOffset = -1, float duration = 1f)
     {
-        LogOnPos(text, position, Color.white, charSize, zOffset, duration);
+        return LogOnPos(text, position, Color.white, ramdomRadius, charSize, zOffset, duration);
     }
 
 }
