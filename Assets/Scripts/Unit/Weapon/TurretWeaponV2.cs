@@ -24,9 +24,11 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
 
     // 炮塔属性
     [SerializeField, Foldout] private TurretSO turretSO;
-    [SerializeField] private GameObject turret;
+    [SerializeField, ForceFill] private GameObject turret;
+    [SerializeField, ForceFill] private Transform projectileCreatPos;
     [SerializeField, ReadOnly] private Transform target;
     [SerializeField, ReadOnly] private float timer;
+
     private const float TURRET_ROTATE_SPEED = 2f;
 
     // 弹药
@@ -108,7 +110,13 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
                 {
                     // 能获取到弹药
                     // Debug.Log("成功射击");
-                    Projectile.ProjectileCreateFactory(projectileInfo.projectileSO, target, turret.transform.position + turret.transform.up, this);
+
+                    // 创建子弹 如果projectileCreatPos 是null 就用turret的位置
+                    Projectile.ProjectileCreateFactory(
+                        projectileInfo.projectileSO, 
+                        target, 
+                        projectileCreatPos != null ? projectileCreatPos.position : turret.transform.position, 
+                        this);
                     timer = 0;
                 }
             }
@@ -177,7 +185,7 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         // 消耗速率计算 弹夹子弹数量/每秒发射量 = 弹药item消耗量/s
         float rate = (1 / turretSO.fireGap) / turretSO.magazineInfos[0].projectileInOneMagazineNum;
 
-        return base.GetInfo() + 
+        return base.GetInfo() +
             $"\n{ammo_consum_rate}\n" +
             $"{rate}/s";
     }

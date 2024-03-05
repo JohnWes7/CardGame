@@ -97,6 +97,12 @@ public abstract class EnemyTurret : MonoBehaviour
         }
         else
         {
+            // 如果target的layer不在searchTargetLayer中则取消target
+            if (target && (enemyTurretSO.searchTargetLayer & (1 << target.gameObject.layer)) == 0)
+            {
+                target = null;
+            }
+
             // 如果当前有目标检查目标是否还在半径范围内 如果不在范围内则取消target
             if (target && TargetOutRange())
             {

@@ -66,7 +66,7 @@ public class ShieldUnit : UnitObject, ITextInfoDisplay
         }
     }
 
-    public void ChargeShield(float deltaTime)
+    private void ChargeShield(float deltaTime)
     {
         // 如果盾是满状态直接return
         if (curShieldCapacity >= shieldSO.shieldCapacity)
@@ -99,7 +99,7 @@ public class ShieldUnit : UnitObject, ITextInfoDisplay
         }
     }
 
-    public void ReStartShield(float deltaTime)
+    private void ReStartShield(float deltaTime)
     {
         if (restatrTimer < shieldSO.restartTime)
         {
@@ -127,6 +127,22 @@ public class ShieldUnit : UnitObject, ITextInfoDisplay
         rechargeTimer = 0;
         shieldBody.gameObject.SetActive(false);
         shieldState = false;
+    }
+
+    public override void Repair(int amount)
+    {
+        LogUtilsXY.LogOnPos(amount.ToString(), transform.position, Color.green);
+        curHP += amount;
+        curHP = Mathf.Clamp(curHP, 0, unitSO.maxHP);
+
+        // 如果修复满血了则设置为在线并且开启update
+        if (!isOnline && curHP >= unitSO.maxHP)
+        {
+            SetState(true);
+            // 如果修复满血了则设置为在线并且重置护盾
+            curShieldCapacity = shieldSO.shieldCapacity;
+            restatrTimer = 0;
+        }
     }
 
     public override void SetState(bool value)

@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 3861180963745456727}
   - component: {fileID: 3450809046350354649}
   - component: {fileID: 3070001810694125936}
+  - component: {fileID: 6272456323663651824}
   m_Layer: 7
   m_Name: CannoTurret
   m_TagString: Untagged
@@ -134,10 +135,12 @@ MonoBehaviour:
   dir: 0
   unitSO: {fileID: 0}
   curHP: 0
+  isOnline: 1
   ship:
     monoBehaviour: {fileID: 0}
   turretSO: {fileID: 11400000, guid: 88e1b609758458044ae335c9c6928ad3, type: 2}
   turret: {fileID: 8705366610172124530}
+  projectileCreatPos: {fileID: 3442362939176141607}
   target: {fileID: 0}
   timer: 0
   curProjectilNum: 0
@@ -171,6 +174,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &6272456323663651824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6433775927285313010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0608fbe519c375941a7ab57807995cc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offlineStateColorA: []
+  aChangeFactor: 0.3
 --- !u!1 &6494381214210154615
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,6 +273,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &7347584619932261783
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3442362939176141607}
+  m_Layer: 7
+  m_Name: CreatePos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3442362939176141607
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7347584619932261783}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4191445853349823196}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8705366610172124530
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,6 +333,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5097571763079812565}
+  - {fileID: 3442362939176141607}
   m_Father: {fileID: 6969829431902473880}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 8298899515614246995}
   - component: {fileID: 7592376321167033053}
   - component: {fileID: 764638507080973996}
+  - component: {fileID: 1663357944691053999}
   m_Layer: 7
   m_Name: GatlingTurretV2
   m_TagString: Untagged
@@ -135,10 +136,12 @@ MonoBehaviour:
   dir: 0
   unitSO: {fileID: 0}
   curHP: 0
+  isOnline: 1
   ship:
     monoBehaviour: {fileID: 0}
   turretSO: {fileID: 11400000, guid: b7cbfc0c5c3d2664390d118209011496, type: 2}
   turret: {fileID: 4499547161671649142}
+  projectileCreatPos: {fileID: 6384172649007610716}
   target: {fileID: 0}
   timer: 0
   curProjectilNum: 0
@@ -172,6 +175,51 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &1663357944691053999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303428054818076662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0608fbe519c375941a7ab57807995cc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offlineStateColorA: []
+  aChangeFactor: 0.3
+--- !u!1 &3531394403709951473
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6384172649007610716}
+  m_Layer: 7
+  m_Name: CreatePos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6384172649007610716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3531394403709951473}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.7, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8977142219901638872}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4499547161671649142
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,7 +248,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6384172649007610716}
   m_Father: {fileID: 2740432067103380636}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

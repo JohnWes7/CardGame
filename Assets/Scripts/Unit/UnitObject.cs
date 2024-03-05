@@ -110,6 +110,9 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
         curHP -= projectile.damageAmount;
         curHP = Mathf.Clamp(curHP, 0, unitSO.maxHP);
 
+        // 用红色字显示伤害
+        LogUtilsXY.LogOnPos(projectile.damageAmount.ToString(), transform.position, Color.red);
+
         // 如果血量小于0则设置为离线并且关闭update
         if (curHP <= 0)
         {
@@ -133,7 +136,13 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
         {
             gameObject.layer = LayerMask.NameToLayer("ShipOffline");
         }
-        
+
+        // 如果有离线特效模块则调用
+        var fxm = GetComponent<IOfflineFXModular>();
+        if (fxm != null)
+        {
+            fxm.SetState(value);
+        }
     }
 
     public virtual float GetHPScale()

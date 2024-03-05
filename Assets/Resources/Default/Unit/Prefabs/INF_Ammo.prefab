@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 1354231370800732175}
   - component: {fileID: 4126879024952777977}
   - component: {fileID: 7547449876383154977}
+  - component: {fileID: 8951758384769845071}
   m_Layer: 7
   m_Name: INF_Ammo
   m_TagString: Untagged
@@ -159,6 +160,8 @@ MonoBehaviour:
   position: {x: 0, y: 0}
   dir: 0
   unitSO: {fileID: 0}
+  curHP: 0
+  isOnline: 1
   shipController:
     monoBehaviour: {fileID: 0}
   buffer: {fileID: 0}
@@ -167,3 +170,17 @@ MonoBehaviour:
   creatTime: 2
   insertPos: {x: 0, y: 0}
   centerIcon: {fileID: 0}
+  offlineStateColorA: []
+--- !u!114 &8951758384769845071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8479795978242872140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0608fbe519c375941a7ab57807995cc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offlineStateColorA: []

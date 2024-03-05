@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DroneProjectile
   m_EditorClassIdentifier: 
   damage: 5
-  speed: 50
+  speed: 10
   explosionRadius: 0
   shieldCoefficient: 0
   armourCoefficient: 0
