@@ -7,8 +7,9 @@ using CustomInspector;
 public class BuildCostPanel : MonoBehaviour
 {
     [SerializeField, AssetsOnly, ForceFill] private GameObject uiCostItemPrefab;
+    [SerializeField, AssetsOnly, ForceFill] private GameObject uiCostCurrencyPrefab;
     [SerializeField, ForceFill] private Transform context;
-    [SerializeField] private List<BuildCostItem> buildCostItemList;
+    [SerializeField] private List<GameObject> buildCostItemList;
 
 
     public void ClosePanel()
@@ -55,26 +56,33 @@ public class BuildCostPanel : MonoBehaviour
         }
         buildCostItemList.Clear();
 
-        // 读取unitso 里面需要多少材料
-        if (unitSO.itemCostList.Count < 1)
-        {
-            var go = Instantiate<GameObject>(uiCostItemPrefab, context);
-            BuildCostItem bci = go.GetComponent<BuildCostItem>();
-            bci.Refresh(null);
-            buildCostItemList.Add(bci);
-            return;
-        }
+        // 读取货币 并显示
+        var goCurrency = Instantiate<GameObject>(uiCostCurrencyPrefab, context);
+        goCurrency.GetComponent<BuildCostCurrency>().RefreshCurrency(unitSO);
+        buildCostItemList.Add(goCurrency);
 
-        foreach (var item in unitSO.itemCostList)
-        {
-            var go = Instantiate<GameObject>(uiCostItemPrefab, context);
-            BuildCostItem bci = go.GetComponent<BuildCostItem>();
-            if (bci != null)
-            {
-                bci.Refresh(item);
-            }
-            buildCostItemList.Add(bci);
-        }
+        // 读取unitso 里面需要多少材料
+        //if (unitSO.itemCostList.Count < 1)
+        //{
+        //    var go = Instantiate<GameObject>(uiCostItemPrefab, context);
+        //    BuildCostItem bci = go.GetComponent<BuildCostItem>();
+        //    bci.Refresh(null);
+        //    buildCostItemList.Add(bci);
+        //    return;
+        //}
+
+        //foreach (var item in unitSO.itemCostList)
+        //{
+        //    var go = Instantiate<GameObject>(uiCostItemPrefab, context);
+        //    BuildCostItem bci = go.GetComponent<BuildCostItem>();
+        //    if (bci != null)
+        //    {
+        //        bci.Refresh(item);
+        //    }
+        //    buildCostItemList.Add(bci);
+        //}
+
+
     }
 
     public void RefreshPosition(Vector3 ShadowPosition)

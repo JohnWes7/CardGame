@@ -18,10 +18,9 @@ public class RightBarInventoryPanel : MonoBehaviour
 
     private void Start()
     {
+        // 注册事件
         PlayerModel.Instance.GetInventory().OnInventoryChange += Instance_OnInventoryChange;
-        //PlayerInventory.Instance.AddItem(test, 50);
         RefreshIcon(PlayerModel.Instance.GetInventory().GetInventory());
-        //Johnwest.JWUniversalTool.LogWithClassMethodName(PlayerModel.Instance.GetInventory(), System.Reflection.MethodBase.GetCurrentMethod());
     }
 
     private void Instance_OnInventoryChange(object sender, PlayerInventory.InventoryEventArgs e)
@@ -31,8 +30,13 @@ public class RightBarInventoryPanel : MonoBehaviour
 
     public void RefreshIcon(Dictionary<ItemSO, int> inventoryDict)
     {
-        foreach (var item in inventoryDict)
+        foreach (KeyValuePair<ItemSO, int> item in inventoryDict)
         {
+            if (item.Key.type == ItemSO.Type.Currency)
+            {
+                continue;
+            }
+
             if (iconDict.ContainsKey(item.Key))
             {
                 iconDict[item.Key].RefreshIcon(item.Key, item.Value);
@@ -47,6 +51,12 @@ public class RightBarInventoryPanel : MonoBehaviour
                 iconDict.Add(item.Key, rbii);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        // 取消事件
+        PlayerModel.Instance.GetInventory().OnInventoryChange -= Instance_OnInventoryChange;
     }
 
     [ContextMenu("LogAllInventory")]

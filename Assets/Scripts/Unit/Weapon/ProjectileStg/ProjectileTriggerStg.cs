@@ -34,9 +34,7 @@ public class NormalBehavior : IProjectileBehaviorStg
         Debug.Log($"create projectile: {context.ProjectileSO} target: {context.Target}");
         // 初始化值
         durationTimer = 0;
-
-        // 计算打击的方向
-        velocity = context.Target.position - context.transform.position;
+        velocity = context.Direction;
 
         // 调整朝向
         float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg - 90f;

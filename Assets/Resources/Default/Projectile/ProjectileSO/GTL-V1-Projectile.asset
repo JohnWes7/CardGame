@@ -9,10 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbd03f027bd7b5b4b99c7cb960acfd97, type: 3}
-  m_Name: Iron
+  m_Script: {fileID: 11500000, guid: 1321d76951fb9a54ea33594c5cd8d7b9, type: 3}
+  m_Name: GTL-V1-Projectile
   m_EditorClassIdentifier: 
-  mainSprite: {fileID: 21300000, guid: 1fd6855aacffbb649a2ab1a0efd81599, type: 3}
-  prefab: {fileID: 2059249289310165507, guid: d679aad28f1989c4aa643b7872b82aff, type: 3}
-  type: 1
-  maxStack: 0
+  damage: 5
+  speed: 50
+  explosionRadius: 0
+  prefab: {fileID: 292520320485557527, guid: 5354c3aa749937f4383afb852681057e, type: 3}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64

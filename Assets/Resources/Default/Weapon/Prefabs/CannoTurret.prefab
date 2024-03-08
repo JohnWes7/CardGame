@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 3450809046350354649}
   - component: {fileID: 3070001810694125936}
   - component: {fileID: 6272456323663651824}
+  - component: {fileID: 5421607746012075352}
   m_Layer: 7
   m_Name: CannoTurret
   m_TagString: Untagged
@@ -143,6 +144,8 @@ MonoBehaviour:
   projectileCreatPos: {fileID: 3442362939176141607}
   target: {fileID: 0}
   timer: 0
+  turretFireStg:
+    monoBehaviour: {fileID: 0}
   curProjectilNum: 0
   curMagzineData:
     magazineItem: {fileID: 0}
@@ -188,6 +191,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offlineStateColorA: []
   aChangeFactor: 0.3
+--- !u!114 &5421607746012075352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6433775927285313010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd203724d9f2d624c987949455eadd16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6494381214210154615
 GameObject:
   m_ObjectHideFlags: 0

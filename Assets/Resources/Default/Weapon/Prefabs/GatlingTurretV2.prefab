@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 7592376321167033053}
   - component: {fileID: 764638507080973996}
   - component: {fileID: 1663357944691053999}
+  - component: {fileID: 916000422785072504}
   m_Layer: 7
   m_Name: GatlingTurretV2
   m_TagString: Untagged
@@ -144,6 +145,8 @@ MonoBehaviour:
   projectileCreatPos: {fileID: 6384172649007610716}
   target: {fileID: 0}
   timer: 0
+  turretFireStg:
+    monoBehaviour: {fileID: 0}
   curProjectilNum: 0
   curMagzineData:
     magazineItem: {fileID: 0}
@@ -189,6 +192,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offlineStateColorA: []
   aChangeFactor: 0.3
+--- !u!114 &916000422785072504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2303428054818076662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd203724d9f2d624c987949455eadd16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3531394403709951473
 GameObject:
   m_ObjectHideFlags: 0

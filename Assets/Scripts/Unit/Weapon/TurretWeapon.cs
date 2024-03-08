@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurretWeapon : UnitObject, IShipUnit, ITurretWeapon, IBePutDownGrabItem
+public class TurretWeapon : UnitObject, IShipUnit, IBePutDownGrabItem
 {
     [SerializeField] private MonoInterface<IShipController> ship;
 
@@ -106,7 +106,8 @@ public class TurretWeapon : UnitObject, IShipUnit, ITurretWeapon, IBePutDownGrab
                 {
                     // 能获取到弹药
                     // Debug.Log("成功射击");
-                    Projectile.ProjectileCreateFactory(projectileInfo.projectileSO, target, turret.transform.position + turret.transform.up, this);
+                    
+                    Projectile.ProjectileCreateFactory(new Projectile.ProjectileCreationParams(projectileInfo.projectileSO, target, transform.position + transform.up, this));
                     timer = 0;
                 }
             }
@@ -223,9 +224,3 @@ public class TurretWeapon : UnitObject, IShipUnit, ITurretWeapon, IBePutDownGrab
     }
 }
 
-public interface ITurretWeapon
-{
-    GameObject Turret { get; set; }
-    Transform Target { get; set; }
-    TurretSO TurretSO { get; set; }
-}

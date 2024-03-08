@@ -29,6 +29,10 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
     [SerializeField, ReadOnly] private Transform target;
     [SerializeField, ReadOnly] private float timer;
 
+    // 逻辑组件
+    [HorizontalLine("Stg")]
+    [SerializeField, ReadOnly] private MonoInterface<ITurretFireStg> turretFireStg;
+
     private const float TURRET_ROTATE_SPEED = 2f;
 
     // 弹药
@@ -46,6 +50,16 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
     public GameObject Turret { get => turret; set => turret = value; }
     public Transform Target { get => target; set => target = value; }
     public TurretSO TurretSO { get => turretSO; set => turretSO = value; }
+    public float Timer { get => timer; set => timer = value; }
+    public Transform ProjectileCreatPos { get => projectileCreatPos; set => projectileCreatPos = value; }
+
+    private void Awake()
+    {
+        curProjectilNum = 0;
+        curMagzineData = null;
+        timer = 0;
+        turretFireStg.InterfaceObj = GetComponent<ITurretFireStg>();
+    }
 
     private void Update()
     {
@@ -71,6 +85,19 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
             return;
         }
 
+        // 如果有目标判断目标有没有超过射击范围
+        if (target != null && (target.transform.position - turret.transform.position).magnitude > turretSO.radius)
+        {
+            target = null; // 超过射击范围就不再索敌
+        }
+
+        // 如果炮塔当前没有目标 尝试获取目标
+        if (target == null)
+        {
+            RaycastHit2D enemy = Physics2D.CircleCast(Turret.transform.position, turretSO.radius, Vector2.zero, 0.0f, LayerMask.GetMask("Enemy"));
+            target = enemy.transform;
+        }
+
         if (timer < turretSO.fireGap)
         {
             timer += deltaTime;
@@ -81,19 +108,6 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
             return;
         }
 
-        // 如果有目标判断目标有没有超过射击范围
-        if (target != null && (target.transform.position - turret.transform.position).magnitude > turretSO.radius)
-        {
-            target = null; // 超过射击范围就不再索敌
-            timer = 0;
-        }
-
-        // 如果炮塔当前没有目标 尝试获取目标
-        if (target == null)
-        {
-            RaycastHit2D enemy = Physics2D.CircleCast(Turret.transform.position, turretSO.radius, Vector2.zero, 0.0f, LayerMask.GetMask("Enemy"));
-            target = enemy.transform;
-        }
 
         // 如果有目标尝试对目标的transfrom攻击
         if (target != null)
@@ -105,18 +119,26 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
             {
                 //Debug.Log("已近瞄准");
                 // 如果已经瞄准了就尝试获取弹药
-                TurretSO.MagazineInfo projectileInfo = GetProjectile();
+                ProjectileSO projectileInfo = GetProjectile();
                 if (projectileInfo != null)
                 {
                     // 能获取到弹药
                     // Debug.Log("成功射击");
 
                     // 创建子弹 如果projectileCreatPos 是null 就用turret的位置
-                    Projectile.ProjectileCreateFactory(
-                        projectileInfo.projectileSO, 
-                        target, 
-                        projectileCreatPos != null ? projectileCreatPos.position : turret.transform.position, 
-                        this);
+                    //Projectile.ProjectileCreateFactory(
+                    //    projectileInfo, 
+                    //    target, 
+                    //    projectileCreatPos != null ? projectileCreatPos.position : turret.transform.position, 
+                    //    this);
+                    //timer = 0;
+
+                    // 改用策略模式
+                    if (turretFireStg.InterfaceObj != null)
+                    {
+                        turretFireStg.InterfaceObj.FireStg(this, projectileInfo);
+                    }
+
                     timer = 0;
                 }
             }
@@ -151,13 +173,13 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
     /// 获取弹药子弹
     /// </summary>
     /// <returns></returns>
-    private TurretSO.MagazineInfo GetProjectile()
+    private ProjectileSO GetProjectile()
     {
         // 如果激发区有弹药 直接使用激发区弹药
         if (curProjectilNum > 0)
         {
             curProjectilNum -= 1;
-            return curMagzineData;
+            return curMagzineData?.projectileSO;
         }
 
         // 如果激发区没有弹药则要去仓库中拿 从高到低拿取弹药
@@ -169,7 +191,7 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
                 curMagzineData = ammo;
                 curProjectilNum = ammo.projectileInOneMagazineNum;
                 curProjectilNum -= 1;
-                return curMagzineData;
+                return curMagzineData.projectileSO;
             }
         }
 

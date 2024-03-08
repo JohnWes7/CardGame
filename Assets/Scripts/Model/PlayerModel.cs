@@ -14,28 +14,34 @@ public class PlayerModel : Singleton<PlayerModel>
     {
         public ShipMemento shipMemento;
         public Dictionary<string, int> inventoryDict;
+        public int currency;
 
         public PlayerModelBean()
         {
         }
 
-        public PlayerModelBean(ShipMemento shipMemento, Dictionary<string, int> inventoryDict)
+        public PlayerModelBean(ShipMemento shipMemento, Dictionary<string, int> inventoryDict, int currency)
         {
             this.shipMemento = shipMemento;
             this.inventoryDict = inventoryDict;
+            this.currency = currency;
         }
     }
 
     private string saveName = "default";
+
+    // 保存的船
     private ShipMemento shipMemento;
+    // 玩家仓库
     private PlayerInventory inventory;
+    // 玩家货币
+    private int currency;
 
     public PlayerInventory GetInventory()
     {
         if (inventory == null)
         {
             inventory = new PlayerInventory();
-            //inventory.AddItem(ItemInfoModel.Instance.GetItem("Iron"), 50);
         }
         return inventory;
     }
@@ -68,12 +74,15 @@ public class PlayerModel : Singleton<PlayerModel>
             string json = File.ReadAllText(path);
             PlayerModelBean bean = JsonConvert.DeserializeObject<PlayerModelBean>(json);
 
-            // 从bean中提取数据
+            // 从bean中提取飞船数据
             shipMemento = bean.shipMemento;
             
-            // 覆盖仓库
+            // 提取仓库数据 因为数据里面是item的name需要交给inventory转录 覆盖仓库
             GetInventory().LoadFromItemNameNumPairs(bean.inventoryDict);
             Johnwest.JWUniversalTool.LogWithClassMethodName(inventory, System.Reflection.MethodBase.GetCurrentMethod());
+
+            // 提取货币
+            currency = bean.currency;
         }
         catch (System.Exception e)
         {
@@ -95,7 +104,7 @@ public class PlayerModel : Singleton<PlayerModel>
         }
 
         // 要保存的数据存入存放的类
-        PlayerModelBean bean = new PlayerModelBean(shipMemento, inventory.ToItemNameNumPairs());
+        PlayerModelBean bean = new PlayerModelBean(shipMemento, inventory.ToItemNameNumPairs(), currency);
 
         string json = JsonConvert.SerializeObject(bean);
         string path = Path.Combine(Application.persistentDataPath, "Saves", saveName + ".json");
@@ -128,5 +137,28 @@ public class PlayerModel : Singleton<PlayerModel>
         Johnwest.JWUniversalTool.LogWithClassMethodName("保存成功 json:\n" + json, System.Reflection.MethodBase.GetCurrentMethod());
     }
 
+    public int GetCurrency()
+    {
+        return currency;
+    }
 
+    public void AddCurrency(int num)
+    {
+        currency += num;
+    }
+
+    public bool TryCostCurrency(int num)
+    {
+        if (currency >= num)
+        {
+            currency -= num;
+            return true;
+        }
+        return false;
+    }
+
+    public void CostCurrency(int num)
+    {
+        currency -= num;
+    }
 }

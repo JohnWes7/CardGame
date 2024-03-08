@@ -225,10 +225,14 @@ public class ShipBuildController : MonoBehaviour
         if (ShipBuildingState.TryDeleteUnitOnMousePos(this, out UnitObject unitObject))
         {
             // 执行成功拆除之后退还资源
-            foreach (var item in unitObject.UnitSO.itemCostList)
-            {
-                PlayerModel.Instance.GetInventory()?.AddItem(item.itemSO, item.cost);
-            }
+            //foreach (var item in unitObject.UnitSO.itemCostList)
+            //{
+            //    PlayerModel.Instance.GetInventory()?.AddItem(item.itemSO, item.cost);
+            //}
+
+            //执行成功退还去钱
+            PlayerModel.Instance.AddCurrency(unitObject.UnitSO.cost);
+
             return true;
         }
 
@@ -286,14 +290,22 @@ public class ShipBuildController : MonoBehaviour
                 return;
             }
 
-            if (!PlayerModel.Instance.GetInventory().HaveEnoughItems(GetCurBuildUnit().itemCostList, out List<UnitSO.ItemCost> missingItem))
+            // 判断仓库资源是否足够
+            //if (!PlayerModel.Instance.GetInventory().HaveEnoughItems(GetCurBuildUnit().itemCostList, out List<UnitSO.ItemCost> missingItem))
+            //{
+            //    List<string> debugString = new List<string>();
+            //    foreach (var item in missingItem)
+            //    {
+            //        debugString.Add(item.ToString());
+            //    }
+            //    LogUtilsXY.LogOnMousePos($"缺少物品无法建造:\n{string.Join("\n", debugString)}");
+            //    return;
+            //}
+
+            // 判断货币资源是否足够
+            if (PlayerModel.Instance.GetCurrency() < curUnit.cost)
             {
-                List<string> debugString = new List<string>();
-                foreach (var item in missingItem)
-                {
-                    debugString.Add(item.ToString());
-                }
-                LogUtilsXY.LogOnMousePos($"缺少物品无法建造:\n{string.Join("\n", debugString)}");
+                Debug.Log($"缺少材料 无法建造 {curUnit.cost}/{PlayerModel.Instance.GetCurrency()}");
                 return;
             }
 
@@ -302,11 +314,14 @@ public class ShipBuildController : MonoBehaviour
 
             if (unitObject != null)
             {
-                //建造成功 扣除资源
-                foreach (var item in GetCurBuildUnit().itemCostList)
-                {
-                    PlayerModel.Instance.GetInventory()?.CostItem(item.itemSO, item.cost);
-                }
+                //建造成功 扣除仓库资源
+                //foreach (var item in GetCurBuildUnit().itemCostList)
+                //{
+                //    PlayerModel.Instance.GetInventory()?.CostItem(item.itemSO, item.cost);
+                //}
+
+                //建造成功 扣除货币
+                PlayerModel.Instance.CostCurrency(GetCurBuildUnit().cost);
             }
         }
     }

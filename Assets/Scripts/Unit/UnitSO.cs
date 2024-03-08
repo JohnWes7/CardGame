@@ -44,7 +44,8 @@ public class UnitSO : ScriptableObject
     public int maxHP = 100;
 
     [HorizontalLine("成本")]
-    public List<ItemCost> itemCostList;
+    //public List<ItemCost> itemCostList;
+    public int cost;
 
     /// <summary>
     /// 获取根据转向

@@ -80,6 +80,15 @@ public class RecyclePlatform : UnitObject, IShipUnit
 
     public void ReceiveDropItem(DropItem dropItem)
     {
+        // 如果改成货币 就需要判断是不是货币
+        if (dropItem.ItemSO.type == ItemSO.Type.Currency)
+        {
+            Debug.Log($"receive drop currency: {dropItem.ItemSO} {dropItem.Num}");
+            PlayerModel.Instance.AddCurrency(dropItem.Num);
+            Destroy(dropItem.gameObject);
+            return;
+        }
+
         Debug.Log($"receive drop item: {dropItem.ItemSO} {dropItem.Num}");
         PlayerModel.Instance.GetInventory()?.AddItem(dropItem.ItemSO, dropItem.Num);
         Destroy(dropItem.gameObject);

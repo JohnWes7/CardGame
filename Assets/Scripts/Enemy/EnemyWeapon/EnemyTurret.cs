@@ -124,7 +124,8 @@ public abstract class EnemyTurret : MonoBehaviour
             // 进行发射准备
             if (AimTarget(deltaTime))
             {
-                Projectile.ProjectileCreateFactory(enemyTurretSO.projectileSO, target, firePos.position, this);
+                Projectile.ProjectileCreateFactory(
+                    new Projectile.ProjectileCreationParams(enemyTurretSO.projectileSO, target, firePos.position, this ));
                 fireGapTimer = 0;
             }
         }
