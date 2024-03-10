@@ -247,7 +247,7 @@ GameObject:
   - component: {fileID: 3584089723893307666}
   - component: {fileID: 2123585911126705596}
   m_Layer: 7
-  m_Name: GTL-V1-Normal
+  m_Name: GTL_V1_Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

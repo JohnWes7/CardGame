@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7215141919114516656}
   - component: {fileID: 7801228903917324322}
   m_Layer: 0
-  m_Name: GTL-V1-Projectile
+  m_Name: GTL_V1_Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1321d76951fb9a54ea33594c5cd8d7b9, type: 3}
-  m_Name: GTL-V1-Projectile
+  m_Name: GTL_V2_Projectile
   m_EditorClassIdentifier: 
-  damage: 5
-  speed: 50
+  damage: 15
+  speed: 60
   explosionRadius: 0
-  prefab: {fileID: 292520320485557527, guid: 5354c3aa749937f4383afb852681057e, type: 3}
+  shieldCoefficient: 1
+  armourCoefficient: 1
+  bodyCoefficient: 1
+  prefab: {fileID: 4335248104715333383, guid: 4e3b0a4f2525b6d41b7f090af162a700, type: 3}
   targetLayer:
     serializedVersion: 2
     m_Bits: 64

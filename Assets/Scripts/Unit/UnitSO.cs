@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
 
-[CreateAssetMenu(menuName ="ScriptableObject/Unit")]
+[CreateAssetMenu(menuName = "ScriptableObject/Unit")]
 public class UnitSO : ScriptableObject
 {
     [System.Serializable]
@@ -46,6 +46,12 @@ public class UnitSO : ScriptableObject
     [HorizontalLine("成本")]
     //public List<ItemCost> itemCostList;
     public int cost;
+
+    [HorizontalLine("文本")]
+    [Dictionary]
+    public SerializableDictionary<string, string> nameInfo = new();
+    [Dictionary]
+    public SerializableDictionary<string, string> descriptionInfo = new();
 
     /// <summary>
     /// 获取根据转向
