@@ -3,9 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public class ProjectileTriggerParameters
+{
+    public Projectile projectile;
+    public Collider2D other;
+    public Action triggerFX;
+}
+
 public interface IProjectileTriggerStrategy
 {
-    public void OnTriggerEnter(Projectile projectile, Collider2D other, Action triggerFX = null);
+    public void TriggerInvoke(ProjectileTriggerParameters projectileTriggerParameters);
 
 }
 
@@ -31,7 +39,7 @@ public class NormalBehavior : IProjectileBehaviorStg
 
     public void Initialize()
     {
-        Debug.Log($"create projectile: {context.ProjectileSO} target: {context.Target}");
+        //Debug.Log($"create projectile: {context.ProjectileSO} target: {context.Target}");
         // 初始化值
         durationTimer = 0;
         velocity = context.Direction;
@@ -65,22 +73,22 @@ public class NormalBehavior : IProjectileBehaviorStg
 /// </summary>
 public class CollisionTriggeredCommonFuzesStg : IProjectileTriggerStrategy
 {
-    public void OnTriggerEnter(Projectile projectile, Collider2D other, Action triggerFX = null)
+    public void TriggerInvoke(ProjectileTriggerParameters projectileTriggerParameters)
     {
         // 如果碰撞对象的 Layer 包含在目标 Layer 中
-        if (((1 << other.gameObject.layer) & projectile.ProjectileSO.targetLayer.value) != 0)
+        if (((1 << projectileTriggerParameters.other.gameObject.layer) & projectileTriggerParameters.projectile.ProjectileSO.targetLayer.value) != 0)
         {
             // LogUtilsXY.LogOnPos($"Hit tag:{other.tag}", projectile.transform.position);
             // 执行攻击
-            var bedamgage = other.GetComponent<IBeDamage>();
+            var bedamgage = projectileTriggerParameters.other.GetComponent<IBeDamage>();
             if (bedamgage != null)
             {
                 // 创造damageInfo
-                DamageInfo damageInfo = new DamageInfo(projectile.ProjectileSO.damage, projectile.Creater);
+                DamageInfo damageInfo = new DamageInfo(projectileTriggerParameters.projectile.ProjectileSO.damage, projectileTriggerParameters.projectile.Creater);
 
                 bedamgage.BeDamage(damageInfo);
-                triggerFX?.Invoke();
-                projectile.Destroy();
+                projectileTriggerParameters.triggerFX?.Invoke();
+                projectileTriggerParameters.projectile.Destroy();
             }
         }
     }
@@ -91,30 +99,31 @@ public class CollisionTriggeredCommonFuzesStg : IProjectileTriggerStrategy
 /// </summary>
 public class CollisionTriggeredExplosionFuzesStg : IProjectileTriggerStrategy
 {
-    public void OnTriggerEnter(Projectile projectile, Collider2D other, Action triggerFX = null)
+    public void TriggerInvoke(ProjectileTriggerParameters projectileTriggerParameters)
     {
         // 如果碰撞对象的 Layer 包含在目标 Layer 中
-        if (((1 << other.gameObject.layer) & projectile.ProjectileSO.targetLayer.value) != 0)
+        if (((1 << projectileTriggerParameters.other.gameObject.layer) & projectileTriggerParameters.projectile.ProjectileSO.targetLayer.value) != 0)
         {
             // 触发爆炸
             // 检索爆炸范围所有的敌人
-            RaycastHit2D[] result = Physics2D.CircleCastAll(projectile.transform.position, projectile.ProjectileSO.explosionRadius, Vector2.zero, 0f, projectile.ProjectileSO.targetLayer);
+            RaycastHit2D[] result = Physics2D.CircleCastAll(projectileTriggerParameters.projectile.transform.position, projectileTriggerParameters.projectile.ProjectileSO.explosionRadius, Vector2.zero, 0f, projectileTriggerParameters.projectile.ProjectileSO.targetLayer);
             foreach (RaycastHit2D item in result)
             {
                 var beDamage = item.collider.gameObject.GetComponent<IBeDamage>();
                 if (beDamage != null)
                 {
-                    DamageInfo damageInfo = new DamageInfo(projectile.ProjectileSO.damage, projectile.Creater);
+                    DamageInfo damageInfo = new DamageInfo(projectileTriggerParameters.projectile.ProjectileSO.damage, projectileTriggerParameters.projectile.Creater);
 
                     beDamage.BeDamage(damageInfo);
                 }
             }
 
             // 触发特效
-            triggerFX?.Invoke();
+            Debug.Log("fx invoke");
+            projectileTriggerParameters.triggerFX?.Invoke();
 
             // 销毁子弹
-            projectile.Destroy();
+            projectileTriggerParameters.projectile.Destroy();
         }
     }
 }

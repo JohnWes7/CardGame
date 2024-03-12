@@ -9,7 +9,6 @@ public class TurretFireRoundBurstStg : TurretFireStrategyBase, ITurretFireStg
 
     public override void FireStg(TurretWeaponV2 turretWeaponV2, ProjectileSO projectileSO)
     {
-        Debug.Log("TurretFireRoundBurstStg");
         StartCoroutine(FireStgCoroutine(turretWeaponV2, projectileSO, burstDelay));
     }
 

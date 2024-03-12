@@ -9,8 +9,6 @@ public class CannoProjectile : Projectile
     private IProjectileBehaviorStg behaviorStg;
     [SerializeField, AssetsOnly, ForceFill]
     private GameObject fxPrefab;
-    [SerializeField]
-    private GameObject fxInstance;
 
     public override void Initialize()
     {
@@ -29,7 +27,7 @@ public class CannoProjectile : Projectile
 
 
     /// <summary>
-    /// 现在这里用SO里面的tag来判断是否击中 如果之后需要更多的方法因为SO 不好绑定策略模式
+    /// 现在这里用SO里面的layer来判断是否击中 如果之后需要更多的方法因为SO 不好绑定策略模式
     /// 可行的方法: 
     /// 1 再弄个策略模式 在start里面用来复用 先尝试策略模式
     /// 2 用继承然后重写
@@ -39,37 +37,30 @@ public class CannoProjectile : Projectile
     /// <param name="other"></param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        triggerStrategy.OnTriggerEnter(this, collision, () => {
-            if (fxPrefab)
-            {
-                //Debug.Log("生成fx");
-                // 从对象池中拿取实体
-                if (fxInstance != null)
-                {
-                    Destroy(fxInstance);
-                    fxInstance = null;
-                }
-
-                fxInstance = Johnwest.ObjectPoolManager.Instance.GetPool(fxPrefab).Get();
-                fxInstance.transform.position = transform.position;
-
-                var setRange = fxInstance.GetComponent<Johnwest.ISetFXRange>();
-                if (setRange != null)
-                {
-                    setRange.SetFXRange(projectileSO.explosionRadius * 2);
-                }
-                Invoke("FxReturnPool", 5f);
-            }
-        });
-    }
-
-    private void FxReturnPool()
-    {
-        if (fxInstance)
+        ProjectileTriggerParameters projectileTriggerParameters = new ProjectileTriggerParameters
         {
-            Johnwest.ObjectPoolManager.Instance.GetPool(fxPrefab).ReturnToPool(fxInstance);
-            fxInstance = null;
-        }
+            projectile = this,
+            other = collision,
+            triggerFX = () =>
+            {
+                if (fxPrefab)
+                {
+                    //Debug.Log("生成fx");
+                    // 从对象池中拿取实体
+                    var fxInstance = Johnwest.ObjectPoolManager.Instance.GetPool(fxPrefab).Get();
+                    fxInstance.transform.position = transform.position;
+
+                    fxInstance.transform.localScale = new Vector3(ProjectileSO.explosionRadius * 2, ProjectileSO.explosionRadius * 2, ProjectileSO.explosionRadius * 2);
+
+                    // 添加自动回收组件
+                    var autoReturnPool = fxInstance.AddComponent<AutoReturnPool>();
+                    autoReturnPool.Initialize(fxPrefab, 5f);
+                }
+            }
+        };
+
+        triggerStrategy.TriggerInvoke(projectileTriggerParameters);
     }
+
 }
 

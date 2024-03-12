@@ -55,7 +55,7 @@ public class ShieldUnit : UnitObject, ITextInfoDisplay
 
     public void ShieldBeDamage(DamageInfo damageInfo)
     {
-        Debug.Log(damageInfo);
+        //Debug.Log(damageInfo);
         curShieldCapacity -= damageInfo.GetDamageAmount();
         curShieldCapacity = Mathf.Clamp(curShieldCapacity, 0, shieldSO.shieldCapacity);
 

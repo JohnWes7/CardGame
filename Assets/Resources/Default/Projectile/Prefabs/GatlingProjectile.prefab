@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 176991224546989141}
   - component: {fileID: 6631424939646251680}
   - component: {fileID: 6081355772877251122}
+  - component: {fileID: 8579208165773029989}
   m_Layer: 0
   m_Name: GatlingProjectile
   m_TagString: Untagged
@@ -75,7 +76,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileSO: {fileID: 0}
   target: {fileID: 0}
-  velocity: {x: 0, y: 0}
+  direction: {x: 0, y: 0}
 --- !u!50 &6081355772877251122
 Rigidbody2D:
   serializedVersion: 4
@@ -97,6 +98,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &8579208165773029989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4335248104715333383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6ec89bba3c031241b6903a8942d1df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fxPrefab: {fileID: 0}
 --- !u!1 &5900975230942853334
 GameObject:
   m_ObjectHideFlags: 0

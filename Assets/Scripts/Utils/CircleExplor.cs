@@ -40,8 +40,13 @@ namespace Johnwest
             startInSize = insideCircle.transform.localScale;
             //startInColor = insideCircle.color;
             //startOutColor = outsideCircle.color;
+        }
+
+        private void OnEnable()
+        {
             Play();
         }
+
 
         public void Play()
         {

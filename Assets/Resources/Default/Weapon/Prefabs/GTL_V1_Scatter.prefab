@@ -95,9 +95,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7187163271372607007}
   - component: {fileID: 8776382905816495249}
-  - component: {fileID: 1795529783348367023}
   - component: {fileID: 8985406015479534904}
   - component: {fileID: 82323187176935352}
+  - component: {fileID: 4757156876451160018}
+  - component: {fileID: 3500878531227783615}
+  - component: {fileID: 7037125026607860516}
   m_Layer: 7
   m_Name: GTL_V1_Scatter
   m_TagString: Untagged
@@ -135,7 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0}
   dir: 0
-  unitSO: {fileID: 11400000, guid: 06babb0f933d08b41aaaea52c6433fd9, type: 2}
+  unitSO: {fileID: 11400000, guid: 2d2bf96e5803a24459f96b9d93ade49a, type: 2}
   curHP: 0
   isOnline: 1
   ship:
@@ -152,20 +154,6 @@ MonoBehaviour:
     magazineItem: {fileID: 0}
     projectileInOneMagazineNum: 0
     projectileSO: {fileID: 0}
---- !u!114 &1795529783348367023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1108193740136546746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a209eb1b515383419bf717ce265744f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scatterAngle: 30
-  scatterCount: 2
 --- !u!61 &8985406015479534904
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -206,6 +194,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offlineStateColorA: []
   aChangeFactor: 0.3
+--- !u!114 &4757156876451160018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108193740136546746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd203724d9f2d624c987949455eadd16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3500878531227783615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108193740136546746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44053da560f70c74089cf24bafad2b36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetCount: 2
+  provity: 1
+--- !u!114 &7037125026607860516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108193740136546746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fb934059c8c9bf49a86e6428dfa99c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scatterAngle: 60
+  provity: 5
 --- !u!1 &1195270058809850268
 GameObject:
   m_ObjectHideFlags: 0
