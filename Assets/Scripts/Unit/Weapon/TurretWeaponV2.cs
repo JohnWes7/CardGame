@@ -23,8 +23,8 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
      */
 
     // 炮塔属性
-    [SerializeField, Foldout] private TurretSO turretSO;
-    [SerializeField, ForceFill] private GameObject turret;
+    [SerializeField, Foldout, ForceFill] private TurretSO turretSO;
+    [SerializeField] private GameObject turret;
     [SerializeField, ForceFill] private Transform projectileCreatPos;
     [SerializeField, ReadOnly] private Transform target;
     [SerializeField, ReadOnly] private float timer;
@@ -76,7 +76,7 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         ship.InterfaceObj = sc;
     }
 
-    public void FireStretagePreFrame(float deltaTime)
+    public virtual void FireStretagePreFrame(float deltaTime)
     {
         // 如果没有turretSO 就不进行射击
         if (turretSO == null)
@@ -86,7 +86,7 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         }
 
         // 如果有目标判断目标有没有超过射击范围
-        if (target != null && (target.transform.position - turret.transform.position).magnitude > turretSO.radius)
+        if (target != null && (target.transform.position - (turret != null ? turret.transform.position : transform.position)).magnitude > turretSO.radius)
         {
             target = null; // 超过射击范围就不再索敌
         }
@@ -94,7 +94,9 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         // 如果炮塔当前没有目标 尝试获取目标
         if (target == null)
         {
-            RaycastHit2D enemy = Physics2D.CircleCast(Turret.transform.position, turretSO.radius, Vector2.zero, 0.0f, LayerMask.GetMask("Enemy"));
+            RaycastHit2D enemy = Physics2D.CircleCast(
+                turret != null ? turret.transform.position : transform.position,
+                turretSO.radius, Vector2.zero, 0.0f, LayerMask.GetMask("Enemy"));
             target = enemy.transform;
         }
 
@@ -103,7 +105,7 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
             timer += deltaTime;
             if (target != null)
             {
-                RotateTurret(target.position - turret.transform.position, deltaTime);
+                RotateTurret(target.position - (turret != null ? turret.transform.position : transform.position), deltaTime);
             }
             return;
         }
@@ -113,7 +115,7 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         if (target != null)
         {
             // 瞄准
-            RotateTurret(target.position - turret.transform.position, deltaTime);
+            RotateTurret(target.position - (turret != null ? turret.transform.position : transform.position), deltaTime);
             // 检查是否瞄准了
             if (CheckTakeAim())
             {
@@ -145,18 +147,18 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
         }
     }
 
-    private void RotateTurret(Vector3 dest, float deltaTime)
+    protected virtual void RotateTurret(Vector3 dest, float deltaTime)
     {
         float angle = Mathf.Atan2(dest.y, dest.x) * Mathf.Rad2Deg - 90f;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         turret.transform.rotation = Quaternion.Slerp(turret.transform.rotation, rotation, TurretSO.rotateSpeed * deltaTime);
     }
 
-    private bool CheckTakeAim()
+    protected virtual bool CheckTakeAim()
     {
         if (target != null)
         {
-            Vector3 dest = target.position - turret.transform.position;
+            Vector3 dest = target.position - (turret != null ? turret.transform.position : transform.position);
             Vector3 curAim = turret.transform.up;
             dest.z = 0;
             curAim.z = 0;
@@ -173,7 +175,7 @@ public class TurretWeaponV2 : UnitObject, IShipUnit
     /// 获取弹药子弹
     /// </summary>
     /// <returns></returns>
-    private ProjectileSO GetProjectile()
+    protected ProjectileSO GetProjectile()
     {
         // 如果激发区有弹药 直接使用激发区弹药
         if (curProjectilNum > 0)

@@ -20,6 +20,11 @@ public class OnFireRandomDirModify : MonoBehaviour
         onFire.priorityEventManager.RemoveListener(OnFireRandomDirModify_OnFire);
     }
 
+    /// <summary>
+    /// 遍历所有子弹参数 并在原有的方向上随机修改方向
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void OnFireRandomDirModify_OnFire(object sender, FireEventArgs e)
     {
         foreach (Projectile.ProjectileCreationParams para in e.ProjectileCreationParams)

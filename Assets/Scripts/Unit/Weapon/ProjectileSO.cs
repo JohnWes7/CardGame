@@ -10,6 +10,7 @@ public class ProjectileSO : ScriptableObject
     public int damage;
     public float speed;
     public float explosionRadius;
+    public int penetration = 1;
 
     [ForceFill, Preview]
     public GameObject prefab;

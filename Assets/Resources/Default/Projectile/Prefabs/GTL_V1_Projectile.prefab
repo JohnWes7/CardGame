@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3857710440613205552}
   - component: {fileID: 4202443481205063237}
-  - component: {fileID: 7215141919114516656}
   - component: {fileID: 7801228903917324322}
+  - component: {fileID: 7215141919114516656}
   - component: {fileID: 4897442420690041809}
+  - component: {fileID: 5960344489471921047}
   m_Layer: 0
   m_Name: GTL_V1_Projectile
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 292520320485557527}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.53, y: 1.06, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -62,21 +63,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.32}
   m_EdgeRadius: 0
---- !u!114 &7215141919114516656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 292520320485557527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc23fcebe37b58141a15a04817e16198, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectileSO: {fileID: 0}
-  target: {fileID: 0}
-  direction: {x: 0, y: 0}
 --- !u!50 &7801228903917324322
 Rigidbody2D:
   serializedVersion: 4
@@ -98,6 +84,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7215141919114516656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292520320485557527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc23fcebe37b58141a15a04817e16198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileSO: {fileID: 0}
+  target: {fileID: 0}
+  direction: {x: 0, y: 0}
 --- !u!114 &4897442420690041809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,6 +112,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fxPrefab: {fileID: 0}
+  showFX: 1
+  scaleFXByExplosionRadius: 1
+  scaleMulty: {x: 1, y: 1, z: 1}
+  penetration: 1
+  samePenetrationTarget: 0
+  triggerTarget: []
+--- !u!114 &5960344489471921047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292520320485557527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c871d14c767d24d98598b27f852904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  context: {fileID: 0}
+  velocity: {x: 0, y: 0}
+  durationTimer: 0
 --- !u!1 &7620830769176646342
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +157,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7620830769176646342}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0

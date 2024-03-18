@@ -8,7 +8,7 @@ public class ProjectileTriggerParameters
 {
     public Projectile projectile;
     public Collider2D other;
-    public Action triggerFX;
+    public Action afterTrigger;
 }
 
 public interface IProjectileTriggerStrategy
@@ -19,8 +19,12 @@ public interface IProjectileTriggerStrategy
 
 public interface IProjectileBehaviorStg
 {
-    void Initialize();
     void UpdatePreDeltaTime(float deltaTime);
+}
+
+public interface IPoolComponent
+{
+    void Initialize(object args);
 }
 
 /// <summary>
@@ -32,14 +36,11 @@ public class NormalBehavior : IProjectileBehaviorStg
     private Vector2 velocity;
     private float durationTimer;
 
-    public NormalBehavior(Projectile projectile)
-    {
-        this.context = projectile;
-    }
 
-    public void Initialize()
+    public void Initialize(Projectile projectile)
     {
-        //Debug.Log($"create projectile: {context.ProjectileSO} target: {context.Target}");
+        context = projectile;
+
         // 初始化值
         durationTimer = 0;
         velocity = context.Direction;
@@ -87,7 +88,7 @@ public class CollisionTriggeredCommonFuzesStg : IProjectileTriggerStrategy
                 DamageInfo damageInfo = new DamageInfo(projectileTriggerParameters.projectile.ProjectileSO.damage, projectileTriggerParameters.projectile.Creater);
 
                 bedamgage.BeDamage(damageInfo);
-                projectileTriggerParameters.triggerFX?.Invoke();
+                projectileTriggerParameters.afterTrigger?.Invoke();
                 projectileTriggerParameters.projectile.Destroy();
             }
         }
@@ -119,8 +120,7 @@ public class CollisionTriggeredExplosionFuzesStg : IProjectileTriggerStrategy
             }
 
             // 触发特效
-            Debug.Log("fx invoke");
-            projectileTriggerParameters.triggerFX?.Invoke();
+            projectileTriggerParameters.afterTrigger?.Invoke();
 
             // 销毁子弹
             projectileTriggerParameters.projectile.Destroy();

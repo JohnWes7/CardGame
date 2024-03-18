@@ -80,15 +80,22 @@ public class Projectile : MonoBehaviour
             go = Instantiate<GameObject>(projectileCreationParams.projectileSO.prefab);
         }
          
-
+        // 获取子弹组件
         Projectile projectile = go.GetComponent<Projectile>();
+        // 如果没有子弹组件则添加
         projectile = projectile != null ? projectile : go.AddComponent<Projectile>();
+
+        // 设置子弹的属性
         projectile.target = projectileCreationParams.target;
         projectile.projectileSO = projectileCreationParams.projectileSO;
         projectile.direction = projectileCreationParams.direction.normalized;
 
+
         // 设置子弹的位置和方向
-        projectile.transform.SetPositionAndRotation(projectileCreationParams.originPos, Quaternion.LookRotation(projectileCreationParams.direction, Vector3.forward));
+        // 计算角度
+        float angle = Mathf.Atan2(projectileCreationParams.direction.y, projectileCreationParams.direction.x) * Mathf.Rad2Deg; 
+        Quaternion rotation = Quaternion.Euler(0f, 0f, angle - 90); // 根据角度创建旋转，-90是因为你想要子弹的y轴对准方向
+        projectile.transform.SetPositionAndRotation(projectileCreationParams.originPos,rotation);
 
         // 调用子弹初始化函数
         projectile.Initialize();

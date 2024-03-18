@@ -181,7 +181,8 @@ GameObject:
   - component: {fileID: 3289172205542577590}
   - component: {fileID: 2944252837785531423}
   - component: {fileID: 6146003857156681375}
-  - component: {fileID: 1924340400533245081}
+  - component: {fileID: 8801018268091558860}
+  - component: {fileID: -1537765141690631036}
   m_Layer: 7
   m_Name: GTL_V1_Burst
   m_TagString: Untagged
@@ -276,7 +277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offlineStateColorA: []
   aChangeFactor: 0.3
---- !u!114 &1924340400533245081
+--- !u!114 &8801018268091558860
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -285,10 +286,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 6561635962484564125}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6a1ef09258756040a71645c7e153f4e, type: 3}
+  m_Script: {fileID: 11500000, guid: fd203724d9f2d624c987949455eadd16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  burstCount: 3
+--- !u!114 &-1537765141690631036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6561635962484564125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2abdc348c6ec5246874f8d4b456dd04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  provity: 6
+  burstCount: 2
   burstDelay: 0.1
 --- !u!1 &7471785634583105784
 GameObject:

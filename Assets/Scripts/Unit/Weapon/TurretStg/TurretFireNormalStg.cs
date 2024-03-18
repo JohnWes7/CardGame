@@ -26,18 +26,39 @@ public class TurretFireNormalStg : TurretFireStrategyBase
             CreatePosition = turretWeapon.ProjectileCreatPos.position,
             Target = turretWeapon.Target,
             ProjectileSO = projectileSO, 
-            ProjectileCreationParams = new List<Projectile.ProjectileCreationParams> { projectileCreationParams } };
+            ProjectileCreationParams = new List<Projectile.ProjectileCreationParams> { projectileCreationParams }, 
+        };
 
         RaiseOnFire(para);
+        
+        if (para.ProjectileCreationParams.Count == 0)
+        {
+            Debug.LogError("ProjectileCreationParams is empty");
+            return;
+        }
 
         //从触发事件后的para中获取参数 并生成子弹
-        foreach (Projectile.ProjectileCreationParams item in para.ProjectileCreationParams)
-        {
-            Projectile.ProjectileCreateFactory(item);
-        }
+        //foreach (Projectile.ProjectileCreationParams item in para.ProjectileCreationParams)
+        //{
+        //    Projectile.ProjectileCreateFactory(item);
+        //}
+        StartCoroutine(Fire(para));
     }
 
+    public IEnumerator Fire(FireEventArgs args)
+    {
+        // 一共执行args.burstCount次
+        for (int i = 0; i < args.burstCount; i++)
+        {
+            //从触发事件后的para中获取参数 并生成子弹
+            foreach (Projectile.ProjectileCreationParams item in args.ProjectileCreationParams)
+            {
+                Projectile.ProjectileCreateFactory(item);
+            }
 
+            yield return new WaitForSeconds(args.burstDelay);
+        }
+    }
 }
 
 
@@ -58,11 +79,14 @@ public interface IOnFire
 // 中介者模式 用来扩展装备更改修改 ProjectileCreationParams 的参数
 public class FireEventArgs : EventArgs
 {
-    public float delay = 0f;
     public Vector3 CreatePosition = Vector3.zero;
     public Transform Target;
     public ProjectileSO ProjectileSO;
     public List<Projectile.ProjectileCreationParams> ProjectileCreationParams = new List<Projectile.ProjectileCreationParams>();
+
+    // 连射逻辑属性
+    public int burstCount = 1;
+    public float burstDelay = 0.1f;
 }
 
 

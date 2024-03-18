@@ -12,15 +12,19 @@ public class KineticProjectile : Projectile
     {
         base.Initialize();
 
-        behaviorStg ??= new NormalBehavior(this);
+        // 获取组件
+        behaviorStg = GetComponent<IProjectileBehaviorStg>();
         triggerStrategy = GetComponent<IProjectileTriggerStrategy>();
 
-        behaviorStg.Initialize();
+        foreach (var item in GetComponents<IPoolComponent>())
+        {
+            item.Initialize(this);
+        }
     }
 
     private void Update()
     {
-        behaviorStg.UpdatePreDeltaTime(Time.deltaTime);
+        behaviorStg?.UpdatePreDeltaTime(Time.deltaTime);
     }
 
 

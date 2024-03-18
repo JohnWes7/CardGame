@@ -15,10 +15,8 @@ MonoBehaviour:
   damage: 15
   speed: 60
   explosionRadius: 0
-  shieldCoefficient: 1
-  armourCoefficient: 1
-  bodyCoefficient: 1
-  prefab: {fileID: 4335248104715333383, guid: 4e3b0a4f2525b6d41b7f090af162a700, type: 3}
+  penetration: 1
+  prefab: {fileID: 292520320485557527, guid: e882eceb39bea8a46aff9f9edf9e06a9, type: 3}
   targetLayer:
     serializedVersion: 2
     m_Bits: 64

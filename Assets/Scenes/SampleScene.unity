@@ -1955,11 +1955,6 @@ MonoBehaviour:
   spawnNumPerTime: 1
   spawnCenter: {fileID: 49091055}
   initTarget: {fileID: 49091055}
---- !u!50 &1906633038 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 4812679209807983747, guid: 99a4277dea6b685409970f6787117c3f, type: 3}
-  m_PrefabInstance: {fileID: 4812679209773049201}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1917384637
 GameObject:
   m_ObjectHideFlags: 0
@@ -2097,34 +2092,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4812679209807983746, guid: 99a4277dea6b685409970f6787117c3f, type: 3}
-      propertyPath: rigi2D
-      value: 
-      objectReference: {fileID: 1906633038}
-    - target: {fileID: 4812679209807983746, guid: 99a4277dea6b685409970f6787117c3f, type: 3}
-      propertyPath: turnTorque
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 4812679209807983746, guid: 99a4277dea6b685409970f6787117c3f, type: 3}
-      propertyPath: forwardForce
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 4812679209807983746, guid: 99a4277dea6b685409970f6787117c3f, type: 3}
-      propertyPath: maxMoveSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4812679209807983746, guid: 99a4277dea6b685409970f6787117c3f, type: 3}
-      propertyPath: maxRotateSpeed
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 4812679209807983747, guid: 99a4277dea6b685409970f6787117c3f, type: 3}
-      propertyPath: m_LinearDrag
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4812679209807983747, guid: 99a4277dea6b685409970f6787117c3f, type: 3}
-      propertyPath: m_AngularDrag
-      value: 0.9
-      objectReference: {fileID: 0}
     - target: {fileID: 4812679209807983772, guid: 99a4277dea6b685409970f6787117c3f, type: 3}
       propertyPath: m_Name
       value: ShipController
