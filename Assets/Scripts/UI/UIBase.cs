@@ -55,3 +55,4 @@ public abstract class UIBase : MonoBehaviour
     public abstract void Initialize(object args = null);
     public abstract void Destroy();
 }
+

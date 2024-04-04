@@ -7,7 +7,7 @@ using TMPro;
 public class LogUtilsXY : MonoBehaviour
 {
     private static GameObject textPrefab;
-    private const string PREFAB_PATH = "Default/UI/Prefabs/LogText";
+    private const string PREFAB_PATH = "Default/UI/Prefabs/Misc/LogText";
 
     public static void LogOnMousePos(string text, float charSize = 0.2f)
     {

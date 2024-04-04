@@ -10,29 +10,25 @@ using CustomInspector;
 /// </summary>
 public class ShipBuildController : MonoBehaviour
 {
-    public class UnitEventargs : EventArgs
+    public class CurUnitChangeArgs : EventArgs
     {
         public UnitSO curUnit;
 
-        public UnitEventargs(UnitSO curUnit)
+        public CurUnitChangeArgs(UnitSO curUnit)
         {
             this.curUnit = curUnit;
         }
     }
 
-    // 状态设计模式弃用
-    [SerializeField] private IShipBuildingState state;
-
     // 建造面板
     [HorizontalLine("建造时候打开的面板")]
     [SerializeField, AssetsOnly, ForceFill] private GameObject uiBuildPanelPrefab;
-    [SerializeField, ReadOnly] private BuildPanelController uiBuildPanelInstance;
+    [SerializeField, ReadOnly] private UIBase uiBuildPanelInstance;
 
     // 单元建造
-    //[SerializeField] private List<UnitSO> unitCanBuild;
-    //[SerializeField] private int buildIndex;
     [HorizontalLine("建造需要的字段")]
-    [SerializeField, ForceFill] private UnitListSO buildableUnit;
+    // 改为从数据中读取 就算是不是单元仓库也可以放在playermodel中 来储存玩家可以建造的所有单位
+    //[SerializeField, ForceFill] private UnitListSO buildableUnit;
     [SerializeField, ReadOnly] private UnitSO curUnit;
     [SerializeField, ReadOnly] private Dir buildDir;
     [SerializeField, ReadOnly] private MonoInterface<IShipController> sc;
@@ -41,22 +37,16 @@ public class ShipBuildController : MonoBehaviour
     [HorizontalLine("建造的时候的虚影")]
     [SerializeField, ReadOnly] private SpriteRenderer prefabShadow;
     [SerializeField] private Color shadowColor;
-    [HorizontalLine("虚影旁边显示造价")]
-    [SerializeField, AssetsOnly, ForceFill] private GameObject uiShadowCostShowerPrefab;
-    [SerializeField, ReadOnly] private BuildCostPanel uiShadowCostShower;
-
 
     // 当当前选择的unit变化后调用
-    public event EventHandler<UnitEventargs> OnCurBuildUnitChange;
+    public event EventHandler<CurUnitChangeArgs> OnCurBuildUnitChange;
 
-    public List<UnitSO> UnitCanBuild { get => buildableUnit.unitSOList; }
-    //public int BuildIndex { get => buildIndex; set => buildIndex = value; }
     public Dir BuildDir { get => buildDir; set => buildDir = value; }
     public MonoInterface<IShipController> Sc { get => sc; set => sc = value; }
     public SpriteRenderer PrefabShadow { get => prefabShadow; set => prefabShadow = value; }
-    public IShipBuildingState State { get => state; set => state = value; }
+
     public bool IsBuilding { get => isBuilding; set => isBuilding = value; }
-    public BuildCostPanel UiShadowCostShower { get => uiShadowCostShower; set => uiShadowCostShower = value; }
+
 
     private void Start()
     {
@@ -75,96 +65,53 @@ public class ShipBuildController : MonoBehaviour
         if (uiBuildPanelInstance == null)
         {
             GameObject temp = Instantiate(uiBuildPanelPrefab, GameObject.Find("Canvas").transform);
-            uiBuildPanelInstance = temp.GetComponent<BuildPanelController>();
+            uiBuildPanelInstance = temp.GetComponent<UIBase>();
         }
-        uiBuildPanelInstance.RefreshIcon(buildableUnit.unitSOList);
 
         // 添加委托
-        // ui的值变化会 影响cur build unit
-        uiBuildPanelInstance.OnUnitValueChange += UiBuildPanelInstance_OnUnitValueChange;
-        // cur unit 变化会影响ui变化
-        OnCurBuildUnitChange += uiBuildPanelInstance.ShipBuildController_OnCurUnitChange;
+        // 改为使用事件中心解耦
+        EventCenter.Instance.AddEventListener("BuildUnitChange", UiBuildPanelInstance_OnUnitValueChange);
 
         // 初始关闭面板
-        uiBuildPanelInstance.ClosePanel();
-
-
-        // 初始化uiShadowCostShowerPrefab
-        var uiShadowCostShowerGO = Instantiate(uiShadowCostShowerPrefab, GameObject.Find("Canvas").transform);
-        uiShadowCostShower = uiShadowCostShowerGO.GetComponent<BuildCostPanel>();
-        uiShadowCostShower.gameObject.SetActive(false);
-        OnCurBuildUnitChange += UiShadowCostShower.ShipBuildController_OnCurBuildChange;
+        uiBuildPanelInstance.CloseUI();
     }
 
+    private void OnDestroy()
+    {
+        // 移除事件
+        EventCenter.Instance.RemoveEventListener("BuildUnitChange", UiBuildPanelInstance_OnUnitValueChange);
+    }
+
+    private void UiBuildPanelInstance_OnUnitValueChange(object sender, object args)
+    {
+        if (args == null)
+        {
+            ChangeCurBuildUnit(null);
+            return;
+        }
+        if (args is BuildPanelController.BuildPanelEventHandler e)
+        {
+            ChangeCurBuildUnit(e.beClickUnit);
+            return;
+        }
+
+        Debug.LogWarning("UiBuildPanelInstance_OnUnitValueChange 参数错误");
+    }
+
+    //弃用
+    [Obsolete("使用UiBuildPanelInstance_OnUnitValueChange代替")]
     private void UiBuildPanelInstance_OnUnitValueChange(object sender, BuildPanelController.BuildPanelEventHandler e)
     {
-        //Debug.Log(sender);
         ChangeCurBuildUnit(e.beClickUnit);
     }
 
     private void Update()
     {
-        #region 旧版纯手打控制 改用新版Input System控制
-        //// 临时控制 按e进入建造右键在ShipBuildState里面退出建造状态
-        //if (!IsBuilding && Input.GetKeyDown(KeyCode.E))
-        //{
-        //    StartBuild();
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.F))
-        //{
-        //    int temp = buildIndex + 1;
-        //    if (temp >= buildUnit.Count)
-        //    {
-        //        temp = 0;
-        //    }
-        //    ChangeIndex(temp);
-        //}
-
-        //// 点击查看物体详情
-        //if (!IsBuilding && Input.GetKeyDown(KeyCode.Mouse0))
-        //{
-        //    Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //    Vector2Int gridXY = sc.InterfaceObj.Grid.WorldPositionToGridXY(mousePos);
-        //    LogUtilsXY.LogOnMousePos($"点击到了: {gridXY}");
-
-        //    var gridobj = sc.InterfaceObj.Grid?.GetGridObject(gridXY);
-        //    var unit = gridobj == null ? null : gridobj.GetContent();
-        //    if (unit != null && unit is IBeClick)
-        //    {
-        //        (unit as IBeClick).BeClick(this);
-        //    }
-        //}
-
-        //state.Update(this);
-        #endregion
-
         if (isBuilding)
         {
             ShadowFollowPerFrame();
         }
-
     }
-
-    #region 老state模式
-    //public void QuitBuild()
-    //{
-    //    isBuilding = false;
-    //    state.QuitBuild(this);
-    //}
-
-    //public void StartBuild()
-    //{
-    //    isBuilding = true;
-    //    state.StartBuild(this);
-    //}
-
-    //public void ChangeIndex(int index)
-    //{
-    //    state.ChangeIndex(this, index);
-    //}
-    #endregion
-
 
     #region 新版input system方法
     /// <summary>
@@ -182,9 +129,7 @@ public class ShipBuildController : MonoBehaviour
             Johnwest.JWUniversalTool.LogWithClassMethodName("startBuild", System.Reflection.MethodBase.GetCurrentMethod());
 
             // 显示ui
-            uiBuildPanelInstance.OpenPanel(UnitCanBuild, GetCurBuildUnit());
-            uiShadowCostShower.OpenPanel();
-            uiShadowCostShower.RefreshUnit(curUnit);
+            uiBuildPanelInstance.OpenUI();
         }
     }
 
@@ -212,8 +157,7 @@ public class ShipBuildController : MonoBehaviour
         sc.InterfaceObj.SetAllFGridNodeBackGroundActive(false);
 
         // 关闭ui
-        uiBuildPanelInstance.ClosePanel();
-        uiShadowCostShower.ClosePanel();
+        uiBuildPanelInstance.CloseUI();
 
         Johnwest.JWUniversalTool.LogWithClassMethodName("LeftBuild", System.Reflection.MethodBase.GetCurrentMethod());
     }
@@ -224,12 +168,6 @@ public class ShipBuildController : MonoBehaviour
         // 如果执行了拆除就不退出
         if (ShipBuildingState.TryDeleteUnitOnMousePos(this, out UnitObject unitObject))
         {
-            // 执行成功拆除之后退还资源
-            //foreach (var item in unitObject.UnitSO.itemCostList)
-            //{
-            //    PlayerModel.Instance.GetInventory()?.AddItem(item.itemSO, item.cost);
-            //}
-
             //执行成功退还去钱
             PlayerModel.Instance.AddCurrency(unitObject.UnitSO.cost);
 
@@ -290,18 +228,6 @@ public class ShipBuildController : MonoBehaviour
                 return;
             }
 
-            // 判断仓库资源是否足够
-            //if (!PlayerModel.Instance.GetInventory().HaveEnoughItems(GetCurBuildUnit().itemCostList, out List<UnitSO.ItemCost> missingItem))
-            //{
-            //    List<string> debugString = new List<string>();
-            //    foreach (var item in missingItem)
-            //    {
-            //        debugString.Add(item.ToString());
-            //    }
-            //    LogUtilsXY.LogOnMousePos($"缺少物品无法建造:\n{string.Join("\n", debugString)}");
-            //    return;
-            //}
-
             // 判断货币资源是否足够
             if (PlayerModel.Instance.GetCurrency() < curUnit.cost)
             {
@@ -314,12 +240,6 @@ public class ShipBuildController : MonoBehaviour
 
             if (unitObject != null)
             {
-                //建造成功 扣除仓库资源
-                //foreach (var item in GetCurBuildUnit().itemCostList)
-                //{
-                //    PlayerModel.Instance.GetInventory()?.CostItem(item.itemSO, item.cost);
-                //}
-
                 //建造成功 扣除货币
                 PlayerModel.Instance.CostCurrency(GetCurBuildUnit().cost);
             }
@@ -401,15 +321,17 @@ public class ShipBuildController : MonoBehaviour
         if (unitSO == null)
         {
             curUnit = null;
-            OnCurBuildUnitChange?.Invoke(this, new UnitEventargs(curUnit));
+            OnCurBuildUnitChange?.Invoke(this, new CurUnitChangeArgs(curUnit));
+            // 改用触发事件中心
+            EventCenter.Instance.TriggerEvent("ShipBuildControllerCurUnitChange", this, new CurUnitChangeArgs(curUnit));
+
             return;
         }
 
-        if (buildableUnit.unitSOList.Contains(unitSO))
-        {
-            curUnit = unitSO;
-            OnCurBuildUnitChange?.Invoke(this, new UnitEventargs(curUnit));
-        }
+        curUnit = unitSO;
+        OnCurBuildUnitChange?.Invoke(this, new CurUnitChangeArgs(curUnit));
+        // 改用触发事件中心
+        EventCenter.Instance.TriggerEvent("ShipBuildControllerCurUnitChange", this, new CurUnitChangeArgs(curUnit));
     }
     
     #endregion

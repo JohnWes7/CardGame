@@ -8,5 +8,7 @@ public class SpacePortManager : MonoBehaviour
     {
         PlayerModel.Instance.LoadLocalSave();
         EventCenter.Instance.TriggerEvent("ShipMementoLoad", this, PlayerModel.Instance.GetShipMemento());
+        
+        SpaceportShopModel.Instance.GenerateCurUnits();
     }
 }

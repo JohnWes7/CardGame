@@ -35,7 +35,7 @@ public class ShipNotBuildingState : IShipBuildingState
     public void StartBuild(ShipBuildController sbc)
     {
         // 非建造状态转换到建造状态
-        sbc.State = new ShipBuildingState(sbc);
+        //sbc.State = new ShipBuildingState(sbc);
     }
 
     public void Update(ShipBuildController sbc)

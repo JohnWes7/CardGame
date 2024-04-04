@@ -69,4 +69,31 @@ public class UnitSO : ScriptableObject
             _ => Vector2.zero,
         };
     }
+
+    public string GetName(string lang)
+    {
+        return nameInfo.GetValueOrDefault(lang, name);
+    }
+
+    public string GetDescription(string lang)
+    {
+        return descriptionInfo.GetValueOrDefault(lang, "no descript");
+    }
+}
+
+[System.Serializable]
+public class UnitNumPair
+{
+    public UnitSO unitSO;
+    public int num;
+
+    public UnitNumPair()
+    {
+    }
+
+    public UnitNumPair(UnitSO unitSO, int num)
+    {
+        this.unitSO = unitSO;
+        this.num = num;
+    }
 }

@@ -34,7 +34,7 @@ public class EventCenter : Singleton<EventCenter>
     }
 }
 
-public class Singleton<T> where T : new()
+public abstract class Singleton<T> where T : new()
 {
     private static T instance;
 

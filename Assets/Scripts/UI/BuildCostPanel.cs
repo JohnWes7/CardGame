@@ -93,7 +93,7 @@ public class BuildCostPanel : MonoBehaviour
         (this.transform as RectTransform).localPosition = localPoint;
     }
 
-    public void ShipBuildController_OnCurBuildChange(object sender, ShipBuildController.UnitEventargs args)
+    public void ShipBuildController_OnCurBuildChange(object sender, ShipBuildController.CurUnitChangeArgs args)
     {
         RefreshUnit(args.curUnit);
     }

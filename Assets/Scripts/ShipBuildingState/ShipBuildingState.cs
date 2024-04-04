@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 状态模式弃用
 public class ShipBuildingState : IShipBuildingState
 {
     public ShipBuildingState(ShipBuildController sbc)
@@ -23,7 +24,6 @@ public class ShipBuildingState : IShipBuildingState
     public void QuitBuild(ShipBuildController sbc)
     {
         sbc.IsBuilding = false;
-        sbc.State = new ShipNotBuildingState(sbc);
     }
 
     public void StartBuild(ShipBuildController sbc)
@@ -229,7 +229,7 @@ public class ShipBuildingState : IShipBuildingState
             // sbc.PrefabShadow.gameObject.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + Vector3.forward;
             // 这里还是直接移动
 
-            sbc.UiShadowCostShower.RefreshPosition(sbc.PrefabShadow.transform.position);
+            //sbc.UiShadowCostShower.RefreshPosition(sbc.PrefabShadow.transform.position);
         }
         else
         {

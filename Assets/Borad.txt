@@ -1,5 +1,6 @@
 --------------------[TODO]-----------------------
 20240304UOB4OZNG
+20240403CURKSP9H
 
 美化
 
@@ -78,8 +79,58 @@ TODO
 
 
 
+TODO:
+player 要增加一个装所有unit的仓库
+建造系统需要结合这个仓库而不是扣除currency
+
+建造的逻辑可能要改
+1 在建造面板时候 如果没有选择要建造的unit 鼠标放在有unit的地方要显示拆除的图标
+2 在建造面板时候 如果选择了要建造的unit 鼠标放在有unit的地方 要关闭虚影 并显示一个红色的虚影 以及unit拆除图标
+
+明天:
+继续拆分buildpanel 维护显示正在建造的 ui标识的位置
+新建一个panel 通过获取player的unit仓库来显示可以建造的unit
 
 ---------------------[Done]---------------------------------
+
+0.6.2
+2024-4-3
+new 
+导入了qframework 分离了一下buildcontroller的代码
+学习command controller model的使用 command 传参可以传一个new command实例来执行
+fix
+playermodel 使用了bindableproperty 来存储currency
+添加了currency如果更改会触发事件中心事件
+
+----note---
+可以向qframework 中一样通过扩展方法给接口实现一个default方法 所有实现了接口就自动获得了扩展方法
+注意: 如果是通过实现接口获得的扩展方法 在实现的实例类中如果要调用必须要使用this : 比如 this.SendCommand()
+注意: 扩展方法会被相同名称和签名的方法覆盖 : https://learn.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/extension-methods
+----end note---
+
+2024-4-1
+fix
+维护shipbuildcontroller的代码
+shipbuildcontroller只负责建造的逻辑
+需要建造什么的逻辑放到了shipbuildpanel中 中间的通讯用eventcenter解耦合
+
+2024-3-30
+商店刷新 扣钱
+装备解锁系统
+
+2024-03-19
+
+learn:
+zenject 依赖性注入框架 正在学习中
+现阶段还是用于解决 如果一个类需要另一个类的时候需要new一个的问题 并且是一直不需要改变的类 还有有一些场景才需要的单例可以使用
+
+还需要找一下如何可以绑定一下mono实例到container中 看到的是通过bind组件的方式来绑定的
+之后就要看如何获取
+
+new
+spaceport shop model
+spaceport shop ui
+spaceport shop product ui
 
 2024-03-16
 new

@@ -529,6 +529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f3b9c181b0483743a4b0a0f831df26a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugUnitlist: {fileID: 11400000, guid: 7afca07860d279b4ab6649be18cdfbfc, type: 2}
   selectFlag: {fileID: 7396364328214350152}
   uiContent: {fileID: 7396364328936580904}
   uiUnitIconList: []

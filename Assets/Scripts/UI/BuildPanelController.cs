@@ -4,8 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using System;
+using CustomInspector;
 
-public class BuildPanelController : MonoBehaviour
+/// <summary>
+/// 当前负责debug 建造 通过 debugunitlist 索引全部unit 并显示
+/// </summary>
+public class BuildPanelController : UIBase
 {
     public class BuildPanelEventHandler : EventArgs
     {
@@ -17,6 +21,8 @@ public class BuildPanelController : MonoBehaviour
         }
     }
 
+   
+    [SerializeField, ForceFill] private UnitListSO debugUnitlist;
 
     [SerializeField] private Image selectFlag;
     [SerializeField] private Transform uiContent;
@@ -34,17 +40,6 @@ public class BuildPanelController : MonoBehaviour
      * 点击之后 改变value 改变value 触发OnUnitValueChange
      * 
      */
-
-    public void OpenPanel(List<UnitSO> showUnitList, UnitSO curUnit)
-    {
-        transform.DOLocalMoveX(ORINGIN_X_POS, 0.2f);
-        SetSelectFlag(curUnit);
-    }
-
-    public void ClosePanel()
-    {
-        transform.DOLocalMoveX(transform.localPosition.x - MOVE_ANI_X, 0.2f);
-    }
 
     /// <summary>
     /// 设置标记选择的那个框跟踪的位置
@@ -102,7 +97,7 @@ public class BuildPanelController : MonoBehaviour
         uiUnitIconList.Clear();
 
         //生成新的icon
-        foreach (var item in showUnitList)
+        foreach (UnitSO item in showUnitList)
         {
             GameObject gameObject = Instantiate<GameObject>(uiIconPrefab, uiContent);
             gameObject.name = item.name;
@@ -112,15 +107,34 @@ public class BuildPanelController : MonoBehaviour
 
             // 添加事件
             unitIcon.OnClick.AddListener(() => {
-                //Debug.Log(item);
                 value = item;
                 OnUnitValueChange?.Invoke(this, new BuildPanelEventHandler(item));
+
+                // 改用事件中心 触发事件 
+                EventCenter.Instance.TriggerEvent("BuildUnitChange", this, new BuildPanelEventHandler(item));
             });
         }
     }
 
-    public void ShipBuildController_OnCurUnitChange(object sender, ShipBuildController.UnitEventargs args)
+    public override void OpenUI()
     {
-        SetSelectFlag(args.curUnit);
+        RefreshIcon(debugUnitlist.unitSOList);
+        transform.DOLocalMoveX(ORINGIN_X_POS, 0.2f);
+    }
+
+    public override void CloseUI()
+    {
+        transform.DOLocalMoveX(transform.localPosition.x - MOVE_ANI_X, 0.2f);
+        SetSelectFlag(null);
+    }
+
+    public override void Initialize(object args = null)
+    {
+        
+    }
+
+    public override void Destroy()
+    {
+        Destroy(gameObject);
     }
 }
