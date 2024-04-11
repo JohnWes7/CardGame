@@ -596,8 +596,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1600, y: 850}
+  m_AnchoredPosition: {x: 144, y: -56}
+  m_SizeDelta: {x: 1600, y: 920}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8118970394531050870
 GameObject:
@@ -858,6 +858,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shopItemPrefab: {fileID: 7816279600701627673, guid: ae0327369078eb1408ab250b2539b400, type: 3}
   content: {fileID: 8118970395148196605}
+  shopItems: []
   refreshShopText: {fileID: 8756451133231855387}
 --- !u!1 &8118970394821692678
 GameObject:

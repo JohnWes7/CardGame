@@ -1,35 +1,61 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class EventCenter : Singleton<EventCenter>
 {
-    private Dictionary<string, EventHandler<object>> eventDict = new Dictionary<string, EventHandler<object>>();
+    private Dictionary<string, List<EventHandler<object>>> eventDict = new Dictionary<string, List<EventHandler<object>>>();
 
     public void AddEventListener(string eventType, EventHandler<object> listener)
     {
-        if (eventDict.ContainsKey(eventType))
+        //if (eventDict.ContainsKey(eventType))
+        //{
+        //    eventDict[eventType] += listener;
+        //}
+        //else
+        //{
+        //    eventDict.Add(eventType, listener);
+        //}
+        if (!eventDict.ContainsKey(eventType))
         {
-            eventDict[eventType] += listener;
+            eventDict[eventType] = new List<EventHandler<object>>();
         }
-        else
-        {
-            eventDict.Add(eventType, listener);
-        }
+        eventDict[eventType].Add(listener);
     }
 
     public void RemoveEventListener(string eventType, EventHandler<object> listener)
     {
+        //if (eventDict.ContainsKey(eventType))
+        //{
+        //    eventDict[eventType] -= listener;
+        //}
         if (eventDict.ContainsKey(eventType))
         {
-            eventDict[eventType] -= listener;
+            eventDict[eventType].Remove(listener);
         }
     }
 
     public void TriggerEvent(string eventType, object sender, object eventParam = null)
     {
+        //if (eventDict.ContainsKey(eventType))
+        //{
+        //    eventDict[eventType]?.Invoke(sender, eventParam);
+        //}
         if (eventDict.ContainsKey(eventType))
         {
-            eventDict[eventType]?.Invoke(sender, eventParam);
+            // 创建一个新列表以防止在事件触发过程中修改集合
+            var listeners = new List<EventHandler<object>>(eventDict[eventType]);
+            foreach (var listener in listeners)
+            {
+                try
+                {
+                    listener?.Invoke(sender, eventParam);
+                }
+                catch (MissingReferenceException)
+                {
+                    Debug.LogError($"key: {eventType} : MissingReferenceException in " + listener.Method.Name);
+                }
+            }
         }
     }
 }

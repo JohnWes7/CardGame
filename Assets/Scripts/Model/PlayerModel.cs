@@ -206,6 +206,8 @@ public class PlayerUnitInventory
         {
             unitInventory.Add(unit, num);
         }
+
+        EventCenter.Instance.TriggerEvent("UnitInventoryChange", this, unitInventory);
     }
 
     public void RemoveUnit(UnitSO unit, int num)
@@ -218,6 +220,8 @@ public class PlayerUnitInventory
                 unitInventory.Remove(unit);
             }
         }
+
+        EventCenter.Instance.TriggerEvent("UnitInventoryChange", this, unitInventory);
     }
 
     public Dictionary<UnitSO, int> GetUnitInventory()

@@ -67,12 +67,19 @@ public class SpaceportShopModel : Singleton<SpaceportShopModel>
     {
         return currentUnits;
     }
+
+    public void SetBoughtFlag(int index, bool value = true)
+    {
+        currentUnits[index].isBought = value;
+        EventCenter.Instance.TriggerEvent("SpaceportShopCurBoughtChange", this, currentUnits);
+    }
 }
 
 public class SpaceportShopProductInfo
 {
     public UnitSO unitSO;
     public int cost;
+    public bool isBought = false;
 
     public SpaceportShopProductInfo(UnitSO unitSO, int cost)
     {

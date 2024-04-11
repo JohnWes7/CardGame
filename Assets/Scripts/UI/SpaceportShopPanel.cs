@@ -11,7 +11,7 @@ public class SpaceportShopPanel : SingletonUIBase<SpaceportShopPanel>, IControll
     private GameObject shopItemPrefab;
     [SerializeField, ForceFill]
     private Transform content;
-    [ReadOnly]
+    [SerializeField, ReadOnly]
     private List<GameObject> shopItems = new List<GameObject>();
 
     [SerializeField, ForceFill]
@@ -37,6 +37,7 @@ public class SpaceportShopPanel : SingletonUIBase<SpaceportShopPanel>, IControll
 
     private void EventCenter_OnSpaceportShopUpdate(object sender, object e)
     {
+        Debug.Log("接收事件 SpaceportShopUpdate");
         UpdateShop();
     }
 
@@ -75,7 +76,7 @@ public class SpaceportShopPanel : SingletonUIBase<SpaceportShopPanel>, IControll
 
     public IArchitecture GetArchitecture()
     {
-        return SpaceportArchitecture.Interface;
+        return GameArchitecture.Interface;
     }
 }
 

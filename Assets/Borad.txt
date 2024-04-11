@@ -89,9 +89,24 @@ player 要增加一个装所有unit的仓库
 
 明天:
 继续拆分buildpanel 维护显示正在建造的 ui标识的位置
-新建一个panel 通过获取player的unit仓库来显示可以建造的unit
+ui build panel 选择command调整buildcontroller的curbuild
+
+open/close by e
 
 ---------------------[Done]---------------------------------
+
+2024-4-11
+new 
+建造面板ui现在会根据playermodel的unit仓库来显示可以建造的unit
+
+2024-4-10
+fix
+修改了eventcenter的 加入了判断如果有事件没有取消订阅而导致执行失败
+
+2024-4-5
+new
+商店现在可以购买 购买后product icon会消失
+物品会进入到playermodel的仓库中但是显示的ui还没做
 
 0.6.2
 2024-4-3

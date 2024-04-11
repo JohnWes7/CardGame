@@ -50,8 +50,16 @@ public abstract class SingletonUIBase<T> : UIBase where T : UIBase
 
 public abstract class UIBase : MonoBehaviour
 {
-    public abstract void OpenUI();
-    public abstract void CloseUI();
+    public virtual void OpenUI() 
+    {
+        gameObject.SetActive(true);   
+    }
+
+    public virtual void CloseUI() 
+    {
+        gameObject.SetActive(false);
+    }
+
     public abstract void Initialize(object args = null);
     public abstract void Destroy();
 }

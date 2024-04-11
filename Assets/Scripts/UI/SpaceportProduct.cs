@@ -5,6 +5,7 @@ using CustomInspector;
 using TMPro;
 using UnityEngine.UI;
 using QFramework;
+using System;
 
 public class SpaceportProduct : MonoBehaviour, IController
 {
@@ -21,15 +22,48 @@ public class SpaceportProduct : MonoBehaviour, IController
     [ReadOnly]
     public int index;
 
-    public IArchitecture GetArchitecture()
+    private void Start()
     {
-        return SpaceportArchitecture.Interface;
+        EventCenter.Instance.AddEventListener("SpaceportShopCurBoughtChange", EventCenter_OnSpaceportShopCurBoughtChange);
     }
 
-    public void Init(SpaceportShopProductInfo spaceportShopProductInfo, int index)
+    private void OnDestroy()
     {
-        // 保存index
-        this.index = index;
+        EventCenter.Instance.RemoveEventListener("SpaceportShopCurBoughtChange", EventCenter_OnSpaceportShopCurBoughtChange);
+    }
+
+    private void EventCenter_OnSpaceportShopCurBoughtChange(object sender, object e)
+    {
+        Debug.Log("接收事件 SpaceportShopCurBoughtChange");
+        if (e is List<SpaceportShopProductInfo> infolist)
+        {
+            UpdateProduct(infolist[index]);
+        }
+    }
+
+    public IArchitecture GetArchitecture()
+    {
+        return GameArchitecture.Interface;
+    }
+
+    public void UpdateProduct(SpaceportShopProductInfo spaceportShopProductInfo)
+    {
+        // 如果已经买了就关闭子物体显示
+        Debug.Log("spaceportShopProductInfo.isBought: " + spaceportShopProductInfo.isBought);
+        if (spaceportShopProductInfo.isBought)
+        {
+            foreach (Transform child in transform)
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            foreach (Transform child in transform)
+            {
+                child.gameObject.SetActive(true);
+            }
+        }
 
         // 读取当前语言
         string langKey = PlayerPrefs.GetString("Language", "zh");
@@ -39,6 +73,20 @@ public class SpaceportProduct : MonoBehaviour, IController
         descText.text = spaceportShopProductInfo.unitSO.GetDescription(langKey);
         costText.text = spaceportShopProductInfo.cost.ToString();
         iconImg.sprite = spaceportShopProductInfo.unitSO.fullsizeSprite;
+    }
+
+    public void Init(SpaceportShopProductInfo spaceportShopProductInfo, int index)
+    {
+        if (spaceportShopProductInfo == null)
+        {
+            return;
+        }
+
+        // 保存index
+        this.index = index;
+
+        // 显示
+        UpdateProduct(spaceportShopProductInfo);
 
         // 设置按钮事件
         buyBtn.onClick.AddListener(() =>
@@ -47,4 +95,6 @@ public class SpaceportProduct : MonoBehaviour, IController
             this.SendCommand(new BuyUnitCommand(index));
         });
     }
+
+    
 }
