@@ -17,7 +17,7 @@ public class BuildByInventoryPanelController : UIBase, IController
 
     public override void Destroy()
     {
-        
+        base.Destroy();
     }
 
     public IArchitecture GetArchitecture()
@@ -47,6 +47,24 @@ public class BuildByInventoryPanelController : UIBase, IController
 
     public void RefreshIcon()
     {
+        // 先删除 不需要显示的unit
+        // 寻找不需要的unit
+        List<BuildByInventoryIcon> removeList =  new List<BuildByInventoryIcon>();
+        foreach (BuildByInventoryIcon item in iconList)
+        {
+            // 如果unit的数量是0或者不在inventory中 就销毁
+            if (PlayerModel.Instance.GetPlayerUnitInventory().GetUnitInventory().ContainsKey(item.unitSO) == false ||
+                PlayerModel.Instance.GetPlayerUnitInventory().GetUnitInventory()[item.unitSO] == 0)
+            {
+                Destroy(item.gameObject);
+                removeList.Add(item);
+            }
+        }
+        // 删除不需要的unit
+        iconList.RemoveAll(x => removeList.Contains(x));
+        
+
+
         // 刷新所有unit
         foreach (var item in PlayerModel.Instance.GetPlayerUnitInventory().GetUnitInventory())
         {
@@ -105,6 +123,7 @@ public class BuildByInventoryPanelController : UIBase, IController
 
     private void OnDisable()
     {
-        
+        // 取消监听玩家unit改变事件
+        EventCenter.Instance.RemoveEventListener("UnitInventoryChange", EventCenter_OnUnitInventoryChange);
     }
 }

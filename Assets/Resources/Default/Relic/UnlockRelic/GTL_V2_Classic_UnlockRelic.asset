@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GTL_V2_Classic_UnlockRelic
   m_EditorClassIdentifier: 
   Image: {fileID: 0}
-  unlockUnit: {fileID: 0}
+  unlockUnit: {fileID: 11400000, guid: 44133c362db77d24d8278f8a7aea77e6, type: 2}
   requireUnit: []

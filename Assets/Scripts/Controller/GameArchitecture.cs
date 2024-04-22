@@ -7,6 +7,6 @@ public class GameArchitecture : Architecture<GameArchitecture>
 {
     protected override void Init()
     {
-        
+        this.RegisterModel(new RelicModel());
     }
 }

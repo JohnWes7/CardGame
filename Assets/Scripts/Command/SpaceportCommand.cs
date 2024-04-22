@@ -60,7 +60,7 @@ public class TryBuildUnitCommand : AbstractCommand
     {
         this.unitSO = unitSO;
     }
-
+    
     protected override void OnExecute()
     {
 

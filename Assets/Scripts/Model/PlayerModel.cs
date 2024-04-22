@@ -42,7 +42,6 @@ public class PlayerModel : Singleton<PlayerModel>
     private PlayerUnitInventory playerUnitInventory;
 
     // 可能需要添加长期数据信息 写在另一个类里面更好
-
     public PlayerModel()
     {
         currency = new BindableProperty<int>(0);

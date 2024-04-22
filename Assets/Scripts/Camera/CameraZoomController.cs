@@ -21,7 +21,7 @@ public class CameraZoomController : MonoBehaviour
     {
         if (virtualCamera)
         {
-            Debug.Log(virtualCamera.m_Lens.OrthographicSize);
+            //Debug.Log(virtualCamera.m_Lens.OrthographicSize);
             orthoSizeSpecified = virtualCamera.m_Lens.OrthographicSize;
         }
     }

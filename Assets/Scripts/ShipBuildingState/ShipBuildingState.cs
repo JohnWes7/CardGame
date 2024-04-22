@@ -252,6 +252,7 @@ public class ShipBuildingState : IShipBuildingState
         // 有东西删除
         if (go != null && go.GetContent() != null)
         {
+            // TODO:判断是否是核心不能拆除
             Object.Destroy(go.GetContent().gameObject);
             beDestory = go.GetContent();
             return true;

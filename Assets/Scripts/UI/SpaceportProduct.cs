@@ -32,6 +32,7 @@ public class SpaceportProduct : MonoBehaviour, IController
         EventCenter.Instance.RemoveEventListener("SpaceportShopCurBoughtChange", EventCenter_OnSpaceportShopCurBoughtChange);
     }
 
+    #region 事件中心事件
     private void EventCenter_OnSpaceportShopCurBoughtChange(object sender, object e)
     {
         Debug.Log("接收事件 SpaceportShopCurBoughtChange");
@@ -40,6 +41,7 @@ public class SpaceportProduct : MonoBehaviour, IController
             UpdateProduct(infolist[index]);
         }
     }
+    #endregion
 
     public IArchitecture GetArchitecture()
     {
@@ -49,7 +51,7 @@ public class SpaceportProduct : MonoBehaviour, IController
     public void UpdateProduct(SpaceportShopProductInfo spaceportShopProductInfo)
     {
         // 如果已经买了就关闭子物体显示
-        Debug.Log("spaceportShopProductInfo.isBought: " + spaceportShopProductInfo.isBought);
+        //Debug.Log("spaceportShopProductInfo.isBought: " + spaceportShopProductInfo.isBought);
         if (spaceportShopProductInfo.isBought)
         {
             foreach (Transform child in transform)

@@ -80,20 +80,24 @@ TODO
 
 
 TODO:
-player 要增加一个装所有unit的仓库
-建造系统需要结合这个仓库而不是扣除currency
+
 
 建造的逻辑可能要改
 1 在建造面板时候 如果没有选择要建造的unit 鼠标放在有unit的地方要显示拆除的图标
 2 在建造面板时候 如果选择了要建造的unit 鼠标放在有unit的地方 要关闭虚影 并显示一个红色的虚影 以及unit拆除图标
 
 明天:
-继续拆分buildpanel 维护显示正在建造的 ui标识的位置
-ui build panel 选择command调整buildcontroller的curbuild
+在商店面板的显示一个tech tree relic的收集
 
 open/close by e
 
 ---------------------[Done]---------------------------------
+2024-4-22
+new
+通过build和拆除command来实现建造和拆除的逻辑
+拆除和建造command中通过unit inventory来进行建造
+
+开始写 relic 生成了几个relic
 
 2024-4-11
 new 

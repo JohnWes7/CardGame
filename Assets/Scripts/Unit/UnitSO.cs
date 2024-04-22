@@ -70,6 +70,11 @@ public class UnitSO : ScriptableObject
         };
     }
 
+    /// <summary>
+    /// 获取unit的名字 如果没有填写则返回代号
+    /// </summary>
+    /// <param name="lang"></param>
+    /// <returns></returns>
     public string GetName(string lang)
     {
         return nameInfo.GetValueOrDefault(lang, name);

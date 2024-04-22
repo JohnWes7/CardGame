@@ -17,6 +17,9 @@ public class SpaceportShopModel : Singleton<SpaceportShopModel>
 
         this.allUnits = unitListSO.unitSOList;
         this.currentUnits = new();
+
+        // 打印初始化的时候所有能随机出来的单位
+        Debug.Log("SpaceportShopModel: init unit list:" + Johnwest.JWUniversalTool.ListToString(allUnits));
     }
 
     /// <summary>

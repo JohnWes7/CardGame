@@ -4,11 +4,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using CustomInspector;
+using QFramework;
 
 /// <summary>
 /// 飞船建造管理类
 /// </summary>
-public class ShipBuildController : MonoBehaviour
+public class ShipBuildController : MonoBehaviour, IController
 {
     public class CurUnitChangeArgs : EventArgs
     {
@@ -89,6 +90,11 @@ public class ShipBuildController : MonoBehaviour
             ChangeCurBuildUnit(null);
             return;
         }
+        if (args is UnitSO unitSO)
+        {
+            ChangeCurBuildUnit(unitSO);
+            return;
+        }
         if (args is BuildPanelController.BuildPanelEventHandler e)
         {
             ChangeCurBuildUnit(e.beClickUnit);
@@ -162,21 +168,6 @@ public class ShipBuildController : MonoBehaviour
         Johnwest.JWUniversalTool.LogWithClassMethodName("LeftBuild", System.Reflection.MethodBase.GetCurrentMethod());
     }
 
-    public bool TryDelectUnit()
-    {
-        // 先判断是要从拆除还是退出
-        // 如果执行了拆除就不退出
-        if (ShipBuildingState.TryDeleteUnitOnMousePos(this, out UnitObject unitObject))
-        {
-            //执行成功退还去钱
-            PlayerModel.Instance.AddCurrency(unitObject.UnitSO.cost);
-
-            return true;
-        }
-
-        return false;
-    }
-
     /// <summary>
     /// 旋转建造方向 顺时针
     /// </summary>
@@ -223,26 +214,7 @@ public class ShipBuildController : MonoBehaviour
     {
         if (callbackContext.performed)
         {
-            if (GetCurBuildUnit() == null)
-            {
-                return;
-            }
-
-            // 判断货币资源是否足够
-            if (PlayerModel.Instance.GetCurrency() < curUnit.cost)
-            {
-                Debug.Log($"缺少材料 无法建造 {curUnit.cost}/{PlayerModel.Instance.GetCurrency()}");
-                return;
-            }
-
-            //Debug.Log($"Build Unit: {GetCurBuildUnit().name}");
-            UnitObject unitObject = ShipBuildingState.BuildUnit(this);
-
-            if (unitObject != null)
-            {
-                //建造成功 扣除货币
-                PlayerModel.Instance.CostCurrency(GetCurBuildUnit().cost);
-            }
+            this.SendCommand(new BuildUnitCommand(this));
         }
     }
 
@@ -265,11 +237,7 @@ public class ShipBuildController : MonoBehaviour
     {
         if (callbackContext.performed)
         {
-            // 先判断是否需要拆除
-            if (!TryDelectUnit())
-            {
-                ChangeCurBuildUnit(null);
-            }
+            this.SendCommand(new DemolitionUnitCommand(this));
         }
     }
 
@@ -277,27 +245,6 @@ public class ShipBuildController : MonoBehaviour
     {
         curUnit = null;
     }
-
-    /// <summary>
-    /// 弃用 不在使用按下某个键来改变build的选择改用ui选择
-    /// </summary>
-    /// <param name="callbackContext"></param>
-    //public void ChangeBuildUnit(InputAction.CallbackContext callbackContext)
-    //{
-    //    #region 旧更改
-    //    //if (callbackContext.performed)
-    //    //{
-    //    //    int temp = buildIndex + 1;
-    //    //    if (temp >= unitCanBuild.Count)
-    //    //    {
-    //    //        temp = 0;
-    //    //    }
-    //    //    buildIndex = temp;
-    //    //    prefabShadow.sprite = unitCanBuild[BuildIndex].fullsizeSprite;
-    //    //}
-    //    #endregion
-
-    //}
 
     /// <summary>
     /// 建造模式开启后显示虚影
@@ -333,7 +280,12 @@ public class ShipBuildController : MonoBehaviour
         // 改用触发事件中心
         EventCenter.Instance.TriggerEvent("ShipBuildControllerCurUnitChange", this, new CurUnitChangeArgs(curUnit));
     }
-    
+
+    public IArchitecture GetArchitecture()
+    {
+        return GameArchitecture.Interface;
+    }
+
     #endregion
 
 }

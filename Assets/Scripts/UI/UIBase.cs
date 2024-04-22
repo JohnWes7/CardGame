@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -61,6 +62,9 @@ public abstract class UIBase : MonoBehaviour
     }
 
     public abstract void Initialize(object args = null);
-    public abstract void Destroy();
+    public virtual void Destroy() 
+    {
+        Destroy(gameObject);
+    }
 }
 
