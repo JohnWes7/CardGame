@@ -11,10 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SpacePort.unity
     guid: ddb7779405b1a36499513b9a63481b8e
-  - enabled: 1
-    path: Assets/Plugins/Magic Menu Free/Example/Scenes/Main_menu.unity
-    guid: a16a4be73be161647874fbd4ab49beea
-  - enabled: 1
-    path: Assets/Plugins/Magic Menu Free/Example/Scenes/scene_gamePlay.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}

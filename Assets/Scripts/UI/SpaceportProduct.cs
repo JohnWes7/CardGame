@@ -35,7 +35,7 @@ public class SpaceportProduct : MonoBehaviour, IController
     #region 事件中心事件
     private void EventCenter_OnSpaceportShopCurBoughtChange(object sender, object e)
     {
-        Debug.Log("接收事件 SpaceportShopCurBoughtChange");
+        Debug.Log("接收事件 SpaceportShopCurBoughtChange 设置物品关闭");
         if (e is List<SpaceportShopProductInfo> infolist)
         {
             UpdateProduct(infolist[index]);
@@ -94,7 +94,7 @@ public class SpaceportProduct : MonoBehaviour, IController
         buyBtn.onClick.AddListener(() =>
         {
             // 购买单位
-            this.SendCommand(new BuyUnitCommand(index));
+            this.SendCommand(new BuyUnitFromShopCommand(index));
         });
     }
 

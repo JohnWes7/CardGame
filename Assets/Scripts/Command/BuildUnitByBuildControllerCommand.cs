@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using QFramework;
 
-public class BuildUnitCommand : AbstractCommand
+/// <summary>
+/// 依赖于buildcontroller的buildcommand 之后可以改为不依赖
+/// </summary>
+public class BuildUnitByBuildControllerCommand : AbstractCommand
 {
     public ShipBuildController shipBuildController;
 
-    public BuildUnitCommand(ShipBuildController shipBuildController)
+    public BuildUnitByBuildControllerCommand(ShipBuildController shipBuildController)
     {
         this.shipBuildController = shipBuildController;
     }
@@ -39,11 +42,11 @@ public class BuildUnitCommand : AbstractCommand
     }
 }
 
-public class DemolitionUnitCommand : AbstractCommand
+public class DemolitionUnitByBuildControllerCommand : AbstractCommand
 {
     public ShipBuildController shipBuildController;
 
-    public DemolitionUnitCommand(ShipBuildController shipBuildController)
+    public DemolitionUnitByBuildControllerCommand(ShipBuildController shipBuildController)
     {
         this.shipBuildController = shipBuildController;
     }

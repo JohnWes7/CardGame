@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Image: {fileID: 0}
   unlockUnit: {fileID: 11400000, guid: 44133c362db77d24d8278f8a7aea77e6, type: 2}
-  requireUnit: []
+  requireUnit:
+  - unitSO: {fileID: 11400000, guid: 06babb0f933d08b41aaaea52c6433fd9, type: 2}
+    num: 4

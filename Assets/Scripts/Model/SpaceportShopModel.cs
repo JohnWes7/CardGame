@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class SpaceportShopModel : Singleton<SpaceportShopModel>
+using QFramework;
+
+public class SpaceportShopModel : Singleton<SpaceportShopModel>, ICanSendCommand
 {
     private List<UnitSO> allUnits;
     private List<SpaceportShopProductInfo> currentUnits;
@@ -30,13 +32,21 @@ public class SpaceportShopModel : Singleton<SpaceportShopModel>
     {
         currentUnits.Clear();
 
+        List<UnitSO> allPool = new List<UnitSO>(allUnits);
+
+        // 获取解锁的单位
+        var getAdditionCommand = new GetAddtionalUnitCommand();
+        this.SendCommand(getAdditionCommand);
+        allPool.AddRange(getAdditionCommand.unitSOList);
+
         for (int i = 0; i < numUnits; i++)
         {
             // Choose a random unit from the list of unlocked units
-            int index = Random.Range(0, allUnits.Count);
+            int index = Random.Range(0, allPool.Count);
+
 
             // Add the chosen unit to the list of current units
-            currentUnits.Add(new SpaceportShopProductInfo(allUnits[index], Mathf.RoundToInt(allUnits[index].cost * inflation)));
+            currentUnits.Add(new SpaceportShopProductInfo(allPool[index], Mathf.RoundToInt(allPool[index].cost * inflation)));
         }
 
         EventCenter.Instance.TriggerEvent("SpaceportShopUpdate", this, this);
@@ -47,11 +57,18 @@ public class SpaceportShopModel : Singleton<SpaceportShopModel>
     /// </summary>
     public void RefreshShop()
     {
-        if (PlayerModel.Instance.GetCurrency() >= GetRefreshCost())
+        var costcommand = new TryCostCurrencyCommand(GetRefreshCost());
+        this.SendCommand(costcommand);
+
+        if (costcommand.isCost)
         {
-            PlayerModel.Instance.CostCurrency(GetRefreshCost());
             refreshCount++;
             GenerateCurUnits();
+            Debug.Log("刷新商店成功\n" + GetRefreshCost());
+        }
+        else
+        {
+            Debug.Log("货币不足 无法刷新");
         }
     }
 
@@ -76,6 +93,11 @@ public class SpaceportShopModel : Singleton<SpaceportShopModel>
         currentUnits[index].isBought = value;
         EventCenter.Instance.TriggerEvent("SpaceportShopCurBoughtChange", this, currentUnits);
     }
+
+    public IArchitecture GetArchitecture()
+    {
+        return GameArchitecture.Interface;
+    }
 }
 
 public class SpaceportShopProductInfo
@@ -90,3 +112,4 @@ public class SpaceportShopProductInfo
         this.cost = cost;
     }
 }
+

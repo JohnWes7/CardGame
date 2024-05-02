@@ -39,7 +39,10 @@ public class PlayerModel : Singleton<PlayerModel>
     // 玩家货币
     private BindableProperty<int> currency;
     // 玩家单位仓库
-    private PlayerUnitInventory playerUnitInventory;
+    private PlayerUnitInventory playerUnitInventory; // TODO: 还没有保存
+    // 玩家科技树遗物
+    private TechRelicInventory techRelicInventory;
+    
 
     // 可能需要添加长期数据信息 写在另一个类里面更好
     public PlayerModel()
@@ -50,6 +53,7 @@ public class PlayerModel : Singleton<PlayerModel>
         });
     }
 
+    // 获取物品仓库
     public PlayerInventory GetInventory()
     {
         if (inventory == null)
@@ -59,9 +63,16 @@ public class PlayerModel : Singleton<PlayerModel>
         return inventory;
         }
 
+    // 获取单位仓库
     public PlayerUnitInventory GetPlayerUnitInventory()
     {
         return playerUnitInventory;
+    }
+
+    // 获取科技树遗物
+    public TechRelicInventory GetTechRelicInventory()
+    {
+        return techRelicInventory;
     }
 
     public ShipMemento GetShipMemento()
@@ -99,6 +110,8 @@ public class PlayerModel : Singleton<PlayerModel>
 
             // TODO 提取单位仓库数据
             playerUnitInventory = new PlayerUnitInventory();
+            // TODO 提取科技树遗物
+            techRelicInventory = new TechRelicInventory();
         }
         catch (System.Exception e)
         {
@@ -189,9 +202,11 @@ public class PlayerModel : Singleton<PlayerModel>
 public class PlayerUnitInventory
 {
     private Dictionary<UnitSO, int> unitInventory;
+    private string eventKeyStr = "UnitInventoryChange";
 
-    public PlayerUnitInventory()
+    public PlayerUnitInventory(string eventKeyStr = "UnitInventoryChange")
     {
+        this.eventKeyStr = eventKeyStr;
         unitInventory = new Dictionary<UnitSO, int>();
     }
 
@@ -206,7 +221,7 @@ public class PlayerUnitInventory
             unitInventory.Add(unit, num);
         }
 
-        EventCenter.Instance.TriggerEvent("UnitInventoryChange", this, unitInventory);
+        EventCenter.Instance.TriggerEvent(eventKeyStr, this, unitInventory);
     }
 
     public void RemoveUnit(UnitSO unit, int num)
@@ -220,11 +235,56 @@ public class PlayerUnitInventory
             }
         }
 
-        EventCenter.Instance.TriggerEvent("UnitInventoryChange", this, unitInventory);
+        EventCenter.Instance.TriggerEvent(eventKeyStr, this, unitInventory);
     }
 
     public Dictionary<UnitSO, int> GetUnitInventory()
     {
         return unitInventory;
+    }
+}
+
+public class TechRelicInventory
+{
+    private List<TechTreeNode> techList;
+    
+    public TechRelicInventory()
+    {
+        techList = new List<TechTreeNode>();
+    }
+
+    public void AddTech(TechTreeNode tech)
+    {
+        // 不能添加重复的科技树物品 毕竟解锁两次炮塔也没有用
+        if (!techList.Contains(tech))
+        {
+            techList.Add(tech);
+            Debug.Log($"added to tech inventory 获得科技 {tech.name}");
+        }
+        else
+        {
+            Debug.Log(tech.name + "该科技已经解锁过了");
+        }
+    }
+
+    public void RemoveTech(TechTreeNode tech)
+    {
+        techList.Remove(tech);
+    }
+
+    public List<TechTreeNode> GetTechList()
+    {
+        return techList;
+    }
+
+    public List<UnitSO> GetUnlockUnits()
+    {
+        List<UnitSO> unlockUnits = new List<UnitSO>();
+        techList.ForEach(tech =>
+        {
+            unlockUnits.Add(tech.unlockUnit);
+        });
+
+        return unlockUnits;
     }
 }

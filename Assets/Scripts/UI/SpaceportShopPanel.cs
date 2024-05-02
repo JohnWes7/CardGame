@@ -27,6 +27,11 @@ public class SpaceportShopPanel : SingletonUIBase<SpaceportShopPanel>, IControll
         EventCenter.Instance.RemoveEventListener("SpaceportShopUpdate", EventCenter_OnSpaceportShopUpdate);
     }
 
+    private void OnEnable()
+    {
+        UpdateShop();
+    }
+
     private void Update()
     {
         if (refreshShopText)

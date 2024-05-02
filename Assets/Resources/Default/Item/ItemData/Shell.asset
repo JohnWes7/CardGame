@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainSprite: {fileID: 21300000, guid: 0b82232a3e69f0746b7f25e8f1cf6bd2, type: 3}
   prefab: {fileID: 2815142260931683684, guid: f6ec090eeab43104983b4a474b9cc038, type: 3}
+  type: 0
+  maxStack: 99

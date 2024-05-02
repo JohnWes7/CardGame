@@ -195,7 +195,7 @@ public class ShipBuildController : MonoBehaviour, IController
 
     public void CheckUnitDetail()
     {
-        Debug.Log("CheckDetail");
+        //Debug.Log("CheckDetail");
         Vector3 mouseOffsetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2Int gridXY = Sc.InterfaceObj.Grid.WorldPositionToGridXY(mouseOffsetPos);
         var gridobj = sc.InterfaceObj.Grid.GetGridObject(gridXY);
@@ -214,7 +214,7 @@ public class ShipBuildController : MonoBehaviour, IController
     {
         if (callbackContext.performed)
         {
-            this.SendCommand(new BuildUnitCommand(this));
+            this.SendCommand(new BuildUnitByBuildControllerCommand(this));
         }
     }
 
@@ -237,7 +237,7 @@ public class ShipBuildController : MonoBehaviour, IController
     {
         if (callbackContext.performed)
         {
-            this.SendCommand(new DemolitionUnitCommand(this));
+            this.SendCommand(new DemolitionUnitByBuildControllerCommand(this));
         }
     }
 

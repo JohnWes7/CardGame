@@ -11,18 +11,21 @@ public class RefreshShopCommand : AbstractCommand
     protected override void OnExecute()
     {
         SpaceportShopModel.Instance.RefreshShop();
-        Debug.Log("刷新商店\n" + SpaceportShopModel.Instance.GetRefreshCost());
+        //Debug.Log("刷新商店\n" + SpaceportShopModel.Instance.GetRefreshCost());
     }
 }
+
+
+
 
 /// <summary>
 /// 购买单位命令
 /// </summary>
-public class BuyUnitCommand : AbstractCommand
+public class BuyUnitFromShopCommand : AbstractCommand
 {
     public int index;
 
-    public BuyUnitCommand(int index)
+    public BuyUnitFromShopCommand(int index)
     {
         this.index = index;
     }
@@ -43,6 +46,7 @@ public class BuyUnitCommand : AbstractCommand
             PlayerModel.Instance.CostCurrency(info.cost);   // 扣除货币
 
             Debug.Log("购买成功" + index + " : " + info.unitSO);
+            EventCenter.Instance.TriggerEvent("BoughtUnit", this, info);
         }
         else
         {

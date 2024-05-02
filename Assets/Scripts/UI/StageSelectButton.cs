@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
+using System;
 
+[Obsolete("不再使用选择关卡的玩法")]
 public class StageSelectButton : MonoBehaviour
 {
     [SerializeField, ForceFill, AssetsOnly]

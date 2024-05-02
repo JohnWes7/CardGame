@@ -17,9 +17,6 @@ public class PlayerInventory
         }
     }
 
-    //// 单例
-    //private static PlayerInventory instance;
-
     public event EventHandler<InventoryEventArgs> OnInventoryChange;
 
     [SerializeField] private Dictionary<ItemSO, int> inventory = new Dictionary<ItemSO, int>();
@@ -53,7 +50,10 @@ public class PlayerInventory
         // 如果是已经有的item就只要添加
         if (inventory.ContainsKey(itemType))
         {
-            inventory[itemType] += num;
+            //增加物品上限
+            int temp = Mathf.Clamp(inventory[itemType] + num, 0, itemType.maxStack);
+            inventory[itemType] = temp;
+
             OnInventoryChange?.Invoke(this, new InventoryEventArgs(inventory, itemType));
             return;
         }
