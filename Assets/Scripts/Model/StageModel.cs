@@ -56,6 +56,11 @@ public class StageModel : AbstractModel
     {
         return allStageSO.stageInfoSOs[stageIndex].timeLimit;
     }
+
+    public AllStageSO GetAllStageSO()
+    {
+        return allStageSO;
+    }
 }
 
 

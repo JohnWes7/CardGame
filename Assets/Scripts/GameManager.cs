@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour, IController
 
     private void Update()
     {
-        
+        CheckTimeOut();
         SpawnEnemyPreFrame();
     }
 
@@ -54,7 +54,23 @@ public class GameManager : MonoBehaviour, IController
 
         if (getStageModelTimerCommand.mStageTimer <= 0)
         {
-               
+            // 关卡索引+1
+            StageModel stageModel = this.GetModel<StageModel>();
+            int stageindex = stageModel.GetStageIndex() + 1;
+
+            // 如果没有下一关则表示游戏结束
+            int stageCount = stageModel.GetAllStageSO().stageInfoSOs.Count;
+            if (stageindex >= stageCount)
+            {
+                // 关闭player
+                EventCenter.Instance.TriggerEvent("DisabalePlayer", this, null);
+                
+                // 显示面板
+
+            }
+
+
+            AsyncLoadSceneCommand asyncLoadSceneCommand = new("SpacePort", this);
         }
     }
 
