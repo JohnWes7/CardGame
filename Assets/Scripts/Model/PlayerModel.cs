@@ -1,9 +1,10 @@
 using Newtonsoft.Json;
 using QFramework;
-using System.Collections;
+using Johnwest;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// caretaker
@@ -16,6 +17,8 @@ public class PlayerModel : Singleton<PlayerModel>
         public ShipMemento shipMemento;
         public Dictionary<string, int> inventoryDict;
         public int currency;
+        public Dictionary<string, int> unitInventoryDict;
+        public List<string> techUnlockList;
 
         public PlayerModelBean()
         {
@@ -39,10 +42,10 @@ public class PlayerModel : Singleton<PlayerModel>
     // 玩家货币
     private BindableProperty<int> currency;
     // 玩家单位仓库
-    private PlayerUnitInventory playerUnitInventory; // TODO: 还没有保存
+    private PlayerUnitInventory playerUnitInventory;
     // 玩家科技树遗物
     private TechRelicInventory techRelicInventory;
-    
+
 
     // 可能需要添加长期数据信息 写在另一个类里面更好
     public PlayerModel()
@@ -51,6 +54,10 @@ public class PlayerModel : Singleton<PlayerModel>
         currency.Register((int value) => {
             EventCenter.Instance.TriggerEvent("CurrencyChange", this, value);
         });
+        shipMemento = null;
+        inventory = new PlayerInventory();
+        playerUnitInventory = new PlayerUnitInventory();
+        techRelicInventory = new TechRelicInventory();
     }
 
     // 获取物品仓库
@@ -89,6 +96,11 @@ public class PlayerModel : Singleton<PlayerModel>
         this.shipMemento = new ShipMemento(ship);
     }
 
+    public void NewSave()
+    {
+        
+    }
+
     public void LoadLocalSave()
     {
         string path = Path.Combine(Application.persistentDataPath, "Saves", saveName + ".json");
@@ -109,9 +121,9 @@ public class PlayerModel : Singleton<PlayerModel>
             currency.Value = bean.currency;
 
             // TODO 提取单位仓库数据
-            playerUnitInventory = new PlayerUnitInventory();
+            playerUnitInventory.LoadFromDict(bean.unitInventoryDict);
             // TODO 提取科技树遗物
-            techRelicInventory = new TechRelicInventory();
+            techRelicInventory.LoadFromList(bean.techUnlockList);
         }
         catch (System.Exception e)
         {
@@ -134,7 +146,12 @@ public class PlayerModel : Singleton<PlayerModel>
 
         // 要保存的数据存入存放的类
         PlayerModelBean bean = new PlayerModelBean(shipMemento, inventory.ToItemNameNumPairs(), currency.Value);
-
+        // 放入unitinventory
+        bean.unitInventoryDict = playerUnitInventory.GetStringIntDict();
+        // 放入解锁的科技树
+        bean.techUnlockList = techRelicInventory.GetGetTechListString();
+        
+        // 保存bean到文件
         string json = JsonConvert.SerializeObject(bean);
         string path = Path.Combine(Application.persistentDataPath, "Saves", saveName + ".json");
         try
@@ -242,6 +259,43 @@ public class PlayerUnitInventory
     {
         return unitInventory;
     }
+
+    public Dictionary<string, int> GetStringIntDict()
+    {
+        var result = new Dictionary<string, int>();
+        foreach (var item in unitInventory)
+        {
+            result[item.Key.name] = item.Value;
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 从可序列化的 dict 导入model Key : unit name Value : num
+    /// </summary>
+    /// <param name="dict"></param>
+    public void LoadFromDict(Dictionary<string, int> dict)
+    {
+        if (dict == null)
+        {
+            Debug.LogError("PlayerUnitInventory 导入失败 dict 为 null");
+            return;
+        }
+
+        unitInventory = new Dictionary<UnitSO, int>();
+        foreach (var item in dict)
+        {
+            UnitSO unit = UnitInfoModel.Instance.GetUnit(item.Key);
+            if (unit != null)
+            {
+                unitInventory.Add(unit, item.Value);
+            }
+            else
+            {
+                Debug.LogError($"PlayerUnitInventory 导入失败 unit 为 null item key: {item.Key}");
+            }
+        }
+    }
 }
 
 public class TechRelicInventory
@@ -286,5 +340,38 @@ public class TechRelicInventory
         });
 
         return unlockUnits;
+    }
+
+    public List<string> GetGetTechListString()
+    {
+        List<string> result = new();
+        foreach (TechTreeNode item in techList)
+        {
+            result.Add(item.name);
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// 从可序列化的list 导入model
+    /// </summary>
+    /// <param name="list"></param>
+    public void LoadFromList(List<string> list)
+    {
+        if (list is null)
+        {
+            Debug.LogError("TechRelicInventory 导入失败 list 为 null");
+            return;
+        }
+
+        techList = new List<TechTreeNode>();
+        foreach (var item in list)
+        {
+            TechTreeNode tech = GameArchitecture.Interface.GetModel<RelicModel>().GetRelicSO<TechTreeNode>(item);
+            if (tech != null)
+            {
+                techList.Add(tech);
+            }
+        }
     }
 }

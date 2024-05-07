@@ -26,7 +26,7 @@ public class ShipController : MonoBehaviour, IShipController
     [Header("属性")]
     [SerializeField] private float speed;
 
-    [HorizontalLine("dubug方法")]
+    [HorizontalLine("手动保存飞船的存档方法")]
     [Button(nameof(DebugSaveShipJson))]
     [HideField]
     public bool _bool;
@@ -37,7 +37,19 @@ public class ShipController : MonoBehaviour, IShipController
 
     private void Awake()
     {
+        // 注册事件
+        // 初始化事件
         EventCenter.Instance.AddEventListener("ShipMementoLoad", EventCenter_OnPlayerMementoLoad);
+        // 保存memento事件
+
+    }
+
+    private void OnDestroy()
+    {
+        // 注销事件
+        // 初始化事件
+        EventCenter.Instance.RemoveEventListener("ShipMementoLoad", EventCenter_OnPlayerMementoLoad);
+        // 取消保存memento事件
     }
 
     //private void Start()
@@ -214,8 +226,5 @@ public class ShipController : MonoBehaviour, IShipController
         DefaultInit();
     }
 
-    private void OnDestroy()
-    {
-        EventCenter.Instance.RemoveEventListener("ShipMementoLoad", EventCenter_OnPlayerMementoLoad);
-    }
+
 }

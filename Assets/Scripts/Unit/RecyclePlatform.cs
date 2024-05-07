@@ -1,3 +1,4 @@
+using QFramework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 回收平台 负责收集敌人死亡后掉落的物资
 /// </summary>
-public class RecyclePlatform : UnitObject, IShipUnit
+public class RecyclePlatform : UnitObject, IShipUnit, IController
 {
     [SerializeField] private MonoInterface<IShipController> shipController;
 
@@ -19,8 +20,6 @@ public class RecyclePlatform : UnitObject, IShipUnit
      * 如果无人机还有空余 -> 扫描周围是否有可打捞的物品 -> 有则释放无人机前往打捞 直到送出所有的无人机
      * 如果没有无人机空余就什么也不干
      */
-    
-
     public IShipController GetShip()
     {
         return shipController.InterfaceObj;
@@ -65,7 +64,7 @@ public class RecyclePlatform : UnitObject, IShipUnit
         if (hitinfo.transform != null)
         {
             DropItem dropItem = hitinfo.transform.GetComponent<DropItem>();
-            if (dropItem != null && dropItem.PickUpDrone == null)
+            if (dropItem != null && dropItem.Pickuper == null)
             {
                 return dropItem;
             }
@@ -80,18 +79,8 @@ public class RecyclePlatform : UnitObject, IShipUnit
 
     public void ReceiveDropItem(DropItem dropItem)
     {
-        // 如果改成货币 就需要判断是不是货币
-        if (dropItem.ItemSO.type == ItemSO.Type.Currency)
-        {
-            Debug.Log($"receive drop currency: {dropItem.ItemSO} {dropItem.Num}");
-            PlayerModel.Instance.AddCurrency(dropItem.Num);
-            Destroy(dropItem.gameObject);
-            return;
-        }
-
-        Debug.Log($"receive drop item: {dropItem.ItemSO} {dropItem.Num}");
-        PlayerModel.Instance.GetInventory()?.AddItem(dropItem.ItemSO, dropItem.Num);
-        Destroy(dropItem.gameObject);
+        // 改用command
+        this.SendCommand(new ReceiveDropItemCommand(dropItem));
     }
 
     public void SetDroneIdel(RecyclePlatformDrone drone)
@@ -120,5 +109,10 @@ public class RecyclePlatform : UnitObject, IShipUnit
                 Destroy(item.gameObject);
             }
         }
+    }
+
+    public IArchitecture GetArchitecture()
+    {
+        return GameArchitecture.Interface;
     }
 }

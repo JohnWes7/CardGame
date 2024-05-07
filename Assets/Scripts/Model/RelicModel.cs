@@ -17,4 +17,15 @@ public class RelicModel : AbstractModel
         Debug.Log("RelicModel: init relic list:" + Johnwest.JWUniversalTool.ListToString(allRelics));
     }
 
+    public T GetRelicSO<T> (string name) where T : RelicSO
+    {
+        foreach (var item in allRelics)
+        {
+            if (item.name == name && item is T)
+            {
+                return item as T;
+            }
+        }
+        return null;
+    }
 }

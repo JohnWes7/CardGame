@@ -27,10 +27,11 @@ public class GameManager : MonoBehaviour, IController
         spawnTimer = 0f;
 
         Debug.Log("开始初始化");
-        PlayerModel.Instance.LoadLocalSave();
+        this.SendCommand<CheckPlayerModelLoadLoacalSaveCommand>();
 
         // 重置关卡
         this.SendCommand<ResetStageInfoCommand>();
+        Debug.Log($"当前关卡index: {this.GetModel<StageModel>().GetStageIndex()}");
     }
 
     private void Start()
@@ -40,7 +41,12 @@ public class GameManager : MonoBehaviour, IController
 
     private void Update()
     {
-        CheckTimeOut();
+        // 判断关卡是否已经结束 (最好是改成command减少耦合 但是先不动) 
+        if (!this.GetModel<StageModel>().IsDone())
+        {
+            CheckTimeOut();
+        }
+        
         SpawnEnemyPreFrame();
     }
 
@@ -60,17 +66,31 @@ public class GameManager : MonoBehaviour, IController
 
             // 如果没有下一关则表示游戏结束
             int stageCount = stageModel.GetAllStageSO().stageInfoSOs.Count;
+            Debug.Log("下一关index stageindex: " + stageindex + " 总共count数量 stageCount: " + stageCount);
+            
             if (stageindex >= stageCount)
             {
+                Debug.Log(" 游戏结束");
                 // 关闭player
                 EventCenter.Instance.TriggerEvent("DisabalePlayer", this, null);
-                
+
                 // 显示面板
+                GameOverPanel.Instance.OpenUI();
 
             }
+            // 如果游戏没有结束则跳到下一关
+            else
+            {
+                Debug.Log("下一关商店");
+                // 设置关卡索引
+                stageModel.SetStageIndex(stageindex);
+                // 跳转到商店
+                AsyncLoadSceneCommand asyncLoadSceneCommand = new("SpacePort", this);
+                this.SendCommand(asyncLoadSceneCommand);
+            }
 
-
-            AsyncLoadSceneCommand asyncLoadSceneCommand = new("SpacePort", this);
+            // 设置关卡结束
+            stageModel.SetDone(true);
         }
     }
 

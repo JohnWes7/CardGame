@@ -10,8 +10,9 @@ public class TimeCountDownPanel : SingletonUIBase<TimeCountDownPanel>, IControll
     [SerializeField, ForceFill] private TextMeshProUGUI timeText;
 
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         // 注册事件
         EventCenter.Instance.AddEventListener("BattleTimeCountDown", TimeCountDown);
     }

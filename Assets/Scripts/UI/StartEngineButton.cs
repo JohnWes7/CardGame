@@ -38,7 +38,7 @@ public class StartEngineButton : MonoBehaviour, IController, IPointerExitHandler
         if (isConfirm)
         {
             // 保存数据命令
-
+            this.SendCommand(new SaveDataCommand());
 
             // 跳转场景命令
             var command = new AsyncLoadSceneCommand("SampleScene", this);

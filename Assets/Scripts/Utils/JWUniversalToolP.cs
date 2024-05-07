@@ -52,6 +52,16 @@ namespace Johnwest
 
             return string.Join("\n", result);
         }
+
+        public static Dictionary<string, int> DictKeyToStringDict<T>(Dictionary<T, int> dict)
+        {
+            var result = new Dictionary<string, int>();
+            foreach (var item in dict)
+            {
+                result[item.Key.ToString()] = item.Value;
+            }
+            return result;
+        }
     }
 
     /// <summary>

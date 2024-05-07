@@ -8,22 +8,27 @@ public class StageModel : AbstractModel
     // 静态数据
     private AllStageSO allStageSO;
 
-    // 保存的动态数据 显示计时器用
-    private float stageTimer = 60f;
-    private int stageIndex = 0;
+    // 保存的动态数据
+    private float stageTimer = 60f; // 显示计时器用
+    private int stageIndex = 0; // 当前关卡索引
+    private bool isDone = false; // 是否完成
 
     protected override void OnInit()
     {
         stageTimer = 60f;
+        stageIndex = 0;
 
         // 之后可以改为reskit加载
         Debug.Log("StageModel OnInit");
         allStageSO = Resources.Load<AllStageSO>("Default/Stage/AllStageSO");
-    }
+    } 
 
+     
+    #region Geter Seter
     public void ResetStageInfo()
     {
         stageTimer = GetCurStageTimeLimit();
+        isDone = false;
     }
 
     public void SetStageIndex(int index)
@@ -57,10 +62,26 @@ public class StageModel : AbstractModel
         return allStageSO.stageInfoSOs[stageIndex].timeLimit;
     }
 
+    public bool IsDone()
+    {
+        return isDone;
+    }
+
+    public void SetDone(bool done)
+    {
+        isDone = done;
+    }
+
     public AllStageSO GetAllStageSO()
     {
         return allStageSO;
     }
+
+    public bool IsTimeOut()
+    {
+        return stageTimer <= 0;
+    }
+    #endregion
 }
 
 

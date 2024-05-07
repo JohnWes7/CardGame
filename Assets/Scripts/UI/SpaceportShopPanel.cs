@@ -17,8 +17,9 @@ public class SpaceportShopPanel : SingletonUIBase<SpaceportShopPanel>, IControll
     [SerializeField, ForceFill]
     private TextMeshProUGUI refreshShopText;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         EventCenter.Instance.AddEventListener("SpaceportShopUpdate", EventCenter_OnSpaceportShopUpdate);
     }
 

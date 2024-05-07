@@ -55,7 +55,8 @@ public class PlayerTechTreeRelicSystem : AbstractSystem
                 // 之后如果要解决重新加载的问题 一个是要保存bought (提取一个model到player中) 还有如果model中有已经解锁了的这边也得设置为unlock = true
                 var techTreeUnlockProcess = new TechTreeUnlockProcess(techTreeNode);
                 // 判断玩家是否已经解锁了这个科技
-                if (PlayerModel.Instance.GetTechRelicInventory().GetTechList().Contains(techTreeNode))
+                var list = PlayerModel.Instance?.GetTechRelicInventory()?.GetTechList();
+                if (list != null && list.Contains(techTreeNode))
                 {
                     techTreeUnlockProcess.isUnlock = true;
                 }

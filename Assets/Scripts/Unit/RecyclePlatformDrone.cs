@@ -30,7 +30,7 @@ public class RecyclePlatformDrone : MonoBehaviour
         curSpeed = Vector3.zero;
         // 双向链接一下
         this.target = target;
-        target.PickUpDrone = this;
+        target.Pickuper = this;
         
         // move to target
         StartCoroutine(MoveTo(target.transform, () => {

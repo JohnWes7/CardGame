@@ -8,11 +8,11 @@ public class DropItem : MonoBehaviour, IItemSO
     [SerializeField] protected int num;
 
     // 添加过来拾取的无人机
-    protected RecyclePlatformDrone pickUpDrone;
+    protected object pickuper;
 
     public ItemSO ItemSO { get => itemSo; set => itemSo = value; }
     public int Num { get => num; set => num = value; }
-    public RecyclePlatformDrone PickUpDrone { get => pickUpDrone; set => pickUpDrone = value; }
+    public object Pickuper { get => pickuper; set => pickuper = value; }
 
     public static DropItem DropItemFactory(ItemSO itemSO, int num, Vector3 posistion, Quaternion rotation)
     {
