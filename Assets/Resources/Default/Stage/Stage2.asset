@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Stage2
   m_EditorClassIdentifier: 
   timeLimit: 60
-  enemySpawnInterval: 0.9
+  enemySpawnInterval: 1.7
   enemySpawnCount: 1
   enemyMaxCount: 100
   enemyInfos:

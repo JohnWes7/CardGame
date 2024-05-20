@@ -18,4 +18,28 @@ MonoBehaviour:
   - {x: 0, y: 0}
   spriteBLtoCMOffset: {x: 0, y: 0}
   maxHP: 25
-  itemCostList: []
+  cost: 10
+  nameInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        list:
+        - zh
+      editor_input: 
+    values:
+      list:
+      - "GTL-V1-\u7ECF\u5178"
+    editor_keyInput: zh
+    editor_valueInput: "GTL-V1-\u7ECF\u5178"
+  descriptionInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        list: []
+      editor_input: 
+    values:
+      list: []
+    editor_keyInput: 
+    editor_valueInput: 

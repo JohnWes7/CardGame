@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
+using QFramework;
 
 /// <summary>
 /// 所有可以建造的物体的父类
 /// </summary>
-public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairUnitObject
+public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairUnitObject, IController
 {
     // 所有unit都通过这里根据unitso来生成
     public static UnitObject UnitFactoryCreate(UnitSO unitSO, Vector2Int position, Dir dir, Grid<FGridNode> grid)
@@ -64,9 +65,22 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
     [SerializeField] protected int curHP;
     [SerializeField] protected bool isOnline = true;
 
+
     public UnitSO UnitSO { get => unitSO; set => unitSO = value; }
     public Dir Dir { get => dir; set => dir = value; }
     public Vector2Int Position { get => position; set => position = value; }
+
+    protected virtual void Awake()
+    {
+        // 注册停止事件
+        this.RegisterEvent<SetUnitObjetEnableEvent>(OnStop).UnRegisterWhenDisabled(gameObject);
+    }
+
+    protected virtual void OnStop(SetUnitObjetEnableEvent obj)
+    {
+        Debug.Log($"set {name} state{obj.value}");
+        this.enabled = obj.value;
+    }
 
     /// <summary>
     /// 在自己的grid上面找到该位置的unitObject 如果没有则返回null
@@ -89,8 +103,6 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
         isOnline = true;
     }
 
-
-
     public virtual string GetInfo()
     {
         string name = unitSO.name;
@@ -111,7 +123,16 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
         curHP = Mathf.Clamp(curHP, 0, unitSO.maxHP);
 
         // 用红色字显示伤害
-        LogUtilsXY.LogOnPos(projectile.damageAmount.ToString(), transform.position, Color.red);
+        //LogUtilsXY.LogOnPos(projectile.damageAmount.ToString(), transform.position, Color.red);
+        var command = new LogDamageTextCommand
+        {
+            DamageAmount = projectile.damageAmount,
+            Position = transform.position,
+            Color = Color.red,
+            Duration = 1f,
+            randomRadius = 2f
+        };
+        this.SendCommand(command);
 
         // 如果血量小于0则设置为离线并且关闭update
         if (curHP <= 0)
@@ -138,8 +159,7 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
         }
 
         // 如果有离线特效模块则调用
-        var fxm = GetComponent<IOfflineFXModular>();
-        if (fxm != null)
+        if (TryGetComponent<IOfflineFXModular>( out var fxm))
         {
             fxm.SetState(value);
         }
@@ -152,7 +172,17 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
 
     public virtual void Repair(int amount)
     {
-        LogUtilsXY.LogOnPos(amount.ToString(), transform.position, Color.green);
+        //LogUtilsXY.LogOnPos(amount.ToString(), transform.position, Color.green);
+        var command = new LogDamageTextCommand
+        {
+            DamageAmount = amount,
+            Position = transform.position,
+            Color = Color.green,
+            Duration = 1f,
+            randomRadius = 2f
+        };
+        this.SendCommand(command);
+
         curHP += amount;
         curHP = Mathf.Clamp(curHP, 0, unitSO.maxHP);
 
@@ -167,4 +197,14 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
     {
         return transform;
     }
+
+    public IArchitecture GetArchitecture()
+    {
+        return GameArchitecture.Interface;
+    }
+}
+
+public struct SetUnitObjetEnableEvent
+{
+    public bool value;
 }

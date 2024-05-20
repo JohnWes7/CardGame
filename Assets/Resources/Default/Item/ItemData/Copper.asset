@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Copper
   m_EditorClassIdentifier: 
   mainSprite: {fileID: 21300000, guid: 9402158ad86ee2c4898e8ed47eb0ef88, type: 3}
+  mainColor: {r: 1, g: 0.39607945, b: 0, a: 1}
   prefab: {fileID: 2059249289310165507, guid: c8884da8baaf2ab4c90c2210e50cd892, type: 3}
+  type: 0
+  maxStack: 99

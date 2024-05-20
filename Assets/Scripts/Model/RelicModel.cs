@@ -10,6 +10,11 @@ public class RelicModel : AbstractModel
 
     protected override void OnInit()
     {
+        Refresh();
+    }
+
+    public void Refresh()
+    {
         // 从Resources文件夹中加载所有的遗物
         RelicSO[] relicSOs = Resources.LoadAll<RelicSO>("Default/Relic");
         allRelics = new List<RelicSO>(relicSOs);
@@ -27,5 +32,18 @@ public class RelicModel : AbstractModel
             }
         }
         return null;
+    }
+
+    public List<T> GetAllRelic<T>() where T : RelicSO
+    {
+        List<T> result = new List<T>();
+        foreach (RelicSO item in allRelics)
+        {
+            if (item is T itemT)
+            {
+                result.Add(itemT);
+            }
+        }
+        return result;
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: INF_NormalAmmo
   m_EditorClassIdentifier: 
   prefab: {fileID: 8479795978242872140, guid: 2e3c7cc397f0f264cb3150af689b6a7e, type: 3}
-  fullsizeSprite: {fileID: 21300000, guid: 59ac1859cf7341e48bdb6107b37316ad, type: 3}
+  fullsizeSprite: {fileID: 21300000, guid: 502b59516ad8eed4ea07e9ec65055abe, type: 3}
   place:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
@@ -21,4 +21,28 @@ MonoBehaviour:
   - {x: 1, y: 1}
   spriteBLtoCMOffset: {x: 0.5, y: 0.5}
   maxHP: 100
-  itemCostList: []
+  cost: 10
+  nameInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        list:
+        - zh
+      editor_input: 
+    values:
+      list:
+      - "\u5B50\u5F39\u5236\u9020\u673AV1"
+    editor_keyInput: zh
+    editor_valueInput: "\u5B50\u5F39\u5236\u9020\u673AV1"
+  descriptionInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        list: []
+      editor_input: 
+    values:
+      list: []
+    editor_keyInput: 
+    editor_valueInput: 

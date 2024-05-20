@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class DroneEnemy : Enemy, IBeDamage
+[Obsolete]
+public class DroneEnemy : AbstractEnemy, IBeDamage
 {
     [SerializeField] private GameObject turret;
     [SerializeField] private Rigidbody2D rigi2D;

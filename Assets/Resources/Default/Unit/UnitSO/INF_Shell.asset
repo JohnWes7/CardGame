@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: INF_Shell
   m_EditorClassIdentifier: 
   prefab: {fileID: 8166541212286835632, guid: 39396fbecb3e93845b4d1d256b197ec3, type: 3}
-  fullsizeSprite: {fileID: 21300000, guid: 59ac1859cf7341e48bdb6107b37316ad, type: 3}
+  fullsizeSprite: {fileID: 21300000, guid: 502b59516ad8eed4ea07e9ec65055abe, type: 3}
   place:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
@@ -21,4 +21,28 @@ MonoBehaviour:
   - {x: 1, y: 1}
   spriteBLtoCMOffset: {x: 0.5, y: 0.5}
   maxHP: 100
-  itemCostList: []
+  cost: 0
+  nameInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        list:
+        - zh
+      editor_input: 
+    values:
+      list:
+      - "\u70AE\u5F39\u5236\u9020\u673AV1"
+    editor_keyInput: zh
+    editor_valueInput: "\u70AE\u5F39\u5236\u9020\u673AV1"
+  descriptionInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        list: []
+      editor_input: 
+    values:
+      list: []
+    editor_keyInput: 
+    editor_valueInput: 

@@ -13,6 +13,7 @@ public abstract class SingletonUIBase<T> : UIBase where T : UIBase
         {
             if (instance == null)
             {
+                Debug.Log("单例ui panel instance 没有初始化 ");
                 instance = GameObject.Find("Canvas").GetComponentInChildren<T>(true);
                 if (instance == null)
                 {

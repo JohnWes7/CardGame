@@ -4,18 +4,17 @@ using QFramework;
 using UnityEngine;
 
 /// <summary>
-/// player 购买的时候会按照科技树遗物的解锁方式自动获得 新科技保存到遗物背包
+/// player 购买的时候会按照科技树遗物的解锁方式自动获得 新科技保存到遗物背包(通过监听购买事件)
 /// </summary>
 public class PlayerTechTreeRelicSystem : AbstractSystem
 {
     /// <summary>
-    /// 自动解锁科技树遗物加入到商店池子中
+    /// 自动解锁科技树进度
     /// </summary>
     public class TechTreeUnlockProcess
     {
 
         public TechTreeNode techTreeNode;
-        public bool isUnlock = false;
         public bool active = false;
 
         public TechTreeUnlockProcess(TechTreeNode techTreeNode)
@@ -25,10 +24,14 @@ public class PlayerTechTreeRelicSystem : AbstractSystem
 
         public bool CheckUnlock(Dictionary<UnitSO, int> boughtDict)
         {
-            isUnlock = techTreeNode.CheckUnlock(boughtDict);
-            return isUnlock;
+            // 检查是否能解锁
+            return techTreeNode.CheckUnlock(boughtDict);
         }
 
+        public bool CheckUnlock(Dictionary<UnitSO, int> boughtDict, out Dictionary<UnitSO, int[]> diff)
+        {
+            return techTreeNode.CheckUnlock(boughtDict, out diff);
+        }
 
         public override string ToString()
         {
@@ -36,39 +39,54 @@ public class PlayerTechTreeRelicSystem : AbstractSystem
         }
     }
 
-    private List<TechTreeUnlockProcess> techTreeUnlockProcessList = new List<TechTreeUnlockProcess>();
-    private Dictionary<UnitSO, int> boughtDict = new Dictionary<UnitSO, int>();
+    private Dictionary<TechTreeNode, TechTreeUnlockProcess> techTreeUnlockProcessDict = new ();
+    private Dictionary<UnitSO, int> boughtDict = new();
 
     protected override void OnInit()
     {
+        // 重置
+        Reset();
+
+        // 监听购买事件
+        EventCenter.Instance.AddEventListener("BoughtUnit", OnBoughtUnitChange);
+    }
+
+    protected override void OnDeinit()
+    {
+        base.OnDeinit();
+        // 取消事件
+        EventCenter.Instance.RemoveEventListener("BoughtUnit", OnBoughtUnitChange);
+    }
+
+    public void Reset()
+    {
         // 初始techTreeUnlockProcessList
-        techTreeUnlockProcessList ??= new();
-        techTreeUnlockProcessList.Clear();
+        techTreeUnlockProcessDict ??= new();
+        techTreeUnlockProcessDict.Clear();
         boughtDict ??= new();
         boughtDict.Clear();
 
         // 遍历所有遗物，找到科技树遗物 并加入list
+        // 玩家拥有科技
+        List<TechTreeNode> playerList = PlayerModel.Instance?.GetTechRelicInventory()?.GetTechList();
+
         this.GetModel<RelicModel>().allRelics.ForEach(relic =>
         {
             if (relic is TechTreeNode techTreeNode)
             {
                 // 之后如果要解决重新加载的问题 一个是要保存bought (提取一个model到player中) 还有如果model中有已经解锁了的这边也得设置为unlock = true
                 var techTreeUnlockProcess = new TechTreeUnlockProcess(techTreeNode);
-                // 判断玩家是否已经解锁了这个科技
-                var list = PlayerModel.Instance?.GetTechRelicInventory()?.GetTechList();
-                if (list != null && list.Contains(techTreeNode))
+                // 判断玩家是否已经解锁了这个科技 如果是有的话就设置为已激活 之后变不再检查是否需要 unlock
+                if (playerList != null && playerList.Contains(techTreeNode))
                 {
-                    techTreeUnlockProcess.isUnlock = true;
+                    Debug.Log("player already unlock");
+                    techTreeUnlockProcess.active = true;
                 }
-                techTreeUnlockProcessList.Add(techTreeUnlockProcess);
+                techTreeUnlockProcessDict.Add(techTreeNode, techTreeUnlockProcess);
             }
         });
 
-        
-
-        Debug.Log($"PlayerTechTreeRelicSystem 遗物解锁系统初始化: OnInit techTreeUnlockProcessList:\n {Johnwest.JWUniversalTool.ListToString(techTreeUnlockProcessList)}");
-
-        EventCenter.Instance.AddEventListener("BoughtUnit", OnBoughtUnitChange);
+        Debug.Log($"PlayerTechTreeRelicSystem 遗物解锁系统初始化: OnInit techTreeUnlockProcessDict:\n {Johnwest.JWUniversalTool.DictToString(techTreeUnlockProcessDict)}");
     }
 
     public void OnBoughtUnitChange(object sender, object e)
@@ -88,18 +106,18 @@ public class PlayerTechTreeRelicSystem : AbstractSystem
             }
 
             // 判断能否解锁
-            foreach (TechTreeUnlockProcess item in techTreeUnlockProcessList)
+            foreach (var item in techTreeUnlockProcessDict)
             {
-                if (!item.isUnlock)
+                if (!item.Value.active)
                 {
-                    item.CheckUnlock(boughtDict);
-                    if (item.isUnlock)
+                    bool unlock = item.Value.CheckUnlock(boughtDict);
+                    if (unlock)
                     {
-                        Debug.Log($"PlayerTechTreeRelicSystem 解锁了新的炮塔: {item.techTreeNode.unlockUnit.name}");
+                        Debug.Log($"PlayerTechTreeRelicSystem 解锁了新的炮塔: {item.Value.techTreeNode.unlockUnit.name}");
 
-                        // 解锁成功 添加到遗物背包
-                        item.active = true;
-                        PlayerModel.Instance.GetTechRelicInventory().AddTech(item.techTreeNode);
+                        // 解锁成功 添加到遗物背包 设置为已激活
+                        item.Value.active = true;
+                        PlayerModel.Instance.GetTechRelicInventory().AddTech(item.Value.techTreeNode);
                     }
 
                 }
@@ -107,26 +125,35 @@ public class PlayerTechTreeRelicSystem : AbstractSystem
 
             #region debug log
             // debug 打印
-            Debug.Log($"PlayerTechTreeRelicSystem: boughtdict:\n{Johnwest.JWUniversalTool.DictToString(boughtDict)}\n");
+            Debug.Log($"PlayerTechTreeRelicSystem: bought dict:\n{Johnwest.JWUniversalTool.DictToString(boughtDict)}\n");
             string debugStr = "";
-            foreach (var item in techTreeUnlockProcessList)
+            foreach (var item in techTreeUnlockProcessDict)
             {
                 // 获取每个科技的解锁情况
-                Dictionary<UnitSO, int[]> outDict = new Dictionary<UnitSO, int[]>();
-                item.techTreeNode.CheckUnlock(boughtDict, out outDict);
-                debugStr += $"{item.techTreeNode.name}:\n";
-                foreach (var pair in outDict)
+                item.Value.techTreeNode.CheckUnlock(boughtDict, out Dictionary<UnitSO, int[]> outDict);
+                debugStr += $"{item.Value.techTreeNode.name}:\n";
+                foreach (KeyValuePair<UnitSO, int[]> pair in outDict)
                 {
                     debugStr += $"{pair.Key.name} : {pair.Value[0]} / {pair.Value[1]}\n";
                 }
             }
             Debug.Log($"全部的解锁项:\n {debugStr}");
             #endregion
-
         }
         else
         {
             Debug.LogWarning($"PlayerTechTreeRelicSystem 接收事件 BoughtUnitChang 参数传入错误: {e.GetType()}");
         }
+    }
+    
+
+    public Dictionary<TechTreeNode, TechTreeUnlockProcess> GetTechTreeUnlockProcessDict()
+    {
+        return techTreeUnlockProcessDict;
+    }
+
+    public Dictionary<UnitSO, int> GetBoughtDict()
+    {
+        return boughtDict;
     }
 }

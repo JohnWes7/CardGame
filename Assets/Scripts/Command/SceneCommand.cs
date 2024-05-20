@@ -55,7 +55,7 @@ public class SaveDataCommand : AbstractCommand
 /// 如果没有被初始化 则加载本地存档
 /// (在游戏点击开始的时候设置init为ture 游戏关闭的时候设置为false)
 /// </summary>
-public class CheckPlayerModelLoadLoacalSaveCommand : AbstractCommand
+public class CheckPlayerModelLoadLocalSaveCommand : AbstractCommand
 {
     protected override void OnExecute()
     {
@@ -64,6 +64,9 @@ public class CheckPlayerModelLoadLoacalSaveCommand : AbstractCommand
         {
             PlayerModel.Instance.LoadLocalSave();
             sceneModel.isModelInit = true;
+
+            // 重置一些模型
+            this.GetSystem<PlayerTechTreeRelicSystem>().Reset();
         }
         else
         {

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 
 [System.Serializable]
 [CreateAssetMenu(menuName = "ScriptableObject/TurretSO")]
@@ -16,15 +15,23 @@ public class TurretSO : ScriptableObject
         [Preview, Foldout] public ProjectileSO projectileSO;
     }
 
+    /// <summary>
+    /// 子弹在有弹药的时候 info
+    /// </summary>
     public List<MagazineInfo> magazineInfos;
+    [Foldout]
+    public ProjectileSO defaultProjectile;
 
-    [ShowMethod(nameof(GetAmmoConsumRate))]
-    public float fireGap;
-    public float radius;
-    public float rotateSpeed;
+    // 子弹消耗速率
+    [ShowMethod(nameof(GetAmmoConsumeRate))]
+    
+    // 炮塔属性
+    public float fireGap;   // 发射间隔
+    public float radius;    // 射程半径
+    public float rotateSpeed;   // 旋转速度
 
     // 获得弹药消耗速率
-    public float GetAmmoConsumRate()
+    public float GetAmmoConsumeRate()
     {
         try
         {
@@ -34,9 +41,14 @@ public class TurretSO : ScriptableObject
         }
         catch (System.Exception)
         {
-            Debug.LogError("弹药消耗速率计算错误");
+            //Debug.LogError("弹药消耗速率计算错误");
         }
         
         return -1f;
     }
+}
+
+public interface IShopDescription
+{
+    string GetDescription(string langKey);
 }

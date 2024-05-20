@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1321d76951fb9a54ea33594c5cd8d7b9, type: 3}
   m_Name: RLG_V1_Projection
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 10
   speed: 45
   explosionRadius: 0
   penetration: 2
-  prefab: {fileID: 292520320485557527, guid: f4f973930aae36240b1de9ec9f27cfd3, type: 3}
+  prefab: {fileID: 292520320485557527, guid: 16ce54d3e302cac4b82cfbe01e744f41, type: 3}
   targetLayer:
     serializedVersion: 2
     m_Bits: 64

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de4ff2949bbeeac4b91e3d0fce7aadce, type: 3}
+  m_Name: MNE_V2_DoubleTrouble_UnlockRelic
+  m_EditorClassIdentifier: 
+  Image: {fileID: 0}
+  unlockUnit: {fileID: 11400000, guid: 5a2b5de4b5a977d4faad682290c18a38, type: 2}
+  requireUnit:
+  - unitSO: {fileID: 11400000, guid: 7b64b880a0e2d294395ba2648f949f02, type: 2}
+    num: 3
+  - unitSO: {fileID: 11400000, guid: 450bb63d60f9c6243936b534fc96fc69, type: 2}
+    num: 3

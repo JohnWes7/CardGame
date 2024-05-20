@@ -40,7 +40,7 @@ public class ItemInfoModel : Singleton<ItemInfoModel>
             return ItemSO;
         }
 
-        Johnwest.JWUniversalTool.LogWarningWithClassMethodName($"no this item, name: {itemName}", System.Reflection.MethodBase.GetCurrentMethod());
+        Debug.LogWarning($"no this item, name: {itemName}");
         return null;
     }
 }

@@ -15,13 +15,18 @@ public class StageModel : AbstractModel
 
     protected override void OnInit()
     {
+        Reset();
+    }
+
+    public void Reset()
+    {
         stageTimer = 60f;
         stageIndex = 0;
 
         // 之后可以改为reskit加载
         Debug.Log("StageModel OnInit");
         allStageSO = Resources.Load<AllStageSO>("Default/Stage/AllStageSO");
-    } 
+    }
 
      
     #region Geter Seter

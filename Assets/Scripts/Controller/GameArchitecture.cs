@@ -9,7 +9,15 @@ public class GameArchitecture : Architecture<GameArchitecture>
     {
         Debug.Log("GameArchitecture 框架初始化 Init");
 
+        // 注册utility
+        RegisterUtility(new LangUtility());
+        var logUtility = new LogTextUtility();
+        logUtility.Init();
+        RegisterUtility(logUtility);
+        
+
         // 注册模型
+        RegisterModel(new UnitExtraSOModel());
         RegisterModel(new SceneModel());
         RegisterModel(new RelicModel());
         RegisterModel(new StageModel());

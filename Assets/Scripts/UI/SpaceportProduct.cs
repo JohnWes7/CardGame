@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.UI;
 using QFramework;
 using System;
+using System.Security.Cryptography;
 
 public class SpaceportProduct : MonoBehaviour, IController
 {
@@ -68,13 +69,35 @@ public class SpaceportProduct : MonoBehaviour, IController
         }
 
         // 读取当前语言
-        string langKey = PlayerPrefs.GetString("Language", "zh");
+        string langKey = this.GetUtility<LangUtility>().GetLanguageKey();
 
         // 设置全部显示
         nameText.text = spaceportShopProductInfo.unitSO.GetName(langKey);
-        descText.text = spaceportShopProductInfo.unitSO.GetDescription(langKey);
         costText.text = spaceportShopProductInfo.cost.ToString();
         iconImg.sprite = spaceportShopProductInfo.unitSO.fullsizeSprite;
+
+        //高级炮塔
+
+        //耐久值:	25
+        //射击间隔: 5
+        //子弹伤害: 10
+        //子弹速度: 60
+        //子弹穿透: 1 -1
+
+        //弹药消耗: 0.5 / s
+
+        //弹药类型:
+
+        // 描述: 高级炮塔
+
+        // 寻找额外数据显示 通过unitso的名字搜索
+        string desc = this.SendCommand(
+            new GetProductDescCommand(
+                spaceportShopProductInfo.unitSO,
+                this.GetUtility<LangUtility>().GetLanguageKey()
+                )
+            );
+        descText.SetText(desc);
     }
 
     public void Init(SpaceportShopProductInfo spaceportShopProductInfo, int index)
@@ -98,5 +121,56 @@ public class SpaceportProduct : MonoBehaviour, IController
         });
     }
 
-    
+
+}
+
+/// <summary>
+/// 根据名字获取炮塔SO命令
+/// </summary>
+public class GetProductDescCommand : AbstractCommand<string>
+{
+    public UnitSO unit;
+    public string langKey;
+
+    public GetProductDescCommand(UnitSO unit, string langKey)
+    {
+        this.unit = unit;
+        this.langKey = langKey;
+    }
+
+    protected override string OnExecute()
+    {
+        string desc = unit.GetDescription(langKey) + "\n" +
+                      "\n" +
+                      $"耐久值:\t{unit.maxHP}\n";
+
+        // 寻找额外数据显示 通过unitso的名字搜索
+
+        // 如果有添加炮塔数据
+        var turretSO = this.GetModel<UnitExtraSOModel>().GetTurretSO(unit.name);
+        if (turretSO != null)
+        {
+            desc += $"射击间隔:\t{turretSO.fireGap}s\n" +
+                    $"索敌半径:\t{turretSO.radius}\n" +
+                    $"子弹伤害:\t{turretSO.defaultProjectile?.damage}\n" +
+                    $"子弹速度:\t{turretSO.defaultProjectile?.speed}\n" +
+                    $"子弹穿透:\t{turretSO.defaultProjectile?.penetration - 1}\n" +
+                    $"\n" +
+                    $"弹药消耗:\t{turretSO.GetAmmoConsumeRate()} / s\n" +
+                    $"\n" +
+                    $"弹药类型:\t<size=40><sprite name=\"{turretSO.magazineInfos[0].magazineItem.name}\"></size>\n";
+        }
+
+        // 如果有护盾数据
+        var shieldSO = this.GetModel<UnitExtraSOModel>().GetShieldSO(unit.name);
+        if (shieldSO != null)
+        {
+            desc += $"护盾值:\t{shieldSO.shieldCapacity}\n" +
+                    $"范围:\t{shieldSO.shieldRadius}\n" +
+                    $"护盾恢复:\t{shieldSO.defaultRechargeNum} / {shieldSO.rechargeGap}s\n" +
+                    $"重启时间:\t{shieldSO.restartTime}\n";
+        }
+
+        return desc;
+    }
 }

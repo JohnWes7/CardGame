@@ -226,17 +226,17 @@ MonoBehaviour:
   ship:
     monoBehaviour: {fileID: 0}
   turretSO: {fileID: 11400000, guid: b5a95d3d47b6cf64c95dad4622dc5c51, type: 2}
+  curProjectileNum: 0
+  curMagazineData:
+    magazineItem: {fileID: 0}
+    projectileInOneMagazineNum: 0
+    projectileSO: {fileID: 0}
   turret: {fileID: 8829708347210321949}
-  projectileCreatPos: {fileID: 3279600056257121864}
+  projectileCreatePos: {fileID: 3279600056257121864}
   target: {fileID: 0}
   timer: 0
   turretFireStg:
     monoBehaviour: {fileID: 0}
-  curProjectilNum: 0
-  curMagzineData:
-    magazineItem: {fileID: 0}
-    projectileInOneMagazineNum: 0
-    projectileSO: {fileID: 0}
 --- !u!61 &2944252837785531423
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2abdc348c6ec5246874f8d4b456dd04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  provity: 6
+  priority: 6
   burstCount: 2
   burstDelay: 0.1
 --- !u!1 &7471785634583105784

@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Alloy
   m_EditorClassIdentifier: 
   mainSprite: {fileID: 21300000, guid: 3bc6e8539bc2e1544b350bc3a337da11, type: 3}
+  mainColor: {r: 0.2133352, g: 0.13039911, b: 0.19412372, a: 1}
   prefab: {fileID: 1695082164624130626, guid: 14f696dec21eb2545b054adeece950c1, type: 3}
+  type: 0
+  maxStack: 99

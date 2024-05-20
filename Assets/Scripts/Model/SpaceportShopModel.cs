@@ -8,13 +8,21 @@ public class SpaceportShopModel : Singleton<SpaceportShopModel>, ICanSendCommand
     private List<UnitSO> allUnits;
     private List<SpaceportShopProductInfo> currentUnits;
 
-    public int level = 1;
     public int numUnits = 4;
     public int refreshCount = 0;
     public float inflation = 1f;
 
     public SpaceportShopModel()
     {
+        Reset();
+    }
+
+    public void Reset()
+    {
+        numUnits = 4;
+        refreshCount = 0;
+        inflation = 1f;
+
         UnitListSO unitListSO = Resources.Load<UnitListSO>("Default/Unit/DefaultUnit/default_unit");
 
         this.allUnits = unitListSO.unitSOList;
@@ -46,6 +54,7 @@ public class SpaceportShopModel : Singleton<SpaceportShopModel>, ICanSendCommand
 
 
             // Add the chosen unit to the list of current units
+            // TODO: 计算价格上涨
             currentUnits.Add(new SpaceportShopProductInfo(allPool[index], Mathf.RoundToInt(allPool[index].cost * inflation)));
         }
 
@@ -75,12 +84,6 @@ public class SpaceportShopModel : Singleton<SpaceportShopModel>, ICanSendCommand
     public int GetRefreshCost()
     {
         return 2 * refreshCount;
-    }
-
-    // Unlocks a new unit, allowing it to be sold in the shop
-    public void UnlockUnit(UnitSO unit)
-    {
-        allUnits.Add(unit);
     }
 
     public List<SpaceportShopProductInfo> GetCurrentUnits()

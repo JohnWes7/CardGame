@@ -1,0 +1,19 @@
+{
+    "shipMemento": {
+        "gridWidthSize": 50,
+        "gridHeightSize": 50,
+        "mementoUnitInfoList": [
+            {
+                "unitName": "Core",
+                "dir": 0,
+                "x": 24,
+                "y": 24,
+                "extraData": null
+            }
+        ]
+    },
+    "inventoryDict": {},
+    "currency": 50,
+    "unitInventoryDict": {},
+    "techUnlockList": []
+}

@@ -96,9 +96,12 @@ public class PlayerModel : Singleton<PlayerModel>
         this.shipMemento = new ShipMemento(ship);
     }
 
-    public void NewSave()
+    public void LoadResourceSave(string path)
     {
-        
+        string json = Resources.Load<TextAsset>(path).text;
+        PlayerModelBean bean = JsonConvert.DeserializeObject<PlayerModelBean>(json);
+
+        LoadFromBean(bean);
     }
 
     public void LoadLocalSave()
@@ -110,30 +113,44 @@ public class PlayerModel : Singleton<PlayerModel>
             string json = File.ReadAllText(path);
             PlayerModelBean bean = JsonConvert.DeserializeObject<PlayerModelBean>(json);
 
-            // 从bean中提取飞船数据
-            shipMemento = bean.shipMemento;
-            
-            // 提取仓库数据 因为数据里面是item的name需要交给inventory转录 覆盖仓库
-            GetInventory().LoadFromItemNameNumPairs(bean.inventoryDict);
-            Johnwest.JWUniversalTool.LogWithClassMethodName(inventory, System.Reflection.MethodBase.GetCurrentMethod());
-
-            // 提取货币
-            currency.Value = bean.currency;
-
-            // TODO 提取单位仓库数据
-            playerUnitInventory.LoadFromDict(bean.unitInventoryDict);
-            // TODO 提取科技树遗物
-            techRelicInventory.LoadFromList(bean.techUnlockList);
+            LoadFromBean(bean);
+            Debug.Log($"成功导入本地存档: {path}");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"can not read file in {path}\n" + e.Message);
+            Debug.LogError($"file path {path}\n" + e.Message);
         }
 
         if (shipMemento == null)
         {
             Debug.LogError("null save load");
         }
+    }
+
+    private void LoadFromBean(PlayerModelBean bean)
+    {
+        try
+        {
+            // 从bean中提取飞船数据
+            shipMemento = bean.shipMemento;
+
+            // 提取仓库数据 因为数据里面是item的name需要交给inventory转录 覆盖仓库
+            GetInventory().LoadFromItemNameNumPairs(bean.inventoryDict);
+            JWUniversalTool.LogWithClassMethodName(inventory, System.Reflection.MethodBase.GetCurrentMethod());
+
+            // 提取货币
+            currency.Value = bean.currency;
+
+            // 提取单位仓库数据
+            playerUnitInventory.LoadFromDict(bean.unitInventoryDict);
+            // 提取科技树遗物
+            techRelicInventory.LoadFromList(bean.techUnlockList);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("load from bean error" + e);
+        }
+        
     }
 
     public void SaveToLocal()

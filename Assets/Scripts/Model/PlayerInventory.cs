@@ -38,7 +38,7 @@ public class PlayerInventory
     {
         if (itemType == null)
         {
-            Johnwest.JWUniversalTool.LogWarningWithClassMethodName("item type need add which is null", System.Reflection.MethodBase.GetCurrentMethod());
+            Debug.LogWarning("item type need add which is null");
             return;
         }
 

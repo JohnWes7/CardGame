@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
+using QFramework;
 
 public class ShieldUnit : UnitObject, ITextInfoDisplay
 {
@@ -131,7 +132,17 @@ public class ShieldUnit : UnitObject, ITextInfoDisplay
 
     public override void Repair(int amount)
     {
-        LogUtilsXY.LogOnPos(amount.ToString(), transform.position, Color.green);
+        //LogUtilsXY.LogOnPos(amount.ToString(), transform.position, Color.green);
+        var command = new LogDamageTextCommand
+        {
+            DamageAmount = amount,
+            Position = transform.position,
+            Color = Color.green,
+            Duration = 1f,
+            randomRadius = 2f
+        };
+        this.SendCommand(command);
+
         curHP += amount;
         curHP = Mathf.Clamp(curHP, 0, unitSO.maxHP);
 

@@ -22,7 +22,7 @@ public class DamageInfo
 
     public override string ToString()
     {
-        return $"damage: {damageAmount}, creater: {Creater}";
+        return $"damage: {damageAmount}, creator: {Creater}";
     }
 }
 

@@ -18,26 +18,32 @@ MonoBehaviour:
   - {x: 0, y: 0}
   spriteBLtoCMOffset: {x: 0, y: 0}
   maxHP: 25
-  cost: 0
+  cost: 10
   nameInfo:
     info: 0
     keys:
       info: 0
       values:
-        list: []
+        list:
+        - zh
+        - en
       editor_input: 
     values:
-      list: []
-    editor_keyInput: 
-    editor_valueInput: 
+      list:
+      - "GTL-V1-\u8FDE\u5C04"
+      - GTL-V1-Burst
+    editor_keyInput: en
+    editor_valueInput: GTL-V1-Burst
   descriptionInfo:
     info: 0
     keys:
       info: 0
       values:
-        list: []
+        list:
+        - zh
       editor_input: 
     values:
-      list: []
-    editor_keyInput: 
-    editor_valueInput: 
+      list:
+      - "\u7206\u53D1"
+    editor_keyInput: zh
+    editor_valueInput: "\u7206\u53D1"

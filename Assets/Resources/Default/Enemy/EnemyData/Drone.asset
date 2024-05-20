@@ -22,5 +22,5 @@ MonoBehaviour:
   maxSpeed: 10
   enemyDropItemInfos:
   - itemSO: {fileID: 11400000, guid: ac6f53da63f83fd4cbf87facc340a53f, type: 2}
-    maxNum: 2
-    minNum: 10
+    maxNum: 5
+    minNum: 2

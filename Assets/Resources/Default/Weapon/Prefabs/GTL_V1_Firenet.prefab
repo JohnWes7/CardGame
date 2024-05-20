@@ -291,7 +291,7 @@ MonoBehaviour:
     monoBehaviour: {fileID: 0}
   turretSO: {fileID: 11400000, guid: a976b67a75280ab409690e92a7297d33, type: 2}
   turret: {fileID: 6820612151211127536}
-  projectileCreatPos: {fileID: 697416413730417829}
+  projectileCreatePos: {fileID: 697416413730417829}
   target: {fileID: 0}
   timer: 0
   turretFireStg:

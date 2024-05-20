@@ -170,7 +170,7 @@ MonoBehaviour:
   creatTime: 2
   insertPos: {x: 0, y: 0}
   centerIcon: {fileID: 0}
-  offlineStateColorA: []
+  iconPos: {x: 0, y: 0, z: 0}
 --- !u!114 &8951758384769845071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,3 +184,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offlineStateColorA: []
+  aChangeFactor: 0.5

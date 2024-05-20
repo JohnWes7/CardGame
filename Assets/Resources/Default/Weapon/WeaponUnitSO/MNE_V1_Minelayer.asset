@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b8e056649301f54b9c185c30b2f967e, type: 3}
+  m_Name: MNE_V1_Minelayer
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 4609537882826921744, guid: 0010b82462212c249bb8a8f16949efbc, type: 3}
+  fullsizeSprite: {fileID: 21300000, guid: be98226d397599d4596ecf35963cfc1f, type: 3}
+  place:
+  - {x: 0, y: 0}
+  spriteBLtoCMOffset: {x: 0, y: 0}
+  maxHP: 25
+  cost: 12
+  nameInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        list:
+        - zh
+      editor_input: 
+    values:
+      list:
+      - "MNE-V1-\u5E03\u96F7\u5668"
+    editor_keyInput: zh
+    editor_valueInput: "MIS-V1-\u5BFC\u5F39\u4E95"
+  descriptionInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        list:
+        - zh
+      editor_input: 
+    values:
+      list:
+      - "\u6EF4."
+    editor_keyInput: zh
+    editor_valueInput: "\u54BB\u54BB\u54BB~~"

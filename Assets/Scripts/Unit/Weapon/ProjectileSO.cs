@@ -7,9 +7,13 @@ using CustomInspector;
 [CreateAssetMenu(menuName = "ScriptableObject/ProjectileSO")]
 public class ProjectileSO : ScriptableObject 
 {
+    [Tooltip("子弹伤害")]
     public int damage;
+    [Tooltip("子弹速度")]
     public float speed;
+    [Tooltip("爆炸半径")]
     public float explosionRadius;
+    [Tooltip("穿透次数")]
     public int penetration = 1;
 
     [ForceFill, Preview]

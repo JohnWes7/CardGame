@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1321d76951fb9a54ea33594c5cd8d7b9, type: 3}
   m_Name: GTL_V2_Smart_Projectile
   m_EditorClassIdentifier: 
-  damage: 15
+  damage: 30
   speed: 40
   explosionRadius: 0
   penetration: 1
-  prefab: {fileID: 292520320485557527, guid: f710c01900a374740b0c19953c9be692, type: 3}
+  prefab: {fileID: 292520320485557527, guid: e882eceb39bea8a46aff9f9edf9e06a9, type: 3}
   targetLayer:
     serializedVersion: 2
     m_Bits: 64

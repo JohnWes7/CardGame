@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1321d76951fb9a54ea33594c5cd8d7b9, type: 3}
   m_Name: GTL_V1_HighSpeed_Projectile
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 10
   speed: 80
   explosionRadius: 0
+  penetration: 1
   prefab: {fileID: 292520320485557527, guid: 5354c3aa749937f4383afb852681057e, type: 3}
   targetLayer:
     serializedVersion: 2

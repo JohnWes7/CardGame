@@ -16,10 +16,10 @@ public class CollectionCenter : MonoBehaviour, IController
     {
         RaycastHit2D[] hitinfo = Physics2D.CircleCastAll(transform.position, collectionRadius, Vector2.zero, 0f, LayerMask.GetMask("DropItem"));
         
-        if (hitinfo.Length > 0)
-        {
-            Debug.Log($"搜索到 {hitinfo.Length} 数量的物品");
-        }
+        //if (hitinfo.Length > 0)
+        //{
+        //    Debug.Log($"搜索到 {hitinfo.Length} 数量的物品");
+        //}
         
         foreach (var hitCollider in hitinfo)
         {

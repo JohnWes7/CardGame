@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using CustomInspector;
 
 [CreateAssetMenu(fileName = "New Unlock Relic", menuName = "Relic/UnlockRelic")]
 public class TechTreeNode : RelicSO
 {
+    [Foldout]
     public UnitSO unlockUnit;
+    [Foldout]
     public List<UnitNumPair> requireUnit;
 
     public override void OnReceive()

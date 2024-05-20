@@ -11,10 +11,11 @@ public class EnemySO : ScriptableObject
     [System.Serializable]
     public class EnemyDropItemInfo
     {
+        [Foldout]
         public ItemSO itemSO;
-        [Header("inclusive")]
-        public int maxNum;
         [Header("exclusive")]
+        public int maxNum;
+        [Header("include")]
         public int minNum;
     }
 

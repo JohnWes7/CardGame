@@ -18,18 +18,20 @@ MonoBehaviour:
   - {x: 0, y: 0}
   spriteBLtoCMOffset: {x: 0, y: 0}
   maxHP: 25
-  cost: 0
+  cost: 10
   nameInfo:
     info: 0
     keys:
       info: 0
       values:
-        list: []
+        list:
+        - zh
       editor_input: 
     values:
-      list: []
-    editor_keyInput: 
-    editor_valueInput: 
+      list:
+      - "RLG-V1-\u8F68\u9053\u70AE"
+    editor_keyInput: zh
+    editor_valueInput: "RLG-V1-\u8F68\u9053\u70AE"
   descriptionInfo:
     info: 0
     keys:

@@ -26,3 +26,16 @@ public class ResetStageInfoCommand : AbstractCommand
         this.GetModel<StageModel>().ResetStageInfo();
     }
 }
+
+/// <summary>
+/// 获取stage index
+/// </summary>
+public class GetStageIndexCommand : AbstractCommand
+{
+    public int mStageIndex;
+
+    protected override void OnExecute()
+    {
+        mStageIndex = this.GetModel<StageModel>().GetStageIndex();
+    }
+}

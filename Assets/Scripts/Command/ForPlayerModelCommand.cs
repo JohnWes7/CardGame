@@ -70,6 +70,11 @@ public class ReceiveDropItemCommand : AbstractCommand
     }
 }
 
+#region 保存数据相关命令
+
+/// <summary>
+/// shipcontroller 保存memento指令
+/// </summary>
 public class ShipSaveMemetoCommand : AbstractCommand
 {
     public ShipController shipController;
@@ -84,3 +89,34 @@ public class ShipSaveMemetoCommand : AbstractCommand
         PlayerModel.Instance.SetShipMemento(shipController);
     }
 }
+
+/// <summary>
+/// 读取初始化存档到指令
+/// </summary>
+public class StartGameResetModelByJsonCommand : AbstractCommand
+{
+    public string initResourcesJsonPath = "Default/Json/default";
+
+    protected override void OnExecute()
+    {
+        // 静态表格model数据重新初始化
+        // 重新导入 unit model
+        UnitInfoModel.Instance.Refresh();
+        // 重新导入 relic model
+        this.GetModel<RelicModel>().Refresh();
+
+        // 重置 player model
+        PlayerModel.Instance.LoadResourceSave(initResourcesJsonPath);
+        // 标记已经初始化 playermodel
+        this.GetModel<SceneModel>().isModelInit = true;
+
+        // 重置 stage model
+        this.GetModel<StageModel>().Reset();
+        // 重置 shop model
+        SpaceportShopModel.Instance.Reset();
+        // 重置 relic system
+        this.GetSystem<PlayerTechTreeRelicSystem>().Reset();
+    }
+}
+
+#endregion

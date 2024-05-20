@@ -134,23 +134,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0}
   dir: 0
-  unitSO: {fileID: 0}
+  unitSO: {fileID: 11400000, guid: c860520e063f34f4d94d19f879c3b632, type: 2}
   curHP: 0
   isOnline: 1
   ship:
     monoBehaviour: {fileID: 0}
   turretSO: {fileID: 11400000, guid: 88e1b609758458044ae335c9c6928ad3, type: 2}
+  curProjectileNum: 0
+  curMagazineData:
+    magazineItem: {fileID: 0}
+    projectileInOneMagazineNum: 0
+    projectileSO: {fileID: 0}
   turret: {fileID: 8705366610172124530}
-  projectileCreatPos: {fileID: 3442362939176141607}
+  projectileCreatePos: {fileID: 3442362939176141607}
   target: {fileID: 0}
   timer: 0
   turretFireStg:
     monoBehaviour: {fileID: 0}
-  curProjectilNum: 0
-  curMagzineData:
-    magazineItem: {fileID: 0}
-    projectileInOneMagazineNum: 0
-    projectileSO: {fileID: 0}
 --- !u!61 &3070001810694125936
 BoxCollider2D:
   m_ObjectHideFlags: 0

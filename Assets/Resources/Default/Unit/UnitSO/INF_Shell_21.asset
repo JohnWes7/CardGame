@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b8e056649301f54b9c185c30b2f967e, type: 3}
+  m_Name: INF_Shell_21
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 8479795978242872140, guid: f7fbf441db0fe9f408fcd1bcf92fce8d, type: 3}
+  fullsizeSprite: {fileID: 21300000, guid: fbb13d408c02a134e84209ac25e257c6, type: 3}
+  place:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  spriteBLtoCMOffset: {x: 0.5, y: 0}
+  maxHP: 50
+  cost: 10
+  nameInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        list:
+        - zh
+      editor_input: 
+    values:
+      list:
+      - "\u70AE\u5F39\u5236\u9020\u673AV1"
+    editor_keyInput: zh
+    editor_valueInput: "\u70AE\u5F39\u5236\u9020\u673AV1"
+  descriptionInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        list: []
+      editor_input: 
+    values:
+      list: []
+    editor_keyInput: 
+    editor_valueInput: 

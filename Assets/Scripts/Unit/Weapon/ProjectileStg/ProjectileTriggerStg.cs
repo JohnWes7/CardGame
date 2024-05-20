@@ -81,13 +81,13 @@ public class CollisionTriggeredCommonFuzesStg : IProjectileTriggerStrategy
         {
             // LogUtilsXY.LogOnPos($"Hit tag:{other.tag}", projectile.transform.position);
             // 执行攻击
-            var bedamgage = projectileTriggerParameters.other.GetComponent<IBeDamage>();
-            if (bedamgage != null)
+            var beDamage = projectileTriggerParameters.other.GetComponent<IBeDamage>();
+            if (beDamage != null)
             {
                 // 创造damageInfo
-                DamageInfo damageInfo = new DamageInfo(projectileTriggerParameters.projectile.ProjectileSO.damage, projectileTriggerParameters.projectile.Creater);
+                DamageInfo damageInfo = new DamageInfo(projectileTriggerParameters.projectile.ProjectileSO.damage, projectileTriggerParameters.projectile.Creator);
 
-                bedamgage.BeDamage(damageInfo);
+                beDamage.BeDamage(damageInfo);
                 projectileTriggerParameters.afterTrigger?.Invoke();
                 projectileTriggerParameters.projectile.Destroy();
             }
@@ -113,7 +113,7 @@ public class CollisionTriggeredExplosionFuzesStg : IProjectileTriggerStrategy
                 var beDamage = item.collider.gameObject.GetComponent<IBeDamage>();
                 if (beDamage != null)
                 {
-                    DamageInfo damageInfo = new DamageInfo(projectileTriggerParameters.projectile.ProjectileSO.damage, projectileTriggerParameters.projectile.Creater);
+                    DamageInfo damageInfo = new DamageInfo(projectileTriggerParameters.projectile.ProjectileSO.damage, projectileTriggerParameters.projectile.Creator);
 
                     beDamage.BeDamage(damageInfo);
                 }

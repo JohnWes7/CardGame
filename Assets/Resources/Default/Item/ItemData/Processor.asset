@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Processor
   m_EditorClassIdentifier: 
   mainSprite: {fileID: 21300000, guid: 81c87c0db1e808f4d8b49c23ad3a6a4f, type: 3}
+  mainColor: {r: 0.33578232, g: 0.5167887, b: 0.4845292, a: 1}
   prefab: {fileID: 8548372596115487104, guid: e22e5e5b77a48aa4f85780fe7c5a75ea, type: 3}
+  type: 0
+  maxStack: 99

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
 
-public class ProjectileNormalBehaviorStg : ProjectileBehaviorStgBase
+public class ProjectileNormalBehaviorStg : AbstractProjectileBehaviorStgBase
 {
     [SerializeField, ReadOnly]
     private Projectile context;
@@ -14,22 +14,20 @@ public class ProjectileNormalBehaviorStg : ProjectileBehaviorStgBase
 
     public override void Initialize(object projectile)
     {
-        if (projectile is Projectile projectile1)
-        {
-            context = projectile1;
+        if (projectile is not Projectile projectile1) return;
+        context = projectile1;
 
-            // 初始化值
-            durationTimer = 0;
-            velocity = context.Direction;
+        // 初始化值
+        durationTimer = 0;
+        velocity = context.Direction;
 
-            // 调整朝向
-            float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg - 90f;
-            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            context.transform.rotation = rotation;
+        // 调整朝向
+        float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg - 90f;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        context.transform.rotation = rotation;
 
-            // 归一化速度向量
-            velocity = velocity.normalized;
-        }
+        // 归一化速度向量
+        velocity = velocity.normalized;
     }
 
     public override void UpdatePreDeltaTime(float deltaTime)
@@ -43,7 +41,7 @@ public class ProjectileNormalBehaviorStg : ProjectileBehaviorStgBase
     }
 }
 
-public abstract class ProjectileBehaviorStgBase : MonoBehaviour, IProjectileBehaviorStg, IPoolComponent
+public abstract class AbstractProjectileBehaviorStgBase : MonoBehaviour, IProjectileBehaviorStg, IPoolComponent
 {
     public abstract void Initialize(object args);
     public abstract void UpdatePreDeltaTime(float deltaTime);

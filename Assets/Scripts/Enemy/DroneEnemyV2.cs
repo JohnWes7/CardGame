@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using QFramework;
 using UnityEngine;
 
-public class DroneEnemyV2 : Enemy, IBeDamage
+public class DroneEnemyV2 : AbstractEnemy, IBeDamage
 {
     [SerializeField] private Rigidbody2D rigi2D;
     [SerializeField] private float maxTurnRate = 120f; // 每秒最大转速度, 单位为度
@@ -92,7 +93,16 @@ public class DroneEnemyV2 : Enemy, IBeDamage
             Destroy(gameObject);
         }
 
-        LogUtilsXY.LogOnPos(damageInfo.GetDamageAmount().ToString(), transform.position, 0.5f, 12f);
+        //LogUtilsXY.LogOnPos(damageInfo.GetDamageAmount().ToString(), transform.position, 0.5f, 12f);
+        var command = new LogDamageTextCommand
+        {
+            DamageAmount = damageInfo.GetDamageAmount(),
+            Position = transform.position,
+            Color = Color.white,
+            Duration = 1f,
+            randomRadius = 2f
+        };
+        this.SendCommand(command);
     }
 
     [ContextMenu("TestDropItemBySO")]

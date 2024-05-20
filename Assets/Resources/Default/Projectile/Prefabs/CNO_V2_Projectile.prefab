@@ -93,13 +93,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2333906761941424712}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35e8da6a4904a6345811881f2eeaecbb, type: 3}
+  m_Script: {fileID: 11500000, guid: b037b332e60709944a58c843cf9c8d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSO: {fileID: 0}
   target: {fileID: 0}
   direction: {x: 0, y: 0}
-  fxPrefab: {fileID: 4628957138138677098, guid: 6c165153ccb989447bb08e89926d3ae3, type: 3}
 --- !u!114 &5092775352697325177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,6 +115,7 @@ MonoBehaviour:
   showFX: 1
   scaleFXByExplosionRadius: 1
   scaleMulty: {x: 1, y: 1, z: 1}
+  triggerTarget: []
 --- !u!114 &-5477597901127726213
 MonoBehaviour:
   m_ObjectHideFlags: 0

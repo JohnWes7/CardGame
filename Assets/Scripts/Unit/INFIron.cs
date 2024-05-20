@@ -4,7 +4,7 @@ using UnityEngine;
 using CustomInspector;
 
 /// <summary>
-/// 无限出铁机器
+/// 无限出铁机器 用于之前的玩法 把物品搬到传送带上 废弃
 /// </summary>
 public class INFIron : UnitObject, IShipUnit
 {
@@ -17,12 +17,15 @@ public class INFIron : UnitObject, IShipUnit
     [SerializeField] protected float creatTime;
     [SerializeField] protected Vector2Int insertPos;
     [SerializeField] protected GameObject centerIcon;
-    protected static readonly Vector3 iconPos = new Vector3(0, -0.31f, -0.1f);
+    [SerializeField] protected Vector3 iconPos = new Vector3(0, -0.31f, -0.1f);
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
+        timer = 0;
         RefreshCenterIcon();
     }
+
 
     public void RefreshCenterIcon()
     {

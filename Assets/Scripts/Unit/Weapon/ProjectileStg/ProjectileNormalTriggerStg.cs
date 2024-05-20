@@ -5,7 +5,7 @@ using UnityEngine;
 using CustomInspector;
 
 
-public class ProjectileNormalTriggerStg : ProjectileTriggerStgBase
+public class ProjectileNormalTriggerStg : AbstractProjectileTriggerStgBase
 {
 
     public override void TriggerInvoke(ProjectileTriggerParameters projectileTriggerParameters)
@@ -21,7 +21,7 @@ public class ProjectileNormalTriggerStg : ProjectileTriggerStgBase
                 // 创造damageInfo并执行扣血
                 DamageInfo damageInfo = new DamageInfo(
                     projectileTriggerParameters.projectile.ProjectileSO.damage,
-                    projectileTriggerParameters.projectile.Creater
+                    projectileTriggerParameters.projectile.Creator
                 );
                 bedamgage.BeDamage(damageInfo);
                 projectileTriggerParameters.afterTrigger?.Invoke();
@@ -39,7 +39,7 @@ public class ProjectileNormalTriggerStg : ProjectileTriggerStgBase
     }
 }
 
-public abstract class ProjectileTriggerStgBase : MonoBehaviour, IProjectileTriggerStrategy, IPoolComponent
+public abstract class AbstractProjectileTriggerStgBase : MonoBehaviour, IProjectileTriggerStrategy, IPoolComponent
 {
     [HorizontalLine("特效")]
     [SerializeField, AssetsOnly]

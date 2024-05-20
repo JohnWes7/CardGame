@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 回收平台 负责收集敌人死亡后掉落的物资
 /// </summary>
-public class RecyclePlatform : UnitObject, IShipUnit, IController
+public class RecyclePlatform : UnitObject, IShipUnit
 {
     [SerializeField] private MonoInterface<IShipController> shipController;
 
@@ -111,8 +111,4 @@ public class RecyclePlatform : UnitObject, IShipUnit, IController
         }
     }
 
-    public IArchitecture GetArchitecture()
-    {
-        return GameArchitecture.Interface;
-    }
 }

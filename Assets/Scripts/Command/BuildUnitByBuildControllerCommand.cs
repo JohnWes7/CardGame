@@ -27,9 +27,12 @@ public class BuildUnitByBuildControllerCommand : AbstractCommand
         if (PlayerModel.Instance.GetPlayerUnitInventory().GetUnitInventory().GetValueOrDefault(curUnitSO, -1) > 0)
         {
             UnitObject unitObject = ShipBuildingState.BuildUnit(shipBuildController);
+
+            // 返回不是 null说明是建造成功
             if (unitObject != null)
             {
-                PlayerModel.Instance.GetPlayerUnitInventory().RemoveUnit(curUnitSO, 1);
+                PlayerModel.Instance.GetPlayerUnitInventory().RemoveUnit(curUnitSO, 1); // 扣除玩家资源
+                this.SendEvent<BuildUnitEvent>(new BuildUnitEvent() { unitObject = unitObject }); // 触发建造事件
             }
         }
 
@@ -40,6 +43,11 @@ public class BuildUnitByBuildControllerCommand : AbstractCommand
         }
 
     }
+}
+
+public struct BuildUnitEvent
+{
+    public UnitObject unitObject;
 }
 
 public class DemolitionUnitByBuildControllerCommand : AbstractCommand

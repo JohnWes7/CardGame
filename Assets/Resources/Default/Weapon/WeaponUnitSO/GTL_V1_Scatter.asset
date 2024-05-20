@@ -18,7 +18,7 @@ MonoBehaviour:
   - {x: 0, y: 0}
   spriteBLtoCMOffset: {x: 0, y: 0}
   maxHP: 25
-  cost: 0
+  cost: 10
   nameInfo:
     info: 0
     keys:

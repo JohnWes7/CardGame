@@ -18,26 +18,30 @@ MonoBehaviour:
   - {x: 0, y: 0}
   spriteBLtoCMOffset: {x: 0, y: 0}
   maxHP: 25
-  cost: 0
+  cost: 12
   nameInfo:
     info: 0
     keys:
       info: 0
       values:
-        list: []
+        list:
+        - zh
       editor_input: 
     values:
-      list: []
-    editor_keyInput: 
-    editor_valueInput: 
+      list:
+      - "MIS-V1-\u5BFC\u5F39\u4E95"
+    editor_keyInput: zh
+    editor_valueInput: "MIS-V1-\u5BFC\u5F39\u4E95"
   descriptionInfo:
     info: 0
     keys:
       info: 0
       values:
-        list: []
+        list:
+        - zh
       editor_input: 
     values:
-      list: []
-    editor_keyInput: 
-    editor_valueInput: 
+      list:
+      - "\u54BB\u54BB\u54BB~~"
+    editor_keyInput: zh
+    editor_valueInput: "\u54BB\u54BB\u54BB~~"

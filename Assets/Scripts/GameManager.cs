@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour, IController
         spawnTimer = 0f;
 
         Debug.Log("开始初始化");
-        this.SendCommand<CheckPlayerModelLoadLoacalSaveCommand>();
+        this.SendCommand<CheckPlayerModelLoadLocalSaveCommand>();
 
         // 重置关卡
         this.SendCommand<ResetStageInfoCommand>();
@@ -66,17 +66,19 @@ public class GameManager : MonoBehaviour, IController
 
             // 如果没有下一关则表示游戏结束
             int stageCount = stageModel.GetAllStageSO().stageInfoSOs.Count;
-            Debug.Log("下一关index stageindex: " + stageindex + " 总共count数量 stageCount: " + stageCount);
+            Debug.Log("下一关index stage index: " + stageindex + " 总共count数量 stageCount: " + stageCount);
             
             if (stageindex >= stageCount)
             {
                 Debug.Log(" 游戏结束");
-                // 关闭player
+                
+                // TODO: 关闭player
                 EventCenter.Instance.TriggerEvent("DisabalePlayer", this, null);
+                // TODO: 关闭敌人
+                EventCenter.Instance.TriggerEvent("DisableAllEnemy", this, null);
 
                 // 显示面板
                 GameOverPanel.Instance.OpenUI();
-
             }
             // 如果游戏没有结束则跳到下一关
             else
@@ -128,7 +130,7 @@ public class GameManager : MonoBehaviour, IController
                 // 创建敌人
                 if (createEnemy != null)
                 {
-                    Enemy enemy = Enemy.CreateEnemyFactory(createEnemy, center + offset, Quaternion.identity);
+                    AbstractEnemy enemy = AbstractEnemy.CreateEnemyFactory(createEnemy, center + offset, Quaternion.identity);
                     if (initTarget)
                     {
                         enemy.SetTarget(initTarget);

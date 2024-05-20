@@ -18,7 +18,7 @@ MonoBehaviour:
   - {x: 0, y: 0}
   spriteBLtoCMOffset: {x: 0, y: 0}
   maxHP: 25
-  cost: 0
+  cost: 10
   nameInfo:
     info: 0
     keys:
@@ -26,12 +26,14 @@ MonoBehaviour:
       values:
         list:
         - zh
+        - en
       editor_input: 
     values:
       list:
       - "GTL-1-\u706B\u529B\u7F51"
-    editor_keyInput: zh
-    editor_valueInput: "GTL-1-\u706B\u529B\u7F51"
+      - GTL-1-Firenet
+    editor_keyInput: en
+    editor_valueInput: GTL-1-Firenet
   descriptionInfo:
     info: 0
     keys:

@@ -9,26 +9,29 @@ public class TurretFireNormalStg : TurretFireStrategyBase
     /// 开火策略模式
     /// 普通开火 生成一次子弹射向目标
     /// </summary>
-    public override void FireStg(TurretWeaponV2 turretWeapon, ProjectileSO projectileSO)
+    public override void FireStg(AbstractTurret turretWeapon, ProjectileSO projectileSO)
     {
-        Vector2 direction = CalculateDir(turretWeapon);
+        Vector2 direction = turretWeapon.GetFireDir();
 
-        // 生成子弹
+        // 生成一颗子弹
         Projectile.ProjectileCreationParams projectileCreationParams = new Projectile.ProjectileCreationParams(
             projectileSO, 
-            turretWeapon.Target, 
-            turretWeapon.ProjectileCreatPos.position,
+            turretWeapon.GetTarget(), 
+            turretWeapon.GetProjectileCreatePos(),
             direction,
             turretWeapon);
 
         // 触发事件 并等待事件修改参数
         FireEventArgs para = new FireEventArgs {
-            CreatePosition = turretWeapon.ProjectileCreatPos.position,
-            Target = turretWeapon.Target,
+            CreatePosition = turretWeapon.GetProjectileCreatePos(),
+            Target = turretWeapon.GetTarget(),
+            Direction = direction,
             ProjectileSO = projectileSO, 
+            creator = turretWeapon,
             ProjectileCreationParams = new List<Projectile.ProjectileCreationParams> { projectileCreationParams }, 
         };
 
+        // 触发事件
         RaiseOnFire(para);
         
         if (para.ProjectileCreationParams.Count == 0)
@@ -38,10 +41,6 @@ public class TurretFireNormalStg : TurretFireStrategyBase
         }
 
         //从触发事件后的para中获取参数 并生成子弹
-        //foreach (Projectile.ProjectileCreationParams item in para.ProjectileCreationParams)
-        //{
-        //    Projectile.ProjectileCreateFactory(item);
-        //}
         StartCoroutine(Fire(para));
     }
 
@@ -65,12 +64,11 @@ public class TurretFireNormalStg : TurretFireStrategyBase
 
 public interface ITurretFireStg
 {
-    public void FireStg(TurretWeaponV2 turretWeaponV2, ProjectileSO projectileSO);
+    public void FireStg(AbstractTurret turretWeaponV2, ProjectileSO projectileSO);
 }
 
 public interface IOnFire 
 {
-    //public event EventHandler<FireEventArgs> OnFire;
     public PriorityEventManager<FireEventArgs> priorityEventManager { get; }
 }
 
@@ -80,9 +78,14 @@ public interface IOnFire
 public class FireEventArgs : EventArgs
 {
     public Vector3 CreatePosition = Vector3.zero;
+    /// <summary>
+    /// 注意target有可能是null
+    /// </summary>
     public Transform Target;
+    public Vector2 Direction;
     public ProjectileSO ProjectileSO;
     public List<Projectile.ProjectileCreationParams> ProjectileCreationParams = new List<Projectile.ProjectileCreationParams>();
+    public object creator;
 
     // 连射逻辑属性
     public int burstCount = 1;
@@ -92,28 +95,18 @@ public class FireEventArgs : EventArgs
 
 
 /// <summary>
-/// ITurretFireStg 的抽象基类
+/// 继承 ITurretFireStg 的抽象基类
+/// 用于实现不同的开火策略
 /// </summary>
 public abstract class TurretFireStrategyBase : MonoBehaviour, ITurretFireStg, IOnFire
 {
-    //public event EventHandler<FireEventArgs> OnFire;
     public PriorityEventManager<FireEventArgs> priorityEventManager { get; } = new PriorityEventManager<FireEventArgs>();
 
-
-    public abstract void FireStg(TurretWeaponV2 turretWeaponV2, ProjectileSO projectileSO);
-
-    protected Vector2 CalculateDir(TurretWeaponV2 turretWeaponV2)
-    {
-        if (turretWeaponV2.Target == null)
-        {
-            Debug.LogError("TurretWeaponV2.Target is null");
-            return Vector2.up;
-        }
-        return turretWeaponV2.Target.position - turretWeaponV2.ProjectileCreatPos.position;
-    }
+    public abstract void FireStg(AbstractTurret turretWeaponV2, ProjectileSO projectileSO);
 
     /// <summary>
     /// 供子类调用的触发事件的方法
+    /// 
     /// </summary>
     /// <param name="e"></param>
     protected void RaiseOnFire(FireEventArgs e)

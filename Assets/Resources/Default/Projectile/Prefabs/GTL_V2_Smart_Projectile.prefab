@@ -94,7 +94,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 292520320485557527}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc23fcebe37b58141a15a04817e16198, type: 3}
+  m_Script: {fileID: 11500000, guid: b037b332e60709944a58c843cf9c8d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSO: {fileID: 0}

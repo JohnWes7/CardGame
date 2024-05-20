@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: SmallDrone
   m_EditorClassIdentifier: 
   maxHP: 30
-  speed: 3
   prefab: {fileID: 4522105117353903605, guid: 110c1c92cef1b134d91b0326a378c84b, type: 3}
   warningRange: 20
   warningLayer:
     serializedVersion: 2
     m_Bits: 128
-  enemyDropItemInfos: []
+  maxTurnRate: 60
+  maxSpeed: 5
+  enemyDropItemInfos:
+  - itemSO: {fileID: 11400000, guid: ac6f53da63f83fd4cbf87facc340a53f, type: 2}
+    maxNum: 3
+    minNum: 1

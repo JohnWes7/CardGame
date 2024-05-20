@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71c3758f85d1d6443933d1ead0991caa, type: 3}
+  m_Name: GTL_V1_Burst
+  m_EditorClassIdentifier: 
+  magazineInfos:
+  - magazineItem: {fileID: 11400000, guid: d8f761b087507b645add5635c9b47a3a, type: 2}
+    projectileInOneMagazineNum: 5
+    projectileSO: {fileID: 11400000, guid: 54485c4b41b0b5f4298b8f96380afffe, type: 2}
+  defaultProjectile: {fileID: 11400000, guid: ddf1ae61e6d313047a696cd5fed6dbdf, type: 2}
+  fireGap: 1
+  radius: 12
+  rotateSpeed: 20

@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using QFramework;
 using UnityEngine;
 
 // 状态模式弃用
-public class ShipBuildingState : IShipBuildingState
+public class ShipBuildingState : IShipBuildingState, IController
 {
     public ShipBuildingState(ShipBuildController sbc)
     {
@@ -133,7 +134,13 @@ public class ShipBuildingState : IShipBuildingState
             }
             else
             {
-                LogUtilsXY.LogOnMousePos("不能建造");
+                //LogUtilsXY.LogOnMousePos("不能建造");
+                var command = new LogWarringTextOnMousePosCommand()
+                {
+                    Text = "不能建造",
+                    Color = Color.white
+                };
+                this.SendCommand(command);
             }
         }
 
@@ -195,7 +202,13 @@ public class ShipBuildingState : IShipBuildingState
         }
         else
         {
-            LogUtilsXY.LogOnMousePos("不能建造");
+            var command = new LogWarringTextOnMousePosCommand()
+            {
+                Text = "不能建造!",
+                Color = Color.yellow,
+                Size = 8f
+            };
+            sbc.SendCommand(command);
             return null;
         }
     }
@@ -263,4 +276,9 @@ public class ShipBuildingState : IShipBuildingState
     }
 
     #endregion
+
+    public IArchitecture GetArchitecture()
+    {
+        return GameArchitecture.Interface;
+    }
 }

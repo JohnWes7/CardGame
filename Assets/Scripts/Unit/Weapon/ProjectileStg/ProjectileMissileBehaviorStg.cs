@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
 
-public class ProjectileMissileBehaviorStg : ProjectileBehaviorStgBase
+public class ProjectileMissileBehaviorStg : AbstractProjectileBehaviorStgBase
 {
     [SerializeField, ReadOnly]
     private Projectile context;

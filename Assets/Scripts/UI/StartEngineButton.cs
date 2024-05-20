@@ -37,6 +37,8 @@ public class StartEngineButton : MonoBehaviour, IController, IPointerExitHandler
     {
         if (isConfirm)
         {
+            // 触发ship保存memento事件
+            this.SendCommand(new TriggerSaveShipMementoCommand());
             // 保存数据命令
             this.SendCommand(new SaveDataCommand());
 
@@ -46,8 +48,12 @@ public class StartEngineButton : MonoBehaviour, IController, IPointerExitHandler
         }
         else
         {
+            // 获取当前关卡index
+            var command = new GetStageIndexCommand();
+            this.SendCommand(command);
+
             changeColorImage.color = confirmColor;
-            text.SetText("确认");
+            text.SetText($"目的地: #{command.mStageIndex:D2}");
             isConfirm = true;
         }
     }

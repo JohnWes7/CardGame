@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
 using System.IO;
+using QFramework;
 
-public class ShipController : MonoBehaviour, IShipController
+public class ShipController : MonoBehaviour, IShipController, IController
 {
     // 飞船核心数值
     [SerializeField] private int HP;
@@ -41,7 +42,8 @@ public class ShipController : MonoBehaviour, IShipController
         // 初始化事件
         EventCenter.Instance.AddEventListener("ShipMementoLoad", EventCenter_OnPlayerMementoLoad);
         // 保存memento事件
-
+        EventCenter.Instance.AddEventListener("ShipMementoSave", EventCenter_OnShipMementoSave);
+        
     }
 
     private void OnDestroy()
@@ -50,6 +52,7 @@ public class ShipController : MonoBehaviour, IShipController
         // 初始化事件
         EventCenter.Instance.RemoveEventListener("ShipMementoLoad", EventCenter_OnPlayerMementoLoad);
         // 取消保存memento事件
+        EventCenter.Instance.RemoveEventListener("ShipMementoSave", EventCenter_OnShipMementoSave);
     }
 
     //private void Start()
@@ -226,5 +229,14 @@ public class ShipController : MonoBehaviour, IShipController
         DefaultInit();
     }
 
+    public void EventCenter_OnShipMementoSave(object sender, object args)
+    {
+        Debug.Log("ship memento save");
+        this.SendCommand(new ShipSaveMemetoCommand(this));
+    }
 
+    public IArchitecture GetArchitecture()
+    {
+        return GameArchitecture.Interface;
+    }
 }

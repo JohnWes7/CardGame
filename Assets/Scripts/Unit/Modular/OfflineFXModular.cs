@@ -55,6 +55,10 @@ public class OfflineFXModular : MonoBehaviour, IOfflineFXModular
     }
 }
 
+/// <summary>
+/// 在UnitObjetc中的SetState 中被调用
+/// 负责控制离线状态下的特效
+/// </summary>
 public interface IOfflineFXModular
 {
     void SetState(bool value);

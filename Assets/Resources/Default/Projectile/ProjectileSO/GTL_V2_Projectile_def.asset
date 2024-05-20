@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1321d76951fb9a54ea33594c5cd8d7b9, type: 3}
+  m_Name: GTL_V2_Projectile_def
+  m_EditorClassIdentifier: 
+  damage: 15
+  speed: 60
+  explosionRadius: 0
+  penetration: 1
+  prefab: {fileID: 4335248104715333383, guid: 43c0e415d3311d4428b783716d366f05, type: 3}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
