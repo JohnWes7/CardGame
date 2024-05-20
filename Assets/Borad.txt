@@ -8,53 +8,29 @@
 建造器的 点击panel美化
 建造的时候可以在右下角显示当前建造物品的详细信息
 
-移动的时候会卡顿 不知道是不是cinemachine的锅
 constructor 现在可以用可序列化的字典了
-
-
-
-无人机敌人的炮塔
-
-
-组件扣血
 
 维修组件 全境封锁维修蜂巢
 
 炮塔
     动能能量
     能量
-    导弹
 
 
 剩余的一些必要的基础物件:
     墙体
-    护盾
-
-    范围收集器
-
     引擎
-    
-
-游戏的保存和结束回港
-
-游戏大体逻辑:
-    [loop]
-    1 停泊 港口 
-    2 副本 获得资源
-        副本中采用坚持3分钟 应对不断来袭的敌人 获得资源
-    3 港口 解锁科技 购买buff 
 
 场景切换
 
 panel 动画
-
 接入steam的sdk
- 
+
 costPanel 可以做一个折叠 动画
 
-
 弹道增加, 特效
-填入更多炮塔 激光, 导弹
+填入更多炮塔 激光
+
 
 
 ---------------------[OnProcess]----------------------
@@ -72,7 +48,6 @@ new
 
 
 TODO
-有时候飞船飞着飞着会顿一下 没有查明原因
 
 优化: 子弹的代码的策略模式可能之后需要特效之类的话 也需要改成监视器面板模组类型的策略模式
 
@@ -81,17 +56,10 @@ TODO
 
 
 TODO:
-
-
 建造的逻辑可能要改
 1 在建造面板时候 如果没有选择要建造的unit 鼠标放在有unit的地方要显示拆除的图标
 2 在建造面板时候 如果选择了要建造的unit 鼠标放在有unit的地方 要关闭虚影 并显示一个红色的虚影 以及unit拆除图标
 
-明天:
-在商店面板的显示一个tech tree relic的收集 // 暂定是如果是一个可以升级的物品 加一个 蓝图需求的描述, 鼠标放上去会显示哪些蓝图需求
-跳转战斗场景跳转前保存当前的飞船和仓库数据 command
-
-每一关用怪物的个数来表示
 
 战斗场景的
 
@@ -101,27 +69,78 @@ TODO:
 // 之后
 核心不能拆
 
-旋转bug
+旋转bug (依旧不知道为什么会有这个bug)
 
 ljh:
 railgun数值
 手感问题
 弹药制造机太大了改成两格
 子弹飞行距离()
-打包之后的中文消失了 bug
+
 
 无人机收集改为一个武器 (后续)
 
 买东西界面 和研发界面的切换
 
-
 炮塔获获取到弹药的时候显示一个小动画弹药飞入到炮塔中 表示弹药减少
 
-新建的炮塔还是会攻击
-    在建造炮塔的时候设置触发一个事件
-    spaceport会通过事件设置这个unitobject的enable
+战斗场景边界
+    出了战斗边界之后 会有一个警告 10s后就会直接判断游戏结束失败
+
+近炸引信炮塔
+    
+
 
 ---------------------[Done]---------------------------------
+2024-5-20
+fix ?
+打包之后的中文消失了 bug 应该是可以了现在langutility 有安全检查
+
+new
+ui panel 动画组件 添加了之后直接通过调用模组上的close方法而不是调用uibase的方法
+fix
+ui move ani 组件关闭不及时
+DOMove是调用transform上面 所以是用mono.transform.DOKill
+
+fix
+完善了 languageUtility 现在可以用来存储和读取当前表示语言的key 并且添加了一个枚举用来检查存放的东西是否合规
+也可以作为表示使用 但先用string更方便和字典交互
+
+new
+Settings Panel
+ui 中 rect 因为用了shader graph里面的HDRShader 会导致UGUI中的 mask 无法遮挡住
+解决办法: 
+要在Unity Shader Graph中支持UGUI的Mask组件，你需要通过一些特定的步骤来修改Shader代码，以便它能够与UGUI的Mask组件兼容。以下是一些关键步骤：
+
+导出Shader代码：首先，你需要从Shader Graph导出最终的Unlit Master节点的Shader代码。
+
+添加Stencil属性：在Shader代码中添加以下Stencil相关的属性：
+
+Copy code
+_Stencil("Stencil ID", Float) = 0
+_StencilComp("StencilComp", Float) = 8
+_StencilOp("StencilOp", Float) = 0
+_StencilReadMask("StencilReadMask", Float) = 255
+_StencilWriteMask("StencilWriteMask", Float) = 255
+_ColorMask("ColorMask", Float) = 15
+修改Pass部分：在Pass部分中添加以下代码，以使用Stencil缓冲区：
+
+Copy code
+Stencil {
+  Ref [_Stencil]
+  Comp [_StencilComp]
+  Pass [_StencilOp]
+  ReadMask [_StencilReadMask]
+  WriteMask [_StencilWriteMask]
+}
+ColorMask [_ColorMask]
+重新分配材质：完成以上修改后，将材质重新分配给这个新编写的Shader，它应该能够与UGUI的Mask组件一起工作。
+
+请注意，这些步骤可能需要根据你的具体需求进行调整，并且可能需要一些额外的调试来确保一切正常工作。此外，这种方法可能不适用于所有版本的Unity，因此请确保你的Unity版本支持这些功能^1^。
+
+如果你需要更详细的指导或示例，Unity的官方文档和社区论坛是很好的资源，你可以在那里找到更多相关信息和帮助^2^^3^^4^^5^。
+
+
 2024-5-19
 new
 添加一个1x2的inf机器作为模板 而不是2x2的
@@ -135,6 +154,10 @@ new
 2024-5-18
 new
 在spaceport界面中 关闭所有unitso的update
+新建的炮塔还是会攻击
+    在建造炮塔的时候设置触发一个事件
+    spaceport会通过事件设置这个unitobject的enable
+
 fixed
 如果在一开始直接关闭 INF会在商店页面中显示不了表示生产的物品
 调整为awake的时候就会设置INF Machine中间的sprite图标
