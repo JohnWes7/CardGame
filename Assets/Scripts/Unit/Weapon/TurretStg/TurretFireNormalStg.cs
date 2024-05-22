@@ -67,6 +67,9 @@ public interface ITurretFireStg
     public void FireStg(AbstractTurret turretWeaponV2, ProjectileSO projectileSO);
 }
 
+/// <summary>
+/// 用于 modifier 所有修改通过这个进行 修改的接口
+/// </summary>
 public interface IOnFire 
 {
     public PriorityEventManager<FireEventArgs> priorityEventManager { get; }

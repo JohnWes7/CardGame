@@ -79,7 +79,7 @@ public class CollisionTriggeredCommonFuzesStg : IProjectileTriggerStrategy
         // 如果碰撞对象的 Layer 包含在目标 Layer 中
         if (((1 << projectileTriggerParameters.other.gameObject.layer) & projectileTriggerParameters.projectile.ProjectileSO.targetLayer.value) != 0)
         {
-            // LogUtilsXY.LogOnPos($"Hit tag:{other.tag}", projectile.transform.position);
+            // LogUtilsXY.LogOnPos($"Hit tag:{other.tag}", laserProjectile.transform.position);
             // 执行攻击
             var beDamage = projectileTriggerParameters.other.GetComponent<IBeDamage>();
             if (beDamage != null)

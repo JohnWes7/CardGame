@@ -17,10 +17,7 @@ public class Projectile : MonoBehaviour
         public Vector2 direction = Vector2.zero;
         public object creator = null;
 
-        public ProjectileCreationParams()
-        {
-
-        }
+        public ProjectileCreationParams() { }
 
         public ProjectileCreationParams(ProjectileSO projectileSO, Transform tgt, Vector3 origin, Vector2 moveDir, object crt = null)
         {

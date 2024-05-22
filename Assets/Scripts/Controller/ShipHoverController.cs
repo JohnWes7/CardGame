@@ -19,6 +19,7 @@ public class ShipHoverController : MonoBehaviour
         if (callbackContext.performed)
         {
             var gridObject = shipController.InterfaceObj.Grid.GetGridObjectByMousePosition();
+            // 触发事件 交给ui去显示
             EventCenter.Instance.TriggerEvent("DistplayUnitInfo", this, gridObject == null ? null : gridObject.GetContent());
         }
     }

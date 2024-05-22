@@ -16,7 +16,7 @@ public class LangUtility : IUtility
     public string GetLanguageKey()
     {
         string key =  PlayerPrefs.GetString(LANGUAGE_PLAYERPREFS_KEY, null);
-        Debug.Log(key);
+        //Debug.Log(key);
         
         // 安全检查 避免存入 或者输出不能正常代表的字符串
         if (string.IsNullOrEmpty(key) || !Enum.TryParse(key, out LanguageKeyEnum _))
@@ -49,7 +49,7 @@ public class LangUtility : IUtility
             }
         }
 
-        Debug.Log($"LangUtility: 当前语言key : {key}");
+        //Debug.Log($"LangUtility: 当前语言key : {key}");
         return key;
     }
 

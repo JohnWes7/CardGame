@@ -85,7 +85,7 @@ public abstract class AbstractTurret : UnitObject, IShipUnit
     /// 获取弹药子弹
     /// </summary>
     /// <returns></returns>
-    protected ProjectileSO GetProjectile()
+    public ProjectileSO GetProjectile()
     {
         // 如果激发区有弹药 直接使用激发区弹药
         if (curProjectileNum > 0)
@@ -111,6 +111,35 @@ public abstract class AbstractTurret : UnitObject, IShipUnit
         if (turretSO.defaultProjectile == null)
         {
             Debug.LogWarning($"{turretSO.name} 默认子弹 defaultProjectile 为null");
+        }
+        // 发射默认子弹
+        return turretSO.defaultProjectile;
+    }
+
+    public ProjectileSO PeekProjectile()
+    {
+        // 如果激发区有弹药 直接使用激发区弹药
+        if (curProjectileNum > 0)
+        {
+            return curMagazineData?.projectileSO;
+        }
+
+        // 如果激发区没有弹药则要去仓库中拿 从高到低拿取弹药
+        foreach (TurretSO.MagazineInfo ammo in turretSO.magazineInfos)
+        {
+            // 如果没有拿到弹药就跳过
+            if (!PlayerModel.Instance.GetInventory().TryCostItem(ammo.magazineItem)) continue;
+
+            // 如果成功拿到了弹药 设置子弹弹夹和数量
+            curMagazineData = ammo;
+            curProjectileNum = ammo.projectileInOneMagazineNum;
+            return curMagazineData.projectileSO;
+        }
+
+        //Debug.Log("发射默认子弹");
+        if (turretSO.defaultProjectile == null)
+        {
+            Debug.LogWarning($"{turretSO.name} peek 默认子弹 defaultProjectile 为null");
         }
         // 发射默认子弹
         return turretSO.defaultProjectile;

@@ -123,7 +123,7 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
         curHP = Mathf.Clamp(curHP, 0, unitSO.maxHP);
 
         // 用红色字显示伤害
-        //LogUtilsXY.LogOnPos(projectile.damageAmount.ToString(), transform.position, Color.red);
+        //LogUtilsXY.LogOnPos(laserProjectile.damageAmount.ToString(), transform.position, Color.red);
         var command = new LogDamageTextCommand
         {
             DamageAmount = projectile.damageAmount,
