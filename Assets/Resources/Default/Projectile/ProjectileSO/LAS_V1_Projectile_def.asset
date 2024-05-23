@@ -16,7 +16,7 @@ MonoBehaviour:
   speed: 45
   explosionRadius: 0
   penetration: 2
-  prefab: {fileID: 292520320485557527, guid: 16ce54d3e302cac4b82cfbe01e744f41, type: 3}
+  prefab: {fileID: 292520320485557527, guid: a132a4659c12f274893c8fb57e7f8d4b, type: 3}
   targetLayer:
     serializedVersion: 2
     m_Bits: 64

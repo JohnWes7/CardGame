@@ -15,7 +15,7 @@ public class TurretFireLaserStg : MonoBehaviour, ILaserFireStg
 {
     [SerializeField, ReadOnly] private bool isLaserOpen = false;
     [SerializeField, ReadOnly] private float timer = 0;
-    [SerializeField, ReadOnly] private LaserProjectile laserProjectile;
+    [SerializeField, ReadOnly] private LaserProjectileBase laserProjectile;
 
     public bool IsLaserOpen => isLaserOpen;
 
@@ -27,15 +27,26 @@ public class TurretFireLaserStg : MonoBehaviour, ILaserFireStg
             return;
         }
 
+        Debug.Log("打开激光");
         isLaserOpen = true;
         timer = 0;
+
+        if (laserProjectile != null) laserProjectile.OpenLaser(turretWeapon);
     }
 
     public void CloseLaser(AbstractTurret turretWeapon)
     {
         // 关闭激光
+        if (!isLaserOpen)
+        {
+            return;
+        }
+
+        Debug.Log("关闭激光");
         isLaserOpen = false;
         timer = 0;
+
+        if (laserProjectile != null) laserProjectile.CloseLaser(turretWeapon);
     }
 
     public void LaserUpdate(AbstractTurret turretWeapon, float deltaTime)
@@ -66,7 +77,7 @@ public class TurretFireLaserStg : MonoBehaviour, ILaserFireStg
                 });
                 try
                 {
-                    laserProjectile = temp as LaserProjectile;
+                    laserProjectile = temp as LaserProjectileBase;
                     timer += deltaTime;
                     laserProjectile.LaserUpdate(turretWeapon, deltaTime);
                 }
@@ -93,7 +104,7 @@ public class TurretFireLaserStg : MonoBehaviour, ILaserFireStg
         // 那么就结算伤害并且把时间调整为0
         if (timer >= turretWeapon.TurretSO.fireGap)
         {
-            laserProjectile.DoDamage();
+            laserProjectile.DoDamage(turretWeapon);
             timer = 0;
             
             // 扣除弹药
