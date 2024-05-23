@@ -18,13 +18,11 @@ public abstract class LaserProjectileBase : Projectile, ILaserProjectile
 
     public virtual void DoDamage(AbstractTurret abstractTurret)
     {
-        Debug.Log("计算伤害");
+        //Debug.Log("计算伤害");
         if (target.TryGetComponent<IBeDamage>(out IBeDamage beDamage))
         {
             beDamage.BeDamage(new DamageInfo(projectileSO.damage, abstractTurret));
         }
-
-        
     }
 
     public virtual void LaserUpdate(AbstractTurret turret, float deltaTime)

@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using CustomInspector;
+using QFramework;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, IController
 {
     /// <summary>
     /// 参数对象模式 的参数对象
@@ -119,5 +120,13 @@ public class Projectile : MonoBehaviour
     {
         // 销毁的时候重新加入池子
         Johnwest.ObjectPoolManager.Instance.GetPool(projectileSO.prefab).ReturnToPool(gameObject);
+
+        // 清除所有的拖尾痕迹
+        this.SendCommand(new ClearAllTrailRendererCommand(gameObject));
+    }
+
+    public IArchitecture GetArchitecture()
+    {
+        return GameArchitecture.Interface;
     }
 }

@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c3758f85d1d6443933d1ead0991caa, type: 3}
-  m_Name: LAS_V1_BlueLasers
+  m_Name: GTL_V1_Bouncing
   m_EditorClassIdentifier: 
   magazineInfos:
-  - magazineItem: {fileID: 11400000, guid: d8f761b087507b645add5635c9b47a3a, type: 2}
-    projectileInOneMagazineNum: 1
-    projectileSO: {fileID: 11400000, guid: 5d5d3814fe028b847a9ebb177fb3e960, type: 2}
-  defaultProjectile: {fileID: 11400000, guid: 8027935fd7be4bb4495f6f91a2038edb, type: 2}
-  fireGap: 0.1
-  radius: 15
+  - magazineItem: {fileID: 11400000, guid: 52a7cae7d9043bd4bb63bc2821dd5c91, type: 2}
+    projectileInOneMagazineNum: 5
+    projectileSO: {fileID: 11400000, guid: e2a5846870cb4a245a29bc94c8905da7, type: 2}
+  defaultProjectile: {fileID: 11400000, guid: fffc2e517e07fa8429085a211157768e, type: 2}
+  fireGap: 1
+  radius: 10
   rotateSpeed: 20

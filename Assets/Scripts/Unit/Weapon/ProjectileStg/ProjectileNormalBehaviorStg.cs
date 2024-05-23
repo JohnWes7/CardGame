@@ -8,8 +8,6 @@ public class ProjectileNormalBehaviorStg : AbstractProjectileBehaviorStgBase
     [SerializeField, ReadOnly]
     private Projectile context;
     [SerializeField, ReadOnly]
-    private Vector2 velocity;
-    [SerializeField, ReadOnly]
     private float durationTimer;
 
     public override void Initialize(object projectile)
@@ -19,15 +17,11 @@ public class ProjectileNormalBehaviorStg : AbstractProjectileBehaviorStgBase
 
         // 初始化值
         durationTimer = 0;
-        velocity = context.Direction;
 
         // 调整朝向
-        float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg - 90f;
+        float angle = Mathf.Atan2(context.Direction.y, context.Direction.x) * Mathf.Rad2Deg - 90f;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         context.transform.rotation = rotation;
-
-        // 归一化速度向量
-        velocity = velocity.normalized;
     }
 
     public override void UpdatePreDeltaTime(float deltaTime)
@@ -37,7 +31,7 @@ public class ProjectileNormalBehaviorStg : AbstractProjectileBehaviorStgBase
         {
             context.Destroy();
         }
-        context.transform.position += new Vector3(velocity.x, velocity.y) * context.ProjectileSO.speed * deltaTime;
+        context.transform.position += new Vector3(context.Direction.x, context.Direction.y) * context.ProjectileSO.speed * deltaTime;
     }
 }
 
