@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using DG.Tweening;
 using QFramework;
 using UnityEngine;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class LogDamageTextCommand : AbstractCommand<GameObject>
 {
@@ -12,7 +11,7 @@ public class LogDamageTextCommand : AbstractCommand<GameObject>
     public Color Color { get; set; }
     public float Duration { get; set; } = 1f;
     public float randomRadius { get; set; } = 1f;
-    public bool ChangeFontSizeByAmount { get; set; } = false;
+    public bool ChangeFontSizeByAmount { get; set; } = true;
 
     protected override GameObject OnExecute()
     {
@@ -22,7 +21,7 @@ public class LogDamageTextCommand : AbstractCommand<GameObject>
             size = Mathf.Clamp(12f + DamageAmount / 10f, 12f, 24f);
         }
 
-        GameObject text = this.GetUtility<LogTextUtility>().LogText(DamageAmount.ToString(), Position, Color, size, Duration);
+        GameObject text = this.GetUtility<LogTextUtility>().LogText(DamageAmount.ToString(), Position + -Vector3.forward, Color, size, Duration);
         
         // 随机半径动画
         var randomV2 = UnityEngine.Random.insideUnitCircle;
@@ -31,6 +30,21 @@ public class LogDamageTextCommand : AbstractCommand<GameObject>
             .SetEase(Ease.OutExpo);
 
         return text;
+    }
+
+    public static Color GetRepairColor()
+    {
+        return new Color(0.1960784f, 0.8039216f, 0.1960784f, 1f);
+    }
+
+    public static Color GetRedColor()
+    {
+        return new Color(1f, 0.2705882f, 0f, 1f);
+    }
+
+    public static Color GetWhiteColor()
+    {
+        return new Color(1f, 1f, 1f, 1f);
     }
 }
 

@@ -1,6 +1,4 @@
 using CustomInspector.Extensions;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,7 +9,7 @@ namespace CustomInspector.Editor
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            if(property.propertyType != SerializedPropertyType.Generic)
+            if (property.propertyType != SerializedPropertyType.Generic)
             {
                 DrawProperties.DrawPropertyWithMessage(position, label, property, $"{nameof(UnfoldAttribute)} only valid on generics (a serialized class)", MessageType.Error);
                 return;
@@ -25,10 +23,13 @@ namespace CustomInspector.Editor
                 height = position.height - 15,
             };
             EditorGUI.DrawRect(lineRect, new Color(.4f, .4f, .4f));
-                
+
             //draw prop
             property.isExpanded = true;
+            EditorGUI.BeginChangeCheck();
             DrawProperties.PropertyField(position, label, property);
+            if (EditorGUI.EndChangeCheck())
+                property.serializedObject.ApplyModifiedProperties();
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {

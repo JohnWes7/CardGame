@@ -27,11 +27,13 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list:
+        _: 0
+        values:
         - zh
       editor_input: 
     values:
-      list:
+      _: 0
+      values:
       - "GTL-V2-\u667A\u6167\u5B50\u5F39"
     editor_keyInput: zh
     editor_valueInput: "GTL-V2-\u667A\u6167\u5B50\u5F39"
@@ -40,9 +42,11 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list: []
+        _: 0
+        values: []
       editor_input: 
     values:
-      list: []
+      _: 0
+      values: []
     editor_keyInput: 
     editor_valueInput: 

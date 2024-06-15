@@ -78,7 +78,10 @@ namespace CustomInspector.Editor
                 width = position.width,
                 height = position.height - (height + hl.spacing),
             };
+            EditorGUI.BeginChangeCheck();
             DrawProperties.PropertyField(propRect, label, property);
+            if (EditorGUI.EndChangeCheck())
+                property.serializedObject.ApplyModifiedProperties();
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
@@ -100,7 +103,7 @@ namespace CustomInspector.Editor
         static readonly Dictionary<string, TextInfo> cachedLabels = new();
         TextInfo GetInfo(string text)
         {
-            if(!cachedLabels.TryGetValue(text, out TextInfo res))
+            if (!cachedLabels.TryGetValue(text, out TextInfo res))
             {
                 res = new(text);
                 cachedLabels.Add(text, res);

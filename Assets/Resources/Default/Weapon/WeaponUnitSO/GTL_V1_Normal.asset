@@ -24,11 +24,13 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list:
+        _: 0
+        values:
         - zh
       editor_input: 
     values:
-      list:
+      _: 0
+      values:
       - "GTL-V1-\u7ECF\u5178"
     editor_keyInput: zh
     editor_valueInput: "GTL-V1-\u7ECF\u5178"
@@ -37,9 +39,11 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list: []
+        _: 0
+        values: []
       editor_input: 
     values:
-      list: []
+      _: 0
+      values: []
     editor_keyInput: 
     editor_valueInput: 

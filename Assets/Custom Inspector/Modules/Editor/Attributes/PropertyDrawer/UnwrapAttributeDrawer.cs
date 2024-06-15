@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace CustomInspector.Editor
 {
@@ -15,7 +14,7 @@ namespace CustomInspector.Editor
         {
             PropInfo info = GetInfo(property);
 
-            if(info.errorMessage != null)
+            if (info.errorMessage != null)
             {
                 DrawProperties.DrawPropertyWithMessage(position, label, property, info.errorMessage, MessageType.Error);
                 return;
@@ -25,12 +24,15 @@ namespace CustomInspector.Editor
 
             UnwrapAttribute u = (UnwrapAttribute)attribute;
             string prefix = (u.applyName && label?.text != null) ? $"{label.text}: " : "";
+            EditorGUI.BeginChangeCheck();
             foreach (var prop in props)
             {
                 position.height = DrawProperties.GetPropertyHeight(prop);
                 DrawProperties.PropertyField(position, property: prop, label: new GUIContent(prefix + prop.name, prop.tooltip));
                 position.y += position.height + EditorGUIUtility.standardVerticalSpacing;
             }
+            if (EditorGUI.EndChangeCheck())
+                property.serializedObject.ApplyModifiedProperties();
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
@@ -53,7 +55,7 @@ namespace CustomInspector.Editor
         PropInfo GetInfo(SerializedProperty property)
         {
             PropertyIdentifier id = new(property);
-            if(!savedInfos.TryGetValue(id, out PropInfo info))
+            if (!savedInfos.TryGetValue(id, out PropInfo info))
             {
                 info = new(property);
                 savedInfos.Add(id, info);
@@ -67,15 +69,10 @@ namespace CustomInspector.Editor
 
             public PropInfo(SerializedProperty property)
             {
-                if (property.IsArrayElement()) //is list element
-                {
-                    errorMessage = "[Unwrap]-attribute not valid on list elements. Use the [Unfold] attribute if you simply always want to expand the property.";
-                    return;
-                }
-
                 if (property.propertyType != SerializedPropertyType.Generic)
                 {
-                    errorMessage = $"{nameof(UnwrapAttribute)} only valid on Generic's (a serialized class)";
+                    errorMessage = $"{nameof(UnwrapAttribute)} only valid on Generic's (a serialized class)." +
+                                   $"\nNote: Attributes on {typeof(List<>).FullName} are applied to the elements.";
                     return;
                 }
 

@@ -59,7 +59,7 @@ public class Projectile : MonoBehaviour, IController
     public const float PROJECTILE_DURATION = 5f;
 
     public ProjectileSO ProjectileSO { get => projectileSO; set => projectileSO = value; }
-    public Transform Target { get => target; set => target = value; }
+    public virtual Transform Target { get => target; set => target = value; }
     public object Creator => creator;
     public Vector2 Direction { get => direction; set => direction = value; }
 

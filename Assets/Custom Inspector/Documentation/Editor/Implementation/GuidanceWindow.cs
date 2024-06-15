@@ -1,3 +1,4 @@
+using CustomInspector.Helpers;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -34,7 +35,7 @@ namespace CustomInspector.Documentation
             {
                 TryGUI();
             }
-            catch(ExitGUIException e)
+            catch (ExitGUIException e)
             {
                 throw e;
             }
@@ -43,7 +44,6 @@ namespace CustomInspector.Documentation
                 Debug.LogException(e);
             }
         }
-        public const float scrollbarThickness = 15;
         void TryGUI()
         {
             //Define some sizes
@@ -58,10 +58,11 @@ namespace CustomInspector.Documentation
             //Get all names shown on left
             string[] names = Enum.GetNames(typeof(NewPropertyD));
 
-            Rect leftBarRect = new Rect(pageOuterSpacing, pageOuterSpacing, leftBarPointWidth + scrollbarThickness, position.height - 2 * pageOuterSpacing);
+            Rect leftBarRect = new Rect(pageOuterSpacing, pageOuterSpacing, leftBarPointWidth + Common.scrollbarThickness, position.height - 2 * pageOuterSpacing);
 
             //Move with arrows
-            if (Event.current.type == EventType.KeyDown
+            if (!EditorGUIUtility.editingTextField //prevent if we are selecting in a text field
+                && Event.current.type == EventType.KeyDown
                 && (Event.current.keyCode == KeyCode.UpArrow
                     || Event.current.keyCode == KeyCode.DownArrow))
             {
@@ -130,7 +131,7 @@ namespace CustomInspector.Documentation
             Rect headerRect = new Rect(leftBarRect.x + leftBarRect.width, 0, -1, topBarHeight);
             {
                 headerRect.width = position.width - headerRect.x;
-                EditorGUI.DrawRect(headerRect, new Color(.1f, .1f, .1f, 1));
+                EditorGUI.DrawRect(headerRect, InternalEditorStylesConvert.DarkerBackground);
 
                 GUIContent headerLabel = new GUIContent(Current.ToString());
                 GUI.skin.label.fontSize += 10;
@@ -140,14 +141,14 @@ namespace CustomInspector.Documentation
                 GUI.skin.label.fontSize -= 10;
             }
             //Icon
-            if(icon != null && icon.texture != null)
+            if (icon != null && icon.texture != null)
             {
                 Rect iconRect = new(position.width - iconSize, 0, iconSize, iconSize);
                 GUI.DrawTexture(iconRect, icon.texture);
             }
 
             //Site
-            if(snippetsReader == null)
+            if (snippetsReader == null)
             {
                 string[] guids = AssetDatabase.FindAssets("t:SnippetsReader");
                 if (guids.Length != 1)

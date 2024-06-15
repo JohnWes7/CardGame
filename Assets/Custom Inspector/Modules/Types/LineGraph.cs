@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -18,10 +16,9 @@ namespace CustomInspector
         }
 
 
-#if UNITY_EDITOR
         [MessageBox("LineGraph is missing the [LineGraph]-attribute to be displayed")]
         [SerializeField, HideField] bool _;
-#endif
+
 
         [SerializeField, HideInInspector, Delayed2] Vector2[] points = new Vector2[] { Vector2.zero };
         /// <summary>
@@ -34,7 +31,7 @@ namespace CustomInspector
             {
                 if (value == null)
                     throw new ArgumentException($"Points provided to {nameof(LineGraph)} must not be null");
-                else if(value.Length <= 0)
+                else if (value.Length <= 0)
                     throw new ArgumentException($"Points provided to {nameof(LineGraph)} must not be empty");
 
                 points = value;
@@ -61,7 +58,7 @@ namespace CustomInspector
                 throw new ArgumentNullException("Line-graph has to points provided. Please add them in the inspector or per script.");
 
             //before first point
-            if(xValue <= points[0].x)
+            if (xValue <= points[0].x)
                 return points[0].y;
 
             //between points

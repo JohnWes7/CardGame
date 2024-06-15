@@ -1,10 +1,9 @@
 using CustomInspector.Extensions;
+using CustomInspector.Helpers;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using System.Reflection;
-using System.Linq;
-using System.Collections.Generic;
-using CustomInspector.Helpers;
 
 
 namespace CustomInspector.Editor
@@ -59,7 +58,7 @@ namespace CustomInspector.Editor
                     backgroundRect.y += outlineThickness;
                     backgroundRect.width -= 2 * outlineThickness;
                     backgroundRect.height -= 2 * outlineThickness;
-                    EditorGUI.DrawRect(backgroundRect, new Color(.2f, .2f, .2f, a: 1));
+                    EditorGUI.DrawRect(backgroundRect, InternalEditorStylesConvert.DarkerBackground);
 
                     //Draw graph
                     Rect graphRect = new()
@@ -70,8 +69,8 @@ namespace CustomInspector.Editor
                         height = backgroundRect.height - 2 * graphPadding.y,
                     };
 
-                    Vector2 min = new Vector2(Mathf.Min( points[0].x, -0.1f), Mathf.Min( points.Min(p => p.y), -0.1f)); //the min
-                    Vector2 max = new Vector2(Mathf.Max( points[^1].x, 0.1f), Mathf.Max(points.Max(p => p.y), 0.1f)); //and max is so that graph is never stuck 
+                    Vector2 min = new Vector2(Mathf.Min(points[0].x, -0.1f), Mathf.Min(points.Min(p => p.y), -0.1f)); //the min
+                    Vector2 max = new Vector2(Mathf.Max(points[^1].x, 0.1f), Mathf.Max(points.Max(p => p.y), 0.1f)); //and max is so that graph is never stuck 
 
                     Vector2 TransformInRange(Vector2 pointValue) //from points into gui-position
                     {
@@ -196,6 +195,7 @@ namespace CustomInspector.Editor
                 {
                     EditorGUI.HelpBox(position, "No points added to the graph!", MessageType.Error);
                     pointsProperty.InsertArrayElementAtIndex(0);
+                    pointsProperty.serializedObject.ApplyModifiedProperties();
                 }
 
 
@@ -218,6 +218,7 @@ namespace CustomInspector.Editor
                     {
                         pointsProperty.GetArrayElementAtIndex(i).vector2Value = sortedPoints[i];
                     }
+                    pointsProperty.serializedObject.ApplyModifiedProperties();
                 }
             }
         }

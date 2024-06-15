@@ -48,11 +48,14 @@ namespace CustomInspector.Editor
                                     position.y + EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing + borderSize,
                                     thumbnailSize, thumbnailSize);
             }
-                
+
             //Label
             EditorGUI.LabelField(labelRect, label, EditorStyles.boldLabel);
             //Field
+            EditorGUI.BeginChangeCheck();
             DrawProperties.PropertyField(fieldRect, GUIContent.none, property);
+            if (EditorGUI.EndChangeCheck())
+                property.serializedObject.ApplyModifiedProperties();
             //Draw thumbnail
             Object m = (Object)property.GetValue();
 
@@ -62,7 +65,7 @@ namespace CustomInspector.Editor
                 thumbnail = AssetPreview.GetMiniThumbnail(m);
             if (thumbnail != null)
                 GUI.DrawTexture(thumbnailRect, thumbnail);
-            
+
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {

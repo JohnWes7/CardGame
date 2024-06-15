@@ -71,6 +71,15 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ESC"",
+                    ""type"": ""Button"",
+                    ""id"": ""bfb82b0a-ee6a-4087-b6ee-ea2e2fd82ab2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -194,6 +203,17 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""action"": ""MousePos"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ada55e52-b62c-45ca-b046-bc738ee410e8"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ESC"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -281,6 +301,15 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ESC"",
+                    ""type"": ""Button"",
+                    ""id"": ""3786fe78-5468-4263-80be-f114015c8dc0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -448,14 +477,47 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                     ""action"": ""MousePos"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""28911ce0-b9a7-43d9-ad58-01e9e6d7a5be"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ESC"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
         {
             ""name"": ""UI"",
             ""id"": ""8dac56f1-c5bc-47e4-b86c-8d17ee07f49c"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""ESC"",
+                    ""type"": ""Button"",
+                    ""id"": ""b9ef059c-bf67-4500-8144-715c2719c964"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""cbb80bc6-98a6-4932-bf0b-16ed5d2aa7cf"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ESC"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -467,6 +529,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         m_Move_StartBuild = m_Move.FindAction("StartBuild", throwIfNotFound: true);
         m_Move_CheckUnitDetail = m_Move.FindAction("CheckUnitDetail", throwIfNotFound: true);
         m_Move_Zoom = m_Move.FindAction("Zoom", throwIfNotFound: true);
+        m_Move_ESC = m_Move.FindAction("ESC", throwIfNotFound: true);
         // Build
         m_Build = asset.FindActionMap("Build", throwIfNotFound: true);
         m_Build_BuildUnit = m_Build.FindAction("BuildUnit", throwIfNotFound: true);
@@ -478,8 +541,10 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         m_Build_Move = m_Build.FindAction("Move", throwIfNotFound: true);
         m_Build_Cancel = m_Build.FindAction("Cancel", throwIfNotFound: true);
         m_Build_MousePos = m_Build.FindAction("MousePos", throwIfNotFound: true);
+        m_Build_ESC = m_Build.FindAction("ESC", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_ESC = m_UI.FindAction("ESC", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -544,6 +609,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
     private readonly InputAction m_Move_StartBuild;
     private readonly InputAction m_Move_CheckUnitDetail;
     private readonly InputAction m_Move_Zoom;
+    private readonly InputAction m_Move_ESC;
     public struct MoveActions
     {
         private @ControlMap m_Wrapper;
@@ -553,6 +619,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         public InputAction @StartBuild => m_Wrapper.m_Move_StartBuild;
         public InputAction @CheckUnitDetail => m_Wrapper.m_Move_CheckUnitDetail;
         public InputAction @Zoom => m_Wrapper.m_Move_Zoom;
+        public InputAction @ESC => m_Wrapper.m_Move_ESC;
         public InputActionMap Get() { return m_Wrapper.m_Move; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -577,6 +644,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @Zoom.started -= m_Wrapper.m_MoveActionsCallbackInterface.OnZoom;
                 @Zoom.performed -= m_Wrapper.m_MoveActionsCallbackInterface.OnZoom;
                 @Zoom.canceled -= m_Wrapper.m_MoveActionsCallbackInterface.OnZoom;
+                @ESC.started -= m_Wrapper.m_MoveActionsCallbackInterface.OnESC;
+                @ESC.performed -= m_Wrapper.m_MoveActionsCallbackInterface.OnESC;
+                @ESC.canceled -= m_Wrapper.m_MoveActionsCallbackInterface.OnESC;
             }
             m_Wrapper.m_MoveActionsCallbackInterface = instance;
             if (instance != null)
@@ -596,6 +666,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @Zoom.started += instance.OnZoom;
                 @Zoom.performed += instance.OnZoom;
                 @Zoom.canceled += instance.OnZoom;
+                @ESC.started += instance.OnESC;
+                @ESC.performed += instance.OnESC;
+                @ESC.canceled += instance.OnESC;
             }
         }
     }
@@ -613,6 +686,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
     private readonly InputAction m_Build_Move;
     private readonly InputAction m_Build_Cancel;
     private readonly InputAction m_Build_MousePos;
+    private readonly InputAction m_Build_ESC;
     public struct BuildActions
     {
         private @ControlMap m_Wrapper;
@@ -626,6 +700,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Build_Move;
         public InputAction @Cancel => m_Wrapper.m_Build_Cancel;
         public InputAction @MousePos => m_Wrapper.m_Build_MousePos;
+        public InputAction @ESC => m_Wrapper.m_Build_ESC;
         public InputActionMap Get() { return m_Wrapper.m_Build; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -662,6 +737,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @MousePos.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnMousePos;
                 @MousePos.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnMousePos;
                 @MousePos.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnMousePos;
+                @ESC.started -= m_Wrapper.m_BuildActionsCallbackInterface.OnESC;
+                @ESC.performed -= m_Wrapper.m_BuildActionsCallbackInterface.OnESC;
+                @ESC.canceled -= m_Wrapper.m_BuildActionsCallbackInterface.OnESC;
             }
             m_Wrapper.m_BuildActionsCallbackInterface = instance;
             if (instance != null)
@@ -693,6 +771,9 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
                 @MousePos.started += instance.OnMousePos;
                 @MousePos.performed += instance.OnMousePos;
                 @MousePos.canceled += instance.OnMousePos;
+                @ESC.started += instance.OnESC;
+                @ESC.performed += instance.OnESC;
+                @ESC.canceled += instance.OnESC;
             }
         }
     }
@@ -701,10 +782,12 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private IUIActions m_UIActionsCallbackInterface;
+    private readonly InputAction m_UI_ESC;
     public struct UIActions
     {
         private @ControlMap m_Wrapper;
         public UIActions(@ControlMap wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ESC => m_Wrapper.m_UI_ESC;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -714,10 +797,16 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_UIActionsCallbackInterface != null)
             {
+                @ESC.started -= m_Wrapper.m_UIActionsCallbackInterface.OnESC;
+                @ESC.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnESC;
+                @ESC.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnESC;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
             {
+                @ESC.started += instance.OnESC;
+                @ESC.performed += instance.OnESC;
+                @ESC.canceled += instance.OnESC;
             }
         }
     }
@@ -729,6 +818,7 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         void OnStartBuild(InputAction.CallbackContext context);
         void OnCheckUnitDetail(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
+        void OnESC(InputAction.CallbackContext context);
     }
     public interface IBuildActions
     {
@@ -741,8 +831,10 @@ public partial class @ControlMap : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
         void OnMousePos(InputAction.CallbackContext context);
+        void OnESC(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
+        void OnESC(InputAction.CallbackContext context);
     }
 }

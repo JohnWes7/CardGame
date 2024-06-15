@@ -18,10 +18,10 @@ namespace CustomInspector
     public class MessageDrawer
     {
 
-#if UNITY_EDITOR
         [MessageBox("You are overriding the default PropertyDrawer of MessageDrawer", MessageBoxType.Error)]
         [SerializeField, HideField] string info;
 
+#if UNITY_EDITOR
         List<(string, MessageBoxType)> messages = new();
 #endif
 
@@ -48,7 +48,7 @@ namespace CustomInspector
 #if UNITY_EDITOR
             if (replaceCurrents)
                 messages.Clear();
-            
+
             messages.Add((message, type));
 #endif
         }

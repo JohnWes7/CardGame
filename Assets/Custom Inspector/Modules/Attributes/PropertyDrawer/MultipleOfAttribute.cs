@@ -42,7 +42,7 @@ namespace CustomInspector
         public static bool IsMultiple(double value, double step)
         {
             double divided = value / step;
-            return divided == (int)divided;
+            return Math.Abs(divided - (int)divided) < .0000001d; // some rounding issues
         }
         /// <summary>
         /// If value is multiple of step

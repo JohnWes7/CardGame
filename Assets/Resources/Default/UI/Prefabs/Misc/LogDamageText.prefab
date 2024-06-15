@@ -129,13 +129,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 14.19
+  m_fontSizeBase: 14.19
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -189,18 +189,18 @@ MonoBehaviour:
   typewriterStartsAutomatically: 1
   animationLoop: 0
   timeScale: 0
-  _text: 
+  _text: 1000
   useDynamicScaling: 1
   referenceFontSize: 10
   isResettingTimeOnNewText: 1
   useDefaultDatabases: 1
-  databaseBehaviors: {fileID: 0}
-  databaseAppearances: {fileID: 0}
+  databaseBehaviors: {fileID: 11400000, guid: 417e4961ba9e249429a2a6a6adb2ccb1, type: 2}
+  databaseAppearances: {fileID: 11400000, guid: 927a8f210e8c4bb46a200f1b6d263f6e, type: 2}
   useDefaultStyleSheet: 1
   styleSheet: {fileID: 0}
-  databaseActions: {fileID: 0}
+  databaseActions: {fileID: 11400000, guid: 079636d73a42bc849bb603cbaf3db725, type: 2}
   defaultAppearancesTags:
-  - size
+  - size a=-1.5
   defaultDisappearancesTags:
   - fade
   defaultBehaviorsTags: []

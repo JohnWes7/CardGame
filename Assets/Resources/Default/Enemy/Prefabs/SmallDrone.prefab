@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1404040733}
   - component: {fileID: 1404040732}
   - component: {fileID: 1404040734}
+  - component: {fileID: 7692498707295029622}
   m_Layer: 6
   m_Name: SmallDrone
   m_TagString: Untagged
@@ -237,6 +238,33 @@ MonoBehaviour:
   maxSpeed: 5
   maxAcceleration: 3
   slowDamping: 0.05
+--- !u!114 &7692498707295029622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4522105117353903605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efb699bdf0c73344987d10dcd8a23451, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rendererComponents: []
+  originColors:
+    info: 0
+    keys:
+      info: 0
+      values:
+        _: 0
+        values: []
+      editor_input: {fileID: 0}
+    values:
+      _: 0
+      values: []
+    editor_keyInput: {fileID: 0}
+    editor_valueInput: {r: 0, g: 0, b: 0, a: 0}
+  duration: 0.05
 --- !u!1 &4522105118836520832
 GameObject:
   m_ObjectHideFlags: 0

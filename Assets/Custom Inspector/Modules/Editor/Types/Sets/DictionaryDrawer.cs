@@ -1,7 +1,7 @@
 using CustomInspector.Extensions;
 using CustomInspector.Helpers;
+using CustomInspector.Helpers.Editor;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -32,15 +32,18 @@ namespace CustomInspector.Editor
                 }
                 else
                 {
+                    EditorGUI.BeginChangeCheck();
                     info.gui(position, label, property);
+                    if (EditorGUI.EndChangeCheck())
+                        property.serializedObject.ApplyModifiedProperties();
                     return;
                 }
             }
-            catch(ExitGUIException e)
+            catch (ExitGUIException e)
             {
                 throw e;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.LogException(e);
             }
@@ -65,7 +68,7 @@ namespace CustomInspector.Editor
                 Debug.LogException(e);
                 return 0;
             }
-}
+        }
 
         static Dictionary<PropertyIdentifier, PropInfo> infos = new();
         PropInfo GetInfo(SerializedProperty property)
@@ -83,6 +86,9 @@ namespace CustomInspector.Editor
             public readonly string errorMessage = null;
 
             public readonly float keyWidth;
+
+            public readonly string customKeyLabel = null;
+            public readonly string customValueLabel = null;
 
             //only for nonreorderable: Remove has to happen after dict was drawn. otherwise tries to draw removed things
             public readonly List<Action> removesAfterDraw = new();
@@ -103,11 +109,17 @@ namespace CustomInspector.Editor
                 if (keyWidth <= 0)
                     Debug.LogWarning($"Dictionary on {property.serializedObject.targetObject}->{property.propertyPath}:\nKeysize is set to zero");
 
+                if (attribute != null)
+                {
+                    customKeyLabel = attribute.keyLabel;
+                    customValueLabel = attribute.valueLabel;
+                }
+
                 if (fieldInfo.FieldType.GetGenericTypeDefinition() == typeof(SerializableDictionary<,>)
                     || fieldInfo.FieldType.GetGenericTypeDefinition() == typeof(SerializableSortedDictionary<,>))
                 {
-                    string keysListPath = "keys.values.list";
-                    string valuesListPath = "values.list";
+                    string keysListPath = "keys.values.values";
+                    string valuesListPath = "values.values";
 
                     SerializedProperty keys_instantiate = property.FindPropertyRelative(keysListPath);
                     SerializedProperty values_instantiate = property.FindPropertyRelative(valuesListPath);
@@ -125,10 +137,10 @@ namespace CustomInspector.Editor
                         return;
                     }
 
-                    if(keys_instantiate.arraySize != values_instantiate.arraySize)
+                    if (keys_instantiate.arraySize != values_instantiate.arraySize)
                     {
                         int amount;
-                        if(keys_instantiate.arraySize > values_instantiate.arraySize) //more keys
+                        if (keys_instantiate.arraySize > values_instantiate.arraySize) //more keys
                         {
                             amount = keys_instantiate.arraySize - values_instantiate.arraySize;
                             for (int i = keys_instantiate.arraySize - 1; i >= keys_instantiate.arraySize; i--)
@@ -231,7 +243,7 @@ namespace CustomInspector.Editor
                 {
                     string path = "keyValuePairs";
                     SerializedProperty keyValuePairs_instantiate = property.FindPropertyRelative(path);
-                    if(keyValuePairs_instantiate == null)
+                    if (keyValuePairs_instantiate == null)
                     {
                         errorMessage = $"Dictionary: Argument types are not serializable."
                          + $"\nMaybe add [System.Serializable] if its your custom class";
@@ -345,8 +357,19 @@ namespace CustomInspector.Editor
                     }
 
                     //insert headers to columns
-                    GUIContent keysHeader = new($"key: {PropertyConversions.GetIListElementType(DirtyValue.GetType(keys)).Name}");
-                    GUIContent valuesHeader = new($"value: {PropertyConversions.GetIListElementType(DirtyValue.GetType(values)).Name}");
+                    GUIContent keysHeader;
+                    GUIContent valuesHeader;
+
+                    if (info.customKeyLabel != null)
+                        keysHeader = new(info.customKeyLabel);
+                    else
+                        keysHeader = new($"key: {PropertyConversions.GetIListElementType(DirtyValue.GetType(keys)).Name}");
+
+
+                    if (info.customValueLabel != null)
+                        valuesHeader = new(info.customValueLabel);
+                    else
+                        valuesHeader = new($"value: {PropertyConversions.GetIListElementType(DirtyValue.GetType(values)).Name}");
 
                     indices.entrys = Enumerable.Repeat(new Entry(0, (position) => { }), 1)
                                             .Concat(indices.entrys);
@@ -460,33 +483,32 @@ namespace CustomInspector.Editor
             Rect ind = EditorGUI.IndentedRect(position);
             using (new NewIndentLevel(0))
             {
-                Color prev = GUI.color;
-                if (!isValid.boolValue) GUI.color = new Color(1f, .6f, .6f);
-
-                Rect r = new(ind)
+                using (new GUIColorScope(!isValid.boolValue ? new Color(1f, .6f, .6f) : GUI.color))
                 {
-                    width = ind.width * keyWidth - dividerWidth / 2f,
-                };
+                    Rect r = new(ind)
+                    {
+                        width = ind.width * keyWidth - dividerWidth / 2f,
+                    };
 
-                using (new LabelWidthScope(r.width * keyWidth))
-                {
-                    DrawProperties.PropertyFieldWithoutLabel(r, key);
+                    using (new LabelWidthScope(r.width * keyWidth))
+                    {
+                        DrawProperties.PropertyFieldWithoutLabel(r, key);
+                    }
+
+                    if (!isValid.boolValue)
+                    {
+                        //Draw warning
+                        EditorGUI.LabelField(r, GetNotValidIcon(), topRight);
+                    }
+
+                    r.x += r.width + dividerWidth;
+                    r.width = ind.width - (r.width + dividerWidth);
+
+                    using (new LabelWidthScope(r.width * keyWidth))
+                    {
+                        DrawProperties.PropertyFieldWithoutLabel(r, value);
+                    }
                 }
-
-                if (!isValid.boolValue)
-                {
-                    //Draw warning
-                    EditorGUI.LabelField(r, GetNotValidIcon(), topRight);
-                }
-
-                r.x += r.width + dividerWidth;
-                r.width = ind.width - (r.width + dividerWidth);
-
-                using (new LabelWidthScope(r.width * keyWidth))
-                {
-                    DrawProperties.PropertyFieldWithoutLabel(r, value);
-                }
-                GUI.color = prev;
             }
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -494,7 +516,7 @@ namespace CustomInspector.Editor
             SerializedProperty key = property.FindPropertyRelative("key");
             SerializedProperty value = property.FindPropertyRelative("value");
 
-            return Mathf.Max(DrawProperties.GetPropertyHeight(label, key), DrawProperties.GetPropertyHeight(label, value));
+            return Mathf.Max(DrawProperties.GetPropertyHeight(key), DrawProperties.GetPropertyHeight(value));
         }
     }
 }

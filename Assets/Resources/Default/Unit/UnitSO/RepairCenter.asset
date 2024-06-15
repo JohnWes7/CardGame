@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b8e056649301f54b9c185c30b2f967e, type: 3}
+  m_Name: RepairCenter
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 8479795978242872140, guid: 5d21b4b77cd7aa64b8fd7df9a99baeb1, type: 3}
+  fullsizeSprite: {fileID: 21300000, guid: f28eb1e5138b5e0449ec7ffba588ef9f, type: 3}
+  place:
+  - {x: 0, y: 0}
+  spriteBLtoCMOffset: {x: 0, y: 0}
+  maxHP: 25
+  cost: 10
+  nameInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        _: 0
+        values:
+        - zh
+      editor_input: 
+    values:
+      _: 0
+      values:
+      - "\u7EF4\u4FEE\u7EC4\u4EF6V1"
+    editor_keyInput: zh
+    editor_valueInput: "\u7EF4\u4FEE\u7EC4\u4EF6V1"
+  descriptionInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        _: 0
+        values: []
+      editor_input: 
+    values:
+      _: 0
+      values: []
+    editor_keyInput: 
+    editor_valueInput: 

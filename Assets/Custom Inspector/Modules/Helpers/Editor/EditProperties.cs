@@ -22,6 +22,7 @@ namespace CustomInspector.Extensions
 
             switch (property.propertyType)
             {
+                case SerializedPropertyType.Enum: // using intValue has better performance than: property.enumValueIndex = Math.Max(0, Array.IndexOf(Enum.GetValues(value.GetType()), value)); break; //max 0 to prevent -1
                 case SerializedPropertyType.Integer: property.intValue = (int)value; break;
                 case SerializedPropertyType.Boolean: property.boolValue = (bool)value; break;
                 case SerializedPropertyType.Float: //and double value
@@ -32,7 +33,6 @@ namespace CustomInspector.Extensions
                 case SerializedPropertyType.Color: property.colorValue = (Color)value; break;
                 case SerializedPropertyType.ExposedReference: property.exposedReferenceValue = (UnityEngine.Object)value; break;
                 case SerializedPropertyType.ObjectReference: property.objectReferenceValue = (UnityEngine.Object)value; break;
-                case SerializedPropertyType.Enum: property.enumValueIndex = (int)value; break;
                 case SerializedPropertyType.Vector2Int: property.vector2IntValue = (Vector2Int)value; break;
                 case SerializedPropertyType.Vector2: property.vector2Value = (Vector2)value; break;
                 case SerializedPropertyType.Vector3Int: property.vector3IntValue = (Vector3Int)value; break;

@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 
 namespace CustomInspector.Helpers
 {
     public static class Common
     {
+        /// <summary>
+        /// The width of the scrollbar that appears when using GUI.ScrollViewScope
+        /// </summary>
+        public const float scrollbarThickness = 15;
         /// <summary>
         /// Gets the first item that matches the predicate
         /// </summary>
@@ -16,7 +19,7 @@ namespace CustomInspector.Helpers
         {
             foreach (T item in list)
             {
-                if(predicate(item))
+                if (predicate(item))
                 {
                     match = item;
                     return true;

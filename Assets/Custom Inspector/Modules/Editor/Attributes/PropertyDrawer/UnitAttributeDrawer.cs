@@ -1,5 +1,4 @@
 using CustomInspector.Extensions;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -19,7 +18,10 @@ namespace CustomInspector.Editor
             position.width = Mathf.Max(position.width, EditorGUIUtility.labelWidth + EditorGUIUtility.fieldWidth);
 
             //Draw Property
+            EditorGUI.BeginChangeCheck();
             DrawProperties.PropertyField(position, label, property);
+            if (EditorGUI.EndChangeCheck())
+                property.serializedObject.ApplyModifiedProperties();
             //Draw Unit
             Rect uRect = new()
             {
@@ -41,7 +43,7 @@ namespace CustomInspector.Editor
         static readonly Dictionary<string, float> namesWidth = new();
         float GetWidth(string name)
         {
-            if(!namesWidth.TryGetValue(name, out float width))
+            if (!namesWidth.TryGetValue(name, out float width))
             {
                 width = GUI.skin.label.CalcSize(new GUIContent(name)).x;
                 namesWidth.Add(name, width);

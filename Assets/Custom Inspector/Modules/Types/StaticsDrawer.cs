@@ -14,9 +14,7 @@ namespace CustomInspector
     [System.Serializable]
     public class StaticsDrawer
     {
-#if UNITY_EDITOR
         [MessageBox("You are overriding the default PropertyDrawer of StaticsDrawer", MessageBoxType.Error)]
-        bool b;
-#endif
+        [SerializeField, HideField] bool b;
     }
 }

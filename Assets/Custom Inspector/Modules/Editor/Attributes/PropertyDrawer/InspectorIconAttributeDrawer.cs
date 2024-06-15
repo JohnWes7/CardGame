@@ -1,5 +1,4 @@
 using CustomInspector.Extensions;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -13,7 +12,7 @@ namespace CustomInspector.Editor
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             InspectorIconAttribute ia = (InspectorIconAttribute)attribute;
-            
+
             GUIContent c = GetIcon(ia.icon);
 
             position = EditorGUI.IndentedRect(position);
@@ -40,7 +39,10 @@ namespace CustomInspector.Editor
 
                     EditorGUI.LabelField(iconRect, c);
 
+                    EditorGUI.BeginChangeCheck();
                     DrawProperties.PropertyField(position, label, property);
+                    if (EditorGUI.EndChangeCheck())
+                        property.serializedObject.ApplyModifiedProperties();
                 }
             }
         }
@@ -52,7 +54,7 @@ namespace CustomInspector.Editor
         readonly static Dictionary<InspectorIcon, GUIContent> icons = new();
         GUIContent GetIcon(InspectorIcon icon)
         {
-            if(!icons.TryGetValue(icon, out GUIContent res))
+            if (!icons.TryGetValue(icon, out GUIContent res))
             {
                 string iconName = icon.ToInternalIconName();
                 res = EditorGUIUtility.IconContent(iconName);

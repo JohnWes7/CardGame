@@ -14,11 +14,12 @@ namespace CustomInspector
     {
         public readonly string groupName = null;
 
-        public FixedColor backgroundColor = FixedColor.DarkGray;
+        [Obsolete("Please use the [BackgroundColor]-attribute instead")]
+        public FixedColor backgroundColor;
 
         public TabAttribute(string groupName)
         {
-            order = -10;
+            order = HorizontalGroupAttribute.defaultOrder - 1; //has to be drawn before HorizontalGroup, because tab-table is always centered
             this.groupName = groupName;
         }
         public TabAttribute(InspectorIcon icon)

@@ -21,6 +21,10 @@ namespace CustomInspector.Documentation
 
             // -------------- PropertyDrawer-------------------
 
+            { NewPropertyD.AnimatorParameterAttribute,
+            "Lets you choose animator parameters from a popup." +
+            "\nThe attribute needs a reference to an Animator or an AnimatorController." },
+
             { NewPropertyD.AsButtonAttribute,
             "Displays a bool, int, string or InspectorButtonState as a clickable button in the inspector." +
             "\nUse the 'staysPressed' parameter to specify if the button should remain pressed after being clicked." },
@@ -62,7 +66,8 @@ namespace CustomInspector.Documentation
             "\nUseful for restricting input to valid options." },
 
             { NewPropertyD.FoldoutAttribute,
-            "Adds a foldout option to see more information on other MonoBehaviours or ScriptableObjects." },
+            "Adds a foldout option to see more information on other MonoBehaviours or ScriptableObjects." +
+            "\n\nNote: Recursive calls (unfolding a class with a reference to itself) are not displayed." },
 
             { NewPropertyD.ForceFillAttribute,
             "Indicates that a field must be filled out and can be used anywhere." +
@@ -101,8 +106,10 @@ namespace CustomInspector.Documentation
             { NewPropertyD.HorizontalGroupAttribute,
             "Surely everyone has already thought about placing input fields next to each other in Unity so that they take up less space. " +
             "It is also very useful for structuring or for comparing two classes. " +
-            "Note: You begin a new HorizontalGroup by setting the parameter beginNewGroup=true" +
-            "\n- Does not work with reordable lists" },
+            "\nNote:" +
+            "\n- You begin a new HorizontalGroup by setting the parameter beginNewGroup=true" +
+            "\n- properties using with different tabs ([Tab]-attribute), will automatically be in different horizontal groups" +
+            "\n- Does not work on list elements -> use CustomInspector.ListContainer<T> type instead of the System List<T> to apply it to the whole list" },
 
 
             { NewPropertyD.IndentAttribute,
@@ -140,11 +147,17 @@ namespace CustomInspector.Documentation
             "Anyone who masters C# will eventually get to the point that they are working with inheritance. " +
             "Since c# doesn't support multi-inheritance, there are interfaces. " +
             "Unfortunately, a field with type of interface is not shown in the inspector. " +
-            "With this attribute you can easily restrict object references to all types and they will still be displayed"},
+            "With this attribute you can easily restrict object references to all types and they will still be displayed." +
+            "\nNote: Use SerializableInterface<T> if you use it for interfaces and want the reference to be already casted."},
 
             { NewPropertyD.RichTextAttribute,
             "Display text using unitys html-style markup-format." +
             "\nYou can edit the raw text if you foldout the textfield." },
+
+            { NewPropertyD.SceneAttribute,
+            "Select the scene name or build-index from a dropdown." +
+            "\nOnly scenes added to the build-settings are shown." +
+            "\nIf you have multiple scenes with the same name, you should use the 'useFullPath' parameter to work with full paths." },
 
             { NewPropertyD.SelfFillAttribute,
             "If you have components where you know they are on your own object and don't want to write GetComponent every time, you can now write [SelfFill] in front of it. " +
@@ -198,7 +211,8 @@ namespace CustomInspector.Documentation
             "\nThe parameter is the distance in pixels." },
 
             { NewPropertyD.TabAttribute,
-            "An easy way to divide properties in groups. Fields with same (attribute parameter) groupName share the same group" },
+            "An easy way to divide properties in groups. Fields with same (attribute parameter) groupName share the same group." +
+            "\nNote: Does not work on list elements -> use CustomInspector.ListContainer<T> type instead of the System List<T> to apply it to the whole list" },
 
 
             { NewPropertyD.TagAttribute,
@@ -281,9 +295,15 @@ namespace CustomInspector.Documentation
 
             { NewPropertyD.LineGraph,
             "Used to make a graph out of linear connecting points." +
-            "\nThis is an easy to compute and an easy to understand method." +
-            "\nThe black lines are the x-axis and the y-axis." +
-            "\n\nAn usecase would be for example the damage drop-off in shooter games." },
+            "\nThis is an easy method often used for balancing damage-drop-off in shooter games." +
+            "\nThe black lines are the x-axis and the y-axis." },
+
+            { NewPropertyD.ListContainer,
+            "Same behaviour as System.Collections.Generic.List<> but with 2 differences:" +
+            "\n\t1. All Attributes on it are applied to the whole list INSTEAD of to all elements of the list." +
+            "\n\t2. It is serializable by JsonUtility." +
+            "\nNote: ListContainer and List are casting to each other implicitly, so you can still treat ListContainer as it would be of type List." +
+            "\nHint: If you want to use attributes both on the list-class and on the elements, you have to create your own class, that consists a list inside. Then you can provide attributes on the inner list and on the outer class. You can add the [Unwrap]-attribute additionally on your class so you only see the list in the inspector." },
 
             { NewPropertyD.MessageDrawer,
             "If you want to write something in the inspector at runtime instead of in the console. For non-runtime messages use the MessageBoxAttribute" },
@@ -295,6 +315,11 @@ namespace CustomInspector.Documentation
             "\nThe reorder-ability is just cosmetic and has no effect in code/game." +
             "\nReorderableDictionary is derived from the System.Dictionary." +
             "\nTime complexity: access = O(log(n)), add/remove = O(n)" },
+
+
+            { NewPropertyD.SerializableInterface,
+            "A reference that has already given interface and is saved already casted." },
+
 
             { NewPropertyD.SerializableDateTime,
             "For displaying time in the unity-inspector." +
@@ -359,7 +384,9 @@ namespace CustomInspector.Documentation
             "Warning: it will only cap new inputs in the inspector: not set values by script" },
 
             { NewPropertyD.MultilineAttribute,
-            "Unity Documentation:\n" +
+            "Overrides the input-box's height. Measured in lines.\n" +
+            "Note: Text won't wrap to the input-box-width and will overflow.\n" +
+            "\nUnity Documentation:\n" +
             "\"Attribute to make a string be edited with a multi-line textfield.\"" },
 
             { NewPropertyD.NonReorderableAttribute,
@@ -385,7 +412,10 @@ namespace CustomInspector.Documentation
             "Adds a tooltip that you appears by hovering over the given field in the inspector AND in your visual studio editor." },
 
             { NewPropertyD.TextAreaAttribute,
-            "Unity Documentation:\n" +
+            "Expands the input-box's height to it's content's height. The height is constrained to min and max lines." +
+            "Text will wrap to the input-box-width and won't overflow.\n" +
+            "If content has more lines than max lines a scrollbar is added.\n" +
+            "\nUnity Documentation:\n" +
             "\"Attribute to make a string be edited with a height-flexible and scrollable text area.\n" +
             "You can specify the minimum and maximum lines for the TextArea, and the field will expand according to the size of the text. A scrollbar will appear if the text is bigger than the area available.\"" },
         };

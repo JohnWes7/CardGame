@@ -21,7 +21,7 @@ namespace CustomInspector.Editor
                 return;
             }
 
-            
+
             object oldValue = property.GetValue();
 
             EditorGUI.BeginChangeCheck();
@@ -48,7 +48,7 @@ namespace CustomInspector.Editor
         {
             PropInfo info = GetInfo(property);
 
-            if(info.errorMessage != null)
+            if (info.errorMessage != null)
                 return DrawProperties.GetPropertyWithMessageHeight(label, property);
             else
                 return DrawProperties.GetPropertyHeight(label, property);
@@ -58,7 +58,7 @@ namespace CustomInspector.Editor
         PropInfo GetInfo(SerializedProperty property)
         {
             PropertyIdentifier id = new(property);
-            if(!savedInfos.TryGetValue(id, out PropInfo info))
+            if (!savedInfos.TryGetValue(id, out PropInfo info))
             {
                 info = new(property, fieldInfo.FieldType, (HookAttribute)attribute);
                 savedInfos.Add(id, info);
@@ -123,7 +123,7 @@ namespace CustomInspector.Editor
                 {
                     hookMethod = (p, o, n) =>
                     {
-                        if(ifExecute())
+                        if (ifExecute())
                             p.GetMethodOnOwner(attribute.methodPath, new Type[] { propertyType, propertyType }).Invoke(o, n);
                     };
                 }

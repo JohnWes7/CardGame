@@ -127,10 +127,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ec89bba3c031241b6903a8942d1df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fxPrefab: {fileID: 0}
+  fxPrefab: {fileID: 149212, guid: c79119d035b326344ba9d1ca3c26db70, type: 3}
   showFX: 1
   scaleFXByExplosionRadius: 1
-  scaleMulty: {x: 1, y: 1, z: 1}
+  scaleMulty: {x: 0.5, y: 0.5, z: 0.5}
   triggerTarget: []
 --- !u!1 &7620830769176646342
 GameObject:

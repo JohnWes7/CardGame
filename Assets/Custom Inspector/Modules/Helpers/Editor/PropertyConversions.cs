@@ -1,11 +1,10 @@
+using CustomInspector.Helpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using CustomInspector.Helpers;
-using log4net.Core;
 
 namespace CustomInspector.Extensions
 {
@@ -25,16 +24,34 @@ namespace CustomInspector.Extensions
             //remove underscore start
             if (name[0] == '_')
                 name = name[1..];
-            if (name == "") //contained only the underscore
+            else if (name.Length > 2 && name[..2] == "m_")
+                name = name[2..];
+            if (name == "") //contained only the prefix
                 return " "; //space so that label is still shown but only empty
 
             //first character always uppercase
             string res = char.ToUpper(name[0]).ToString();
-            //add remaining but insert space before uppercases
+            //add remaining but insert space before uppercases (if previous was not underscore->lowercase or next not upper also)
             for (int i = 1; i < name.Length; i++)
             {
-                if (char.IsUpper(name[i]) && (i <= 0 || name[i-1] != ' ')) //if uppercase letter and not already inserted
-                    res += " " + name[i];  //to lowercase would be: res += " " + (char)(name[i] + ('a' - 'A'));
+                if (char.IsUpper(name[i]) && i > 0)
+                {
+                    //if already a space
+                    if (res[^1] == '_' || res[^1] == ' ')
+                    {
+                        res += name[i];
+                    }
+                    //if its a new word made by casing
+                    else if ((i + 1 < name.Length && char.IsLower(name[i + 1])) //after is lowercase
+                        || char.IsLower(res[^1])) //before was lowercase
+                    {
+                        res += " " + name[i];
+                    }
+                    else
+                    {
+                        res += name[i];
+                    }
+                }
                 else
                     res += name[i];
             }
@@ -180,7 +197,7 @@ namespace CustomInspector.Extensions
         public static string FollowName(this string path)
         {
             int split = path.LastIndexOf('.');
-            if(path[^1] == ']') //if array
+            if (path[^1] == ']') //if array
                 split = path.LastIndexOf('.', split - 1);
             return path[(split + 1)..];
         }
@@ -212,7 +229,7 @@ namespace CustomInspector.Extensions
                 //get in front of name
                 while (i > 0 && path[i] != '.')
                     i--;
-                if(i == 0)
+                if (i == 0)
                 {
                     if (path[0] == '.')
                         throw new ArgumentException($"Path '{path}' cannot begin with a dot");
@@ -294,7 +311,7 @@ namespace CustomInspector.Extensions
             {
                 hadChanges |= ObjectToPropChanges(prop);
             }
-            if(hadChanges)
+            if (hadChanges)
             {
                 if (withUndoOperation)
                     serializedObject.ApplyModifiedProperties();
@@ -359,7 +376,7 @@ namespace CustomInspector.Extensions
 
                         //Debug.Log($"dirtyList {dirtyList.Count} | cleanList {cleanList.Count}");
 
-                        if(dirtyList.Count != cleanList.Count || !dirtyList.SequenceEqual(cleanList))
+                        if (dirtyList.Count != cleanList.Count || !dirtyList.SequenceEqual(cleanList))
                         {
                             try
                             {
@@ -371,7 +388,7 @@ namespace CustomInspector.Extensions
                                 Debug.LogException(e);
                                 Debug.LogError("Changes on array could not be saved");
                             }
-                            
+
                             return true;
                         }
                         else

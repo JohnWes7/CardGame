@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using CustomInspector;
 using UnityEngine;
 
+
+/// <summary>
+/// 激光炮塔的射击策略
+/// </summary>
 public interface ILaserFireStg
 {
     bool IsLaserOpen { get; }
@@ -11,6 +15,9 @@ public interface ILaserFireStg
     void OpenLaser(AbstractTurret turretWeapon);
 }
 
+/// <summary>
+/// 通用激光射击策略
+/// </summary>
 public class TurretFireLaserStg : MonoBehaviour, ILaserFireStg
 {
     [SerializeField, ReadOnly] private bool isLaserOpen = false;
@@ -27,7 +34,7 @@ public class TurretFireLaserStg : MonoBehaviour, ILaserFireStg
             return;
         }
 
-        Debug.Log("打开激光");
+        // Debug.Log("打开激光");
         isLaserOpen = true;
         timer = 0;
 
@@ -42,7 +49,7 @@ public class TurretFireLaserStg : MonoBehaviour, ILaserFireStg
             return;
         }
 
-        Debug.Log("关闭激光");
+        // Debug.Log("关闭激光");
         isLaserOpen = false;
         timer = 0;
 

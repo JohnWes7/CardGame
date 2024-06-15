@@ -15,6 +15,7 @@ public class OpenUIMoveAni : MonoBehaviour, IController
     [SelfFill]
     public UIBase uiBase;
 
+
     public void OpenUI()
     {
         // 删除已有动画进程

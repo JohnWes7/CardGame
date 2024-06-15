@@ -1,4 +1,5 @@
 using CustomInspector.Extensions;
+using CustomInspector.Helpers;
 using CustomInspector.Helpers.Editor;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace CustomInspector.Documentation
         /// This is the file
         /// </summary>
         [SerializeField] Object codeSnippetsFile;
-        
+
         /// <summary>
         /// This is the file
         /// </summary>
@@ -123,7 +124,7 @@ namespace CustomInspector.Documentation
         /// <param name="position"></param>
         public void DrawCode(Rect position, NewPropertyD drawer)
         {
-            EditorGUI.DrawRect(position, new Color(.12f, .12f, .12f, 1));
+            EditorGUI.DrawRect(position, InternalEditorStylesConvert.DarkerBackground);
             position = GuidanceWindow.Shrinked(position, padding);
 
             //get snippet
@@ -154,11 +155,11 @@ namespace CustomInspector.Documentation
             + $"\npublic class MyClass : MonoBehaviour"
             + "\n{\n" + innerPart + "\n}";
 
-            GUIContent content = new (AddRichText(code, GetName(drawer)));
+            GUIContent content = new(AddRichText(code, GetName(drawer)));
 
-            GUIStyle style = new (GUI.skin.label);
+            GUIStyle style = new(GUI.skin.label);
             style.richText = true;
-            Rect codeRect = new (Vector2.zero, style.CalcSize(content));
+            Rect codeRect = new(Vector2.zero, style.CalcSize(content));
             codeRect.width += 10; //slighly more distance
             using (var scrollScope = new GUI.ScrollViewScope(position,
                                                                 codeScrollPos,
@@ -172,7 +173,7 @@ namespace CustomInspector.Documentation
             string GetName(NewPropertyD drawer)
             {
                 string s = drawer.ToString();
-                if(s.Length > 9 && s[^9..] == "Attribute")
+                if (s.Length > 9 && s[^9..] == "Attribute")
                     return s[..^9];
                 else
                     return s;
@@ -213,7 +214,7 @@ namespace CustomInspector.Documentation
                 CreatePreviewObj();
             }
             serializedObject ??= new SerializedObject(this);
-            
+
             //Find container that we preview
             string propName = ClassName(drawer);
 
@@ -226,12 +227,12 @@ namespace CustomInspector.Documentation
 
             //Draw Propertys
             var props = container.GetAllVisibleProperties(false);
-            Debug.Assert(props.Any(), "No properties found for display");
+            Debug.Assert(props.Any(), $"No properties found for display (on {container.name}).");
             float totalHeight = props.Select(_ => DrawProperties.GetPropertyHeight(_)).Sum() + props.Count() * EditorGUIUtility.standardVerticalSpacing + 50; // 50 is some tolerance - space below
-            
+
             Rect previewRect =
             (totalHeight > position.height) ?//if has slider
-                new Rect(0, 0, position.width - GuidanceWindow.scrollbarThickness, totalHeight)
+                new Rect(0, 0, position.width - Common.scrollbarThickness, totalHeight)
                 : new Rect(0, 0, position.width, totalHeight);
             using (var scrollScope = new GUI.ScrollViewScope(position,
                                                     previewScrollPos,
@@ -243,19 +244,21 @@ namespace CustomInspector.Documentation
                 float height = spacing;
                 EditorGUIUtility.labelWidth = position.width * 0.35f;
                 EditorGUIUtility.fieldWidth = 50;
-                EditorGUI.indentLevel = 0;
-                using (new NewWideModeScope(position.width > 350))
+                using (new NewIndentLevel(0))
                 {
-                    foreach (SerializedProperty prop in props)
+                    using (new NewWideModeScope(position.width > 350))
                     {
-                        GUIContent label = new(prop.name, prop.tooltip);
-                        Rect lineRect = new(x: spacing,
-                                            y: height,
-                                            width: previewRect.width - 2 * spacing,
-                                            height: DrawProperties.GetPropertyHeight(label, prop));
+                        foreach (SerializedProperty prop in props)
+                        {
+                            GUIContent label = new(prop.name, prop.tooltip);
+                            Rect lineRect = new(x: spacing,
+                                                y: height,
+                                                width: previewRect.width - 2 * spacing,
+                                                height: DrawProperties.GetPropertyHeight(label, prop));
 
-                        DrawProperties.PropertyField(lineRect, label, prop, true);
-                        height += lineRect.height + EditorGUIUtility.standardVerticalSpacing;
+                            DrawProperties.PropertyField(lineRect, label, prop, true);
+                            height += lineRect.height + EditorGUIUtility.standardVerticalSpacing;
+                        }
                     }
                 }
             }
@@ -288,7 +291,7 @@ namespace CustomInspector.Documentation
                         continue;
                     }
                 }
-                catch(MissingMethodException)
+                catch (MissingMethodException)
                 {
                     continue;
                 }
@@ -318,7 +321,7 @@ namespace CustomInspector.Documentation
                 int openBrackets = 1;
                 for (startInd = match.Index + 1; codeSnippets[startInd] != '{'; startInd++) { } // go to open brace
                 do { startInd++; }
-                while (codeSnippets[startInd-1] != '\n'); // remove empty line
+                while (codeSnippets[startInd - 1] != '\n'); // remove empty line
                 //Find end
                 int endInd;
                 for (endInd = startInd + 1; openBrackets > 0; endInd++) // go to close brace
@@ -331,7 +334,7 @@ namespace CustomInspector.Documentation
                 endInd--; //to closing bracket back
                 do { endInd--; }
                 while (codeSnippets[endInd] != '\n'); // remove last line
-                
+
                 //Find enum
                 string name = match.Groups[1].Value;
                 NewPropertyD res;
@@ -370,10 +373,10 @@ namespace CustomInspector.Documentation
         /// Each line first character index
         /// </summary>
         List<int> lineIndices = new List<int>() { 0 };
-        
+
         int LineIndexToCharacterIndex(int index)
         {
-            while(index >= lineIndices.Count)
+            while (index >= lineIndices.Count)
                 CalcNextLine();
 
             return lineIndices[index];
@@ -384,12 +387,12 @@ namespace CustomInspector.Documentation
             if (lineIndices.Last() < index)
             {
                 while (CalcNextLine() < index) { }
-                
+
                 return lineIndices.Count - 1;
             }
             else //in list
             {
-                if(lineIndices.Last() == index)
+                if (lineIndices.Last() == index)
                     return lineIndices.Count + 1;
 
                 return FindLineBetween(0, lineIndices.Count - 1);
@@ -397,7 +400,7 @@ namespace CustomInspector.Documentation
                 ///<summary>Find the index in lineIndices that is bigger, but clostest to index</summary>
                 int FindLineBetween(int min, int max)
                 {
-                    if(min + 3 >= max)
+                    if (min + 3 >= max)
                     {
                         if (lineIndices[min] > index)
                             return min;

@@ -34,7 +34,7 @@ public class ProjectileExplodeTriggerStg : AbstractProjectileTriggerStgBase
             }
 
             // 触发特效
-            ShowFX(projectileTriggerParameters.projectile.ProjectileSO.explosionRadius);
+            ShowFX(transform.position, Quaternion.identity,projectileTriggerParameters.projectile.ProjectileSO.explosionRadius);
 
             projectileTriggerParameters.afterTrigger?.Invoke();
 

@@ -32,6 +32,17 @@ public class GameManager : MonoBehaviour, IController
         // 重置关卡
         this.SendCommand<ResetStageInfoCommand>();
         Debug.Log($"当前关卡index: {this.GetModel<StageModel>().GetStageIndex()}");
+
+        // 注册打开 ESC 面板事件 要进行暂停
+        this.RegisterEvent<SendEscPanelOpenEventCommand.EscPanelOpenEvent>((args) =>
+        {
+            PauseGame();
+        }).UnRegisterWhenGameObjectDestroyed(gameObject);
+        // 注册关闭 ESC 面板事件 要进行恢复
+        this.RegisterEvent<SendEscPanelCloseEventCommand.EscPanelCloseEvent>((args) =>
+        {
+            ResumeGame();
+        });
     }
 
     private void Start()
@@ -48,6 +59,18 @@ public class GameManager : MonoBehaviour, IController
         }
         
         SpawnEnemyPreFrame();
+    }
+
+    public void PauseGame()
+    {
+        Debug.Log("暂停游戏");
+        Time.timeScale = 0f; // 暂停游戏
+    }
+
+    public void ResumeGame()
+    {
+        Debug.Log("恢复游戏");
+        Time.timeScale = 1f; // 恢复游戏
     }
 
     /// <summary>
@@ -72,10 +95,12 @@ public class GameManager : MonoBehaviour, IController
             {
                 Debug.Log(" 游戏结束");
                 
-                // TODO: 关闭player
-                EventCenter.Instance.TriggerEvent("DisabalePlayer", this, null);
-                // TODO: 关闭敌人
-                EventCenter.Instance.TriggerEvent("DisableAllEnemy", this, null);
+                //// TODO: 关闭player
+                //EventCenter.Instance.TriggerEvent("DisabalePlayer", this, null);
+                //// TODO: 关闭敌人
+                //EventCenter.Instance.TriggerEvent("DisableAllEnemy", this, null);
+                // 直接线暂停
+                PauseGame();
 
                 // 显示面板
                 GameOverPanel.Instance.OpenUI();
@@ -156,7 +181,7 @@ public class GameManager : MonoBehaviour, IController
         }
 
         // 返回最后一个
-        return enemyInfoSO[enemyInfoSO.Count - 1].enemySO;
+        return enemyInfoSO[^1].enemySO;
     }
 
     public IArchitecture GetArchitecture()

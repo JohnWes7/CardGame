@@ -42,8 +42,9 @@ namespace CustomInspector.Editor
                                 property.intValue = MultipleOf.NearestMultiple(prevNumber + step, step);
                             else
                                 property.intValue = MultipleOf.NearestMultiple(prevNumber - step, step);
+
+                            property.serializedObject.ApplyModifiedProperties();
                         }
-                        property.serializedObject.ApplyModifiedProperties();
                     }
                 }
                 else
@@ -68,8 +69,9 @@ namespace CustomInspector.Editor
                             property.floatValue = (float)MultipleOf.NearestMultiple(prevNumber + d_step, d_step);
                         else
                             property.floatValue = (float)MultipleOf.NearestMultiple(prevNumber - d_step, d_step);
+
+                        property.serializedObject.ApplyModifiedProperties();
                     }
-                    property.serializedObject.ApplyModifiedProperties();
                 }
             }
             else

@@ -45,7 +45,7 @@ namespace CustomInspector.Editor
             DirtyValue dv = new(property);
             dv.FindRelative("RequiredType").TryGetValue(out object resType);
 
-            if(resType == null) //noone called = new() | so unity used some sort of copy to not call the constructor
+            if (resType == null) //noone called = new() | so unity used some sort of copy to not call the constructor
             {
                 position.height = errorHeight;
                 EditorGUI.HelpBox(position, $"path '{property.name}' is null!\nPls call the constructor in code: ... = new()", MessageType.Error);
@@ -60,7 +60,7 @@ namespace CustomInspector.Editor
 
             //new guiContent showing type
             if (requiredType == typeof(Object)) { }
-            else if(requiredType == typeof(Folder))
+            else if (requiredType == typeof(Folder))
                 label.text += " (Folder)";
             else
                 label.text += $" ({requiredType.Name})";
@@ -98,7 +98,7 @@ namespace CustomInspector.Editor
                     {
                         EditorGUI.HelpBox(errorRect, "Path has to end on a folder and not on a file!", MessageType.Error);
                     }
-                    else if(AssetPath.IsValidPath(path.stringValue, typeof(Folder)))
+                    else if (AssetPath.IsValidPath(path.stringValue, typeof(Folder)))
                     {
                         EditorGUI.HelpBox(errorRect, $"Path has to end on a file and not a folder", MessageType.Error);
                     }
@@ -116,7 +116,7 @@ namespace CustomInspector.Editor
                             string currentPath = "Assets";
                             while (true) //Find what is not found
                             {
-                                if(!parts.MoveNext())
+                                if (!parts.MoveNext())
                                 {
                                     Debug.LogWarning("Wrong guess, that path is wrong");
                                     break;
@@ -176,6 +176,7 @@ namespace CustomInspector.Editor
                         else
                             assetReference.objectReferenceValue = null;
                     }
+                    property.serializedObject.ApplyModifiedProperties();
                 }
 
                 //Object drop
@@ -198,28 +199,30 @@ namespace CustomInspector.Editor
                     droppedObj = EditorGUI.ObjectField(position: dropRect, label: GUIContent.none,
                                                            obj: assetReference.objectReferenceValue, objType: typeof(DefaultAsset), allowSceneObjects: false);
 
-/*                    if (GUI.Button(fileOpenRect, "O"))
-                    {
-                        absolutePath = EditorUtility.OpenFolderPanel("Folder Selection", path.stringValue, "");
-                    }*/
+                    /*                    if (GUI.Button(fileOpenRect, "O"))
+                                        {
+                                            absolutePath = EditorUtility.OpenFolderPanel("Folder Selection", path.stringValue, "");
+                                        }*/
                 }
                 else
                 {
                     droppedObj = EditorGUI.ObjectField(position: dropRect, label: GUIContent.none,
                                                                    obj: assetReference.objectReferenceValue, objType: requiredType, allowSceneObjects: false);
 
-/*                    if (GUI.Button(fileOpenRect, "O"))
-                    {
-                        absolutePath = EditorUtility.OpenFolderPanel("File Selection", path.stringValue, "");
-                    }*/
+                    /*                    if (GUI.Button(fileOpenRect, "O"))
+                                        {
+                                            absolutePath = EditorUtility.OpenFolderPanel("File Selection", path.stringValue, "");
+                                        }*/
                 }
 
                 if (EditorGUI.EndChangeCheck())
                 {
-                    if(absolutePath == null)
+                    if (absolutePath == null)
                     {
                         assetReference.objectReferenceValue = droppedObj;
                         path.stringValue = AssetDatabase.GetAssetPath(droppedObj);
+
+                        property.serializedObject.ApplyModifiedProperties();
                     }
                     else
                     {
@@ -236,7 +239,7 @@ namespace CustomInspector.Editor
             }
         }
         Texture folderIcon;
-        Texture FolderIcon { get { if (folderIcon == null) folderIcon = AssetPreview.GetMiniThumbnail(AssetDatabase.LoadAssetAtPath<Object>("Assets"));  return folderIcon; } }
+        Texture FolderIcon { get { if (folderIcon == null) folderIcon = AssetPreview.GetMiniThumbnail(AssetDatabase.LoadAssetAtPath<Object>("Assets")); return folderIcon; } }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             //Check type

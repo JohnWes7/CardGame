@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1321d76951fb9a54ea33594c5cd8d7b9, type: 3}
   m_Name: LAS_V1_Projectile
   m_EditorClassIdentifier: 
-  damage: 4
+  damage: 8
   speed: 0
   explosionRadius: 0
   penetration: 1

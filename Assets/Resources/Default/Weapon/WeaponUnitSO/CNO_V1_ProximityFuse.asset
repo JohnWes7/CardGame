@@ -24,22 +24,26 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list:
+        _: 0
+        values:
         - zh
       editor_input: 
     values:
-      list:
+      _: 0
+      values:
       - "CNO-V1-\u8FD1\u70B8\u5F15\u4FE1"
     editor_keyInput: zh
-    editor_valueInput: "GTL-V1-\u7ECF\u5178"
+    editor_valueInput: "CNO-V1-\u8FD1\u70B8\u5F15\u4FE1"
   descriptionInfo:
     info: 0
     keys:
       info: 0
       values:
-        list: []
+        _: 0
+        values: []
       editor_input: 
     values:
-      list: []
+      _: 0
+      values: []
     editor_keyInput: 
     editor_valueInput: 

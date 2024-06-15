@@ -1,6 +1,5 @@
 using CustomInspector.Extensions;
 using CustomInspector.Helpers;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -12,12 +11,12 @@ namespace CustomInspector.Editor
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            if(property.propertyType == SerializedPropertyType.Generic)
+            if (property.propertyType == SerializedPropertyType.Generic)
             {
                 //Get Asset Reference
                 Object assetReference = GetAssetReference(property);
 
-                if(assetReference != null)
+                if (assetReference != null)
                 {
                     //Show Asset Reference
                     Rect refRect = new(position)
@@ -30,7 +29,10 @@ namespace CustomInspector.Editor
                     }
 
                     //Draw Property
+                    EditorGUI.BeginChangeCheck();
                     DrawProperties.PropertyField(position, label, property, includeChildren: true);
+                    if (EditorGUI.EndChangeCheck())
+                        property.serializedObject.ApplyModifiedProperties();
                 }
                 else
                 {
@@ -64,7 +66,7 @@ namespace CustomInspector.Editor
         Object GetAssetReference(SerializedProperty property)
         {
             PropertyIdentifier id = new(property);
-            if(!assetReferences.TryGetValue(id, out Object res))
+            if (!assetReferences.TryGetValue(id, out Object res))
             {
                 TryGetAsset(GetAssetName(), out res);
                 assetReferences.Add(id, res);

@@ -137,7 +137,7 @@ public class ShieldUnit : UnitObject, ITextInfoDisplay
         {
             DamageAmount = amount,
             Position = transform.position,
-            Color = Color.green,
+            Color = LogDamageTextCommand.GetRepairColor(),
             Duration = 1f,
             randomRadius = 2f
         };

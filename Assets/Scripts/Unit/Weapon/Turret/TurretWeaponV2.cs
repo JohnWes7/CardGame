@@ -19,7 +19,6 @@ public class TurretWeaponV2 : AbstractTurret
     [SerializeField, ReadOnly] private MonoInterface<ITurretFireStg> turretFireStg;
 
     public Transform Target { get => target; set => target = value; }
-    public Transform ProjectileCreatePos { get => projectileCreatePos; set => projectileCreatePos = value; }
 
     protected override void Awake()
     {

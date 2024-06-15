@@ -38,7 +38,7 @@ public class ShipSpaceportCheckUnitController : MonoBehaviour, IController
             //Debug.Log($"{gridXy} : {gridObject?.GetContent()?.UnitSO}");
             var unit = gridObject?.GetContent();
 
-            if (curShowUnitObject != unit)
+            if (curShowUnitObject != unit || unit == null)
             {
                 curShowUnitObject = unit;
                 this.SendCommand(new SendShowUnitDetailEventCommand(curShowUnitObject));
@@ -55,28 +55,5 @@ public class ShipSpaceportCheckUnitController : MonoBehaviour, IController
     public IArchitecture GetArchitecture()
     {
         return GameArchitecture.Interface;
-    }
-}
-
-public class SendShowUnitDetailEventCommand : AbstractCommand
-{
-    public struct ShowUnitDetailEvent
-    {
-        public UnitObject unitObject;
-    }
-
-    public UnitObject unitObject;
-
-    public SendShowUnitDetailEventCommand(UnitObject unitObject)
-    {
-        this.unitObject = unitObject;
-    }
-
-    protected override void OnExecute()
-    {
-        this.SendEvent(new ShowUnitDetailEvent()
-        {
-            unitObject = unitObject
-        });
     }
 }

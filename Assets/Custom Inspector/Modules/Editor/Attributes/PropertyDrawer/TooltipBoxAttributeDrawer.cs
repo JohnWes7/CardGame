@@ -1,6 +1,4 @@
 using CustomInspector.Extensions;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -30,12 +28,15 @@ namespace CustomInspector.Editor
             {
                 tooltip = t.content,
             };
-            
+
             position.width -= (infoWidth + spacing);
             position.width = Mathf.Max(position.width, EditorGUIUtility.labelWidth + EditorGUIUtility.fieldWidth);
 
             //Draw Property
+            EditorGUI.BeginChangeCheck();
             DrawProperties.PropertyField(position, label, property);
+            if (EditorGUI.EndChangeCheck())
+                property.serializedObject.ApplyModifiedProperties();
             //Draw Unit
             Rect uRect = new()
             {

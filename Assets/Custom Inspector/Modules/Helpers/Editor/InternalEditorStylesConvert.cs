@@ -1,15 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using CustomInspector.Extensions;
-using System;
 
 namespace CustomInspector.Helpers
 {
     public static class InternalEditorStylesConvert
     {
+        public static Color DarkerBackground
+        {
+            get
+            {
+                if (EditorGUIUtility.isProSkin)
+                    return new Color(0.12f, 0.12f, 0.12f); //Default Background is Color(0.22f, 0.22f, 0.22f)
+                else
+                    return new Color(0.66f, 0.66f, 0.66f); //Default Background is Color(0.76f, 0.76f, 0.76f)
+            }
+        }
         public static GUIContent IconNameToGUIContent(string iconName)
         {
             Texture2D iconTexture = (Texture2D)typeof(EditorGUIUtility)

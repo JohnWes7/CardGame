@@ -7,7 +7,6 @@ public class TechTreeNode : RelicSO
 {
     [Foldout]
     public UnitSO unlockUnit;
-    [Foldout]
     public List<UnitNumPair> requireUnit;
 
     public override void OnReceive()

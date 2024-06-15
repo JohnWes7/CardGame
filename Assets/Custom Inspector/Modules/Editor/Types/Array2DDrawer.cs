@@ -1,7 +1,5 @@
 using CustomInspector.Extensions;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,7 +11,7 @@ namespace CustomInspector.Editor
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            if(property == null)
+            if (property == null)
                 return;
 
 
@@ -33,9 +31,10 @@ namespace CustomInspector.Editor
                 return;
             position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
-            EditorGUI.indentLevel++;
-            position = EditorGUI.IndentedRect(position);
-            EditorGUI.indentLevel--;
+            using (new EditorGUI.IndentLevelScope(1))
+            {
+                position = EditorGUI.IndentedRect(position);
+            }
 
             using (new NewIndentLevel(0))
             {
@@ -61,17 +60,19 @@ namespace CustomInspector.Editor
                 using (new LabelWidthScope(EditorGUIUtility.labelWidth / 2f))
                 {
                     EditorGUI.BeginChangeCheck();
-                    int res = EditorGUI.IntField(rowColumDefine, new GUIContent("rows"), rowAmount.intValue);
+                    int res = EditorGUI.IntField(rowColumDefine, new GUIContent("Rows"), rowAmount.intValue);
                     if (EditorGUI.EndChangeCheck())
                     {
                         res = Math.Max(res, 1);
                         rowAmount.intValue = res;
                         rows.arraySize = res;
+
+                        rows.serializedObject.ApplyModifiedProperties();
                     }
 
                     rowColumDefine.x += rowColumDefine.width + spacing;
                     EditorGUI.BeginChangeCheck();
-                    res = EditorGUI.IntField(rowColumDefine, new GUIContent("columns"), columnAmount.intValue);
+                    res = EditorGUI.IntField(rowColumDefine, new GUIContent("Columns"), columnAmount.intValue);
                     if (EditorGUI.EndChangeCheck())
                     {
                         res = Math.Max(res, 1);
@@ -80,6 +81,8 @@ namespace CustomInspector.Editor
                         {
                             rows.GetArrayElementAtIndex(i).FindPropertyRelative("elements").arraySize = res;
                         }
+
+                        columnAmount.serializedObject.ApplyModifiedProperties();
                     }
                 }
 
@@ -93,7 +96,7 @@ namespace CustomInspector.Editor
                 Rect rect = new()
                 {
                     x = position.x,
-                    y = position.y + rowColumDefine.height + EditorGUIUtility.standardVerticalSpacing,
+                    y = position.y + rowColumDefine.height + 2 * EditorGUIUtility.standardVerticalSpacing,
                     width = columnWidth,
                     height = rowHeight,
                 };
@@ -101,6 +104,8 @@ namespace CustomInspector.Editor
                 if (rows.arraySize != rowAmountValue)
                     rows.arraySize = rowAmountValue;
 
+                // draw elements
+                EditorGUI.BeginChangeCheck();
                 for (int rowIndex = 0; rowIndex < rowAmountValue; rowIndex++)
                 {
                     SerializedProperty row = rows.GetArrayElementAtIndex(rowIndex)
@@ -118,13 +123,15 @@ namespace CustomInspector.Editor
 
                     rect.y += rowHeight + EditorGUIUtility.standardVerticalSpacing;
                 }
+                if (EditorGUI.EndChangeCheck())
+                {
+                    property.serializedObject.ApplyModifiedProperties();
+                }
             }
-
-            property.serializedObject.ApplyModifiedProperties();
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            if(property == null)
+            if (property == null)
                 return 0f;
 
             //Check type
@@ -143,8 +150,8 @@ namespace CustomInspector.Editor
             Debug.Assert(rowAmount != null);
 
             return EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing //foldout
-                + EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing //row and column amounts
-                //table size
+                + EditorGUIUtility.singleLineHeight + 2 * EditorGUIUtility.standardVerticalSpacing //row and column amounts
+                                                                                                   //table size
                 + rowAmount.intValue * (DrawProperties.GetPropertyHeight(property.propertyType, GUIContent.none)
                                 + EditorGUIUtility.standardVerticalSpacing);
         }

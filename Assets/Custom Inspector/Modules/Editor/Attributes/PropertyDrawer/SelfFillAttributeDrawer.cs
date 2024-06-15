@@ -2,7 +2,6 @@ using CustomInspector.Extensions;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Scripting;
 
 namespace CustomInspector.Editor
 {
@@ -31,7 +30,7 @@ namespace CustomInspector.Editor
                 Component component = property.serializedObject.targetObject as Component;
                 if (component == null)
                 {
-                    if(property.serializedObject.targetObject is ScriptableObject)
+                    if (property.serializedObject.targetObject is ScriptableObject)
                         DrawProperties.DrawPropertyWithMessage(position, label, property, $"SelfFillAttribute for ScriptableObjects not supported", MessageType.Error, disabled: true);
                     else
                         DrawProperties.DrawPropertyWithMessage(position, label, property, $"SelfFillAttribute for {property.serializedObject.targetObject.GetType()} not supported", MessageType.Error, disabled: true);
@@ -50,7 +49,7 @@ namespace CustomInspector.Editor
                         property.objectReferenceValue = gob;
                         property.serializedObject.ApplyModifiedProperties();
                     }
-                    else if(requiredInterface != null)
+                    else if (requiredInterface != null)
                     {
                         property.objectReferenceValue = gob.GetComponent(requiredInterface.requiredType);
 
@@ -85,7 +84,7 @@ namespace CustomInspector.Editor
                 else //property.objectReferenceValue != null
                 {
                     //Check if valid (invalid fills when for example you copy the script to other objects)
-                    if(property.objectReferenceValue is GameObject g)
+                    if (property.objectReferenceValue is GameObject g)
                     {
                         if (!object.ReferenceEquals(g, gob)) //c.gameObject != gob
                         {
@@ -97,12 +96,12 @@ namespace CustomInspector.Editor
                             property.serializedObject.ApplyModifiedProperties();
                         }
                     }
-                    else if(property.objectReferenceValue is Component c)
+                    else if (property.objectReferenceValue is Component c)
                     {
                         var requiredInterface = fieldInfo.GetCustomAttribute<RequireTypeAttribute>();
 
                         //should have right type
-                        if(requiredInterface != null && !requiredInterface.requiredType.IsAssignableFrom(c.GetType()))
+                        if (requiredInterface != null && !requiredInterface.requiredType.IsAssignableFrom(c.GetType()))
                         {
                             Debug.LogWarning($"Value on {property.name} had wrong type. {requiredInterface.requiredType} is not assignable from {c.GetType()}.\nValue set to null");
                             property.objectReferenceValue = null;
@@ -138,7 +137,7 @@ namespace CustomInspector.Editor
                 }
             }
         }
-        
+
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             if ((property.propertyType != SerializedPropertyType.ObjectReference && fieldInfo.GetCustomAttribute<RequireTypeAttribute>() == null)

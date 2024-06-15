@@ -18,9 +18,8 @@ namespace CustomInspector
     [System.Serializable]
     public abstract class AssetPath
     {
-#if UNITY_EDITOR
         [MessageBox("You are overriding the default PropertyDrawer of AssetPath. Use the [AssetPath] attribute to fix overriding", MessageBoxType.Error)]
-#endif
+
         [SerializeField]
         string path;
         protected const string invalidString = "<invalid>";
@@ -29,12 +28,11 @@ namespace CustomInspector
         public readonly Type RequiredType = typeof(Object);
         public string Name => GetFileName();
 
-#if UNITY_EDITOR
 #pragma warning disable CS0414
         [SerializeField, HideInInspector]
         private Object assetReference = null;
 #pragma warning restore CS0414
-#endif
+
         protected AssetPath(string defaultPath = invalidString)
         {
             this.path = defaultPath;
@@ -126,7 +124,7 @@ namespace CustomInspector
             if (ending == "*")
                 return true;
 
-            if(ending.Length > path.Length)
+            if (ending.Length > path.Length)
                 return false;
             int ind = path.LastIndexOf('.');
             if (ind == -1)
@@ -139,10 +137,10 @@ namespace CustomInspector
         public static bool IsValidPath(string path, Type fileType)
         {
 #if UNITY_EDITOR
-            if(path == invalidString)
+            if (path == invalidString)
                 return false;
 
-            if(fileType == typeof(Folder))
+            if (fileType == typeof(Folder))
             {
                 return AssetDatabase.IsValidFolder(path);
             }

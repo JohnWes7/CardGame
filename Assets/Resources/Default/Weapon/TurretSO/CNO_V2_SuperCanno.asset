@@ -16,6 +16,7 @@ MonoBehaviour:
   - magazineItem: {fileID: 11400000, guid: 52a7cae7d9043bd4bb63bc2821dd5c91, type: 2}
     projectileInOneMagazineNum: 2
     projectileSO: {fileID: 11400000, guid: 2178b5f0b7b9a1b45b0fd86ab738857d, type: 2}
+  defaultProjectile: {fileID: 0}
   fireGap: 1
-  radius: 20
+  radius: 25
   rotateSpeed: 10

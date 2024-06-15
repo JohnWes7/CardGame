@@ -30,10 +30,9 @@ namespace CustomInspector.Editor
                 var mList = (List<(string content, MessageBoxType type)>)messages.GetValue();
                 if (mList.Count > 0)
                 {
-                    int savedIndentLevel = EditorGUI.indentLevel;
-                    EditorGUI.indentLevel = 0;
+                    using (new NewIndentLevel(0))
                     {
-                        Rect messageRect = new (position);
+                        Rect messageRect = new(position);
                         float space = Mathf.Min(Mathf.Max(position.width - minSize, 0), position.width * spacing);
                         messageRect.x += space;
                         messageRect.width -= space;
@@ -47,7 +46,6 @@ namespace CustomInspector.Editor
                         }
 
                     }
-                    EditorGUI.indentLevel = savedIndentLevel;
                 }
             }
             else

@@ -52,15 +52,15 @@ public class ButtonScaleAni : MonoBehaviour, IPointerEnterHandler, IPointerDownH
 
     public void ToBigState()
     {
-        transform.DOScale(bigState, duration);
+        transform.DOScale(bigState, duration).SetUpdate(true);
     }
     public void ToNormalState()
     {
-        transform.DOScale(normalState, duration);
+        transform.DOScale(normalState, duration).SetUpdate(true);
     }
     public void ToSmallState()
     {
-        transform.DOScale(smallState, duration);
+        transform.DOScale(smallState, duration).SetUpdate(true);
     }
 
     

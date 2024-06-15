@@ -58,12 +58,15 @@ public class TechUnlockPanel : UIBase, IController
         rightTestText.SetText("");
         if (rightTestText == null || rightShowTech == null) return;
 
+        // 获取当前语言key
+        string langKey = this.SendCommand(new GetLanguageStringKeyCommand());
+
         // 通过command 获得单个科技的解锁进度
         var unitNeedDict = this.SendCommand(new GetTechSystemProcessCommand(rightShowTech));
-        string str = rightShowTech.unlockUnit.name + "\n\n";
+        string str = rightShowTech.unlockUnit.GetName(langKey) + "\n\n";
         foreach (var item in unitNeedDict)
         {
-            str += $"{item.Key.name} : {item.Value[0]}/{item.Value[1]}\n";
+            str += $"{item.Key.GetName(langKey)} : {item.Value[0]}/{item.Value[1]}\n";
         }
 
         rightTestText.SetText(str);

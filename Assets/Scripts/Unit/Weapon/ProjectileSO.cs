@@ -13,7 +13,7 @@ public class ProjectileSO : ScriptableObject
     public float speed;
     [Tooltip("爆炸半径")]
     public float explosionRadius;
-    [Tooltip("穿透次数")]
+    [Tooltip("穿透次数/弹跳次数")]
     public int penetration = 1;
 
     [ForceFill, Preview]

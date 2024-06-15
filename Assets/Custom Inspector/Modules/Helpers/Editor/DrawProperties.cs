@@ -24,18 +24,24 @@ namespace CustomInspector.Extensions
         {
             if (property.propertyType != SerializedPropertyType.Generic)
             {
-                PropertyField(position: position, label: GUIContent.none, property: property, includeChildren: includeChildren);
+                DrawProperties.PropertyField(position: position,
+                                                    label: new GUIContent(""), //using GUIContent.none instead caused gui bugs
+                                                    property: property,
+                                                    includeChildren: includeChildren);
             }
             else
             {
                 if (includeChildren)
                 {
-                    PropertyField(position: position, label: new GUIContent(property.GetValue().ToString(), property.tooltip), property: property, includeChildren: includeChildren);
+                    DrawProperties.PropertyField(position: position,
+                                                 label: new GUIContent(property.name, property.tooltip),
+                                                 property: property,
+                                                 includeChildren: true);
                 }
                 else
                 {
                     property.isExpanded = false;
-                    EditorGUI.LabelField(position: position, label: new GUIContent(property.GetValue().ToString(), property.tooltip));
+                    EditorGUI.LabelField(position: position, label: new GUIContent(property.name, property.tooltip));
                 }
             }
         }
@@ -46,7 +52,11 @@ namespace CustomInspector.Extensions
             EditorGUI.PropertyField(position, property, new GUIContent(" "), includeChildren);
         }
         public static float GetPropertyHeight(GUIContent label, SerializedProperty property, bool includeChildren = true)
-            => EditorGUI.GetPropertyHeight(property, label, includeChildren);
+        {
+            Debug.Assert(property != null, "Property cannot be null");
+            Debug.Assert(label != null, "Label should not be null. If you dont want a label use the GUIContent(\"\") or GUIContent(\" \")");
+            return EditorGUI.GetPropertyHeight(property, label, includeChildren);
+        }
         public static float GetPropertyHeight(SerializedProperty property, bool includeChildren = true)
             => EditorGUI.GetPropertyHeight(property, includeChildren);
         public static float GetPropertyHeight(SerializedPropertyType type, GUIContent label)
@@ -152,13 +162,16 @@ namespace CustomInspector.Extensions
 
                 case InternalLabelStyle.NoSpacing:
                     if (property.propertyType == SerializedPropertyType.Generic)
+                    {
                         DrawProperties.PropertyField(position, label, property, true);
+                    }
                     else
                     {
+                        label = PropertyValues.RepairLabel(label, property); //we have to repair before checking width
                         float labelWidth = GUI.skin.label.CalcSize(label).x + 5; //some additional distance
                         using (new LabelWidthScope(labelWidth))
                         {
-                            DrawProperties.PropertyField(position, label, property, true);
+                            EditorGUI.PropertyField(position, property, label); //we dont need DrawProperties.PropertyField since we already repaired the label
                         }
                     }
                     break;
@@ -175,18 +188,18 @@ namespace CustomInspector.Extensions
         /// <summary> spacing between message and the field it belongs too.</summary>
         public const float messageBoxEndSpacing = 2;
         public const float messageBoxHeight = 40;
+
+        static Vector2 scrollPos = Vector2.zero;
         /// <summary> Draws the field with position, but inserts an error message before </summary>
         public static void DrawPropertyWithMessage(Rect position, GUIContent label, SerializedProperty property, string errorMessage, MessageType type, bool includeChildren = true, bool disabled = false)
         {
             position.y += messageBoxStartSpacing;
-            Rect rect = EditorGUI.IndentedRect(position);
-            rect.height = messageBoxHeight;
-            using (new NewIndentLevel(0))
-            {
-                EditorGUI.HelpBox(rect, errorMessage, type);
-            }
+            Rect messageRect = EditorGUI.IndentedRect(position);
+            messageRect.height = messageBoxHeight;
 
-            position.y += rect.height + messageBoxEndSpacing;
+            DrawMessageField(messageRect, errorMessage, type);
+
+            position.y += messageRect.height + messageBoxEndSpacing;
             position.height = DrawProperties.GetPropertyHeight(label, property);
 
             if (disabled)
@@ -213,17 +226,32 @@ namespace CustomInspector.Extensions
                 DrawProperties.PropertyField(position: position, label: new GUIContent(" "), property: property, includeChildren: includeChildren);
         }
         /// <summary>
-        /// Draws a helpbox with specific height
+        /// Draws a helpbox with specific height (in scrollScope if message is too large)
         /// </summary>
         /// <param name="position"></param>
         /// <param name="errorMessage"></param>
         /// <param name="type"></param>
         public static void DrawMessageField(Rect position, string errorMessage, MessageType type)
         {
-            Rect rect = EditorGUI.IndentedRect(position);
             using (new NewIndentLevel(0))
             {
-                EditorGUI.HelpBox(rect, errorMessage, type);
+                float neededHeight = EditorStyles.helpBox.CalcHeight(new GUIContent(errorMessage), position.width - Common.scrollbarThickness) + 10; // + some margin
+
+                if (neededHeight <= messageBoxHeight)
+                {
+                    EditorGUI.HelpBox(position, errorMessage, type);
+                }
+                else
+                {
+                    Rect innerPosition = new Rect(0, 0, position.width - Common.scrollbarThickness, neededHeight); //position in the scrollbar
+
+                    using (var scrollScope = new GUI.ScrollViewScope(position, scrollPos, innerPosition))
+                    {
+                        scrollPos = scrollScope.scrollPosition;
+
+                        EditorGUI.HelpBox(innerPosition, errorMessage, type);
+                    }
+                }
             }
         }
 
@@ -282,7 +310,7 @@ namespace CustomInspector.Extensions
                 int columnsWidthDynamicWidth = columns.Length;
                 foreach (Column c in columns)
                 {
-                    if(c.fixedWidth.HasValue)
+                    if (c.fixedWidth.HasValue)
                     {
                         usedWidth += c.fixedWidth.Value;
                         columnsWidthDynamicWidth--;

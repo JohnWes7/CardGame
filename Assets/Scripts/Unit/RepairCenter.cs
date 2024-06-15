@@ -4,6 +4,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using CustomInspector;
 using DG.Tweening;
+using QFramework;
+
+public interface IBeRepairUnitObject
+{
+    public float GetHPScale();
+    public void Repair(int amount);
+    public Transform GetTransform();
+}
 
 public class RepairCenter : UnitObject, IShipUnit
 {
@@ -19,8 +27,11 @@ public class RepairCenter : UnitObject, IShipUnit
     private int repairAmount = 5;
     [SerializeField]
     private int repairRadius = 10;
+    [HorizontalLine("fx")]
     [SerializeField]
     private GameObject droneFXPrefab;
+    [SerializeField]
+    private LineRenderer lineRenderer;
 
     private void Update()
     {
@@ -50,25 +61,20 @@ public class RepairCenter : UnitObject, IShipUnit
     {
         if (target != null)
         {
-            // 生成一个特效
-            GameObject fx = Instantiate(droneFXPrefab, transform.position, Quaternion.FromToRotation(transform.position, target.GetTransform().position), transform);
-            // Debug.Log(transform.InverseTransformPoint(target.GetTransform().position));
-            fx.transform.DOLocalMove(transform.InverseTransformPoint(target.GetTransform().position), 1).SetEase(Ease.InBack).OnComplete(() =>
+            //this.SendCommand(new RepairDroneAniCommand()
+            //{
+            //    sender = this,
+            //    target = target,
+            //    repairAmount = repairAmount,
+            //    droneFXPrefab = droneFXPrefab
+            //});
+            this.SendCommand(new RepairLineAniCommand()
             {
-                try
-                {
-                    target.Repair(repairAmount);
-                }
-                catch (System.Exception)
-                {
-                    Debug.Log("target is null");
-                }
-                finally
-                {
-                    Destroy(fx);
-                }
+                Line = lineRenderer,
+                repairAmount = repairAmount,
+                sender = this,
+                target = target
             });
-
         }
     }
 
@@ -130,9 +136,59 @@ public class RepairCenter : UnitObject, IShipUnit
     }
 }
 
-public interface IBeRepairUnitObject
+public class RepairLineAniCommand : AbstractCommand
 {
-    public float GetHPScale();
-    public void Repair(int amount);
-    public Transform GetTransform();
+    public MonoBehaviour sender;
+    public IBeRepairUnitObject target;
+    public int repairAmount;
+    public LineRenderer Line;
+
+    protected override void OnExecute()
+    {
+        Line.positionCount = 2;
+        Line.SetPosition(0, Vector3.zero);
+        Line.SetPosition(1, sender.transform.InverseTransformPoint(target.GetTransform().position));
+
+        Line.DOColor(new Color2(new Color(0.09451604f, 1f, 0f, 0f), new Color(0.2392159f, 1f, 0f, 0f)),
+                new Color2(new Color(0.09451604f, 1f, 0f, 1f), new Color(0.2392159f, 1f, 0f, 1f)), 0.25f)
+            .SetEase(Ease.OutQuint)
+            .OnComplete(() =>
+            {
+                Line.DOColor(new Color2(new Color(0.09451604f, 1f, 0f, 1f), new Color(0.2392159f, 1f, 0f, 1f)),
+                        new Color2(new Color(0.09451604f, 1f, 0f, 0f), new Color(0.2392159f, 1f, 0f, 0f)), 0.25f)
+                    .SetEase(Ease.OutQuint);
+            });
+
+        target.Repair(repairAmount);
+    }
+}
+
+public class RepairDroneAniCommand : AbstractCommand
+{
+    public MonoBehaviour sender;
+    public IBeRepairUnitObject target;
+    public int repairAmount;
+    public GameObject droneFXPrefab;
+
+    protected override void OnExecute()
+    {
+        // 生成一个特效
+        GameObject fx = Object.Instantiate(droneFXPrefab, sender.transform.position, Quaternion.FromToRotation(sender.transform.position, target.GetTransform().position), sender.transform);
+        // Debug.Log(transform.InverseTransformPoint(target.GetTransform().position));
+        fx.transform.DOLocalMove(sender.transform.InverseTransformPoint(target.GetTransform().position), 1).SetEase(Ease.InBack).OnComplete(() =>
+        {
+            try
+            {
+                target.Repair(repairAmount);
+            }
+            catch (System.Exception)
+            {
+                Debug.Log("target is null");
+            }
+            finally
+            {
+                Object.Destroy(fx);
+            }
+        });
+    }
 }

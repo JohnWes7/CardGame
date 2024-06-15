@@ -1,5 +1,4 @@
 using System;
-using UnityEditor;
 using UnityEngine;
 
 namespace CustomInspector
@@ -30,6 +29,7 @@ namespace CustomInspector
         Purple,
         Red,
         Yellow,
+        /// <summary> Color(0, 0, 0, 0) </summary>
         Transparent,
     }
     public enum LabelStyle

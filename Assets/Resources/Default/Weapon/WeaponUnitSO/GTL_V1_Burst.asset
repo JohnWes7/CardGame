@@ -24,26 +24,28 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list:
-        - zh
+        _: 0
+        values:
         - en
+        - zh
       editor_input: 
     values:
-      list:
-      - "GTL-V1-\u8FDE\u5C04"
+      _: 0
+      values:
       - GTL-V1-Burst
-    editor_keyInput: en
-    editor_valueInput: GTL-V1-Burst
+      - "GTL-V1-\u8FDE\u51FB\u6273\u673A"
+    editor_keyInput: zh
+    editor_valueInput: "GTL-V1-\u8FDE\u51FB\u6273\u673A"
   descriptionInfo:
     info: 0
     keys:
       info: 0
       values:
-        list:
-        - zh
+        _: 0
+        values: []
       editor_input: 
     values:
-      list:
-      - "\u7206\u53D1"
+      _: 0
+      values: []
     editor_keyInput: zh
     editor_valueInput: "\u7206\u53D1"

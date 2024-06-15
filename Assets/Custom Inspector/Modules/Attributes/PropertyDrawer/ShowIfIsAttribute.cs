@@ -16,6 +16,9 @@ namespace CustomInspector
         public readonly string fieldPath;
         public readonly object value;
         public DisabledStyle style = DisabledStyle.Invisible;
+        /// <summary>
+        /// The offset in the inspector applied on the member (to the right side)
+        /// </summary>
         public int indent = 1;
 
         public bool Inverted { get; protected set; } = false;

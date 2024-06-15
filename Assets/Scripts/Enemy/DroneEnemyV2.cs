@@ -86,23 +86,29 @@ public class DroneEnemyV2 : AbstractEnemy, IBeDamage
 
     public void BeDamage(DamageInfo damageInfo)
     {
+        // 扣血
         curHp -= damageInfo.GetDamageAmount();
         if (curHp <= 0)
         {
+            // 死亡掉落
             DropItemBySO();
             Destroy(gameObject);
         }
 
         //LogUtilsXY.LogOnPos(damageInfo.GetDamageAmount().ToString(), transform.position, 0.5f, 12f);
+        // 执行 显示伤害数字 command
         var command = new LogDamageTextCommand
         {
             DamageAmount = damageInfo.GetDamageAmount(),
             Position = transform.position,
-            Color = Color.white,
+            Color = LogDamageTextCommand.GetWhiteColor(),
             Duration = 1f,
             randomRadius = 2f
         };
         this.SendCommand(command);
+
+        // 执行 显示受伤动画 command
+        this.SendCommand(new ExecuteHitAniCommand(gameObject));
     }
 
     [ContextMenu("TestDropItemBySO")]
@@ -117,4 +123,22 @@ public class DroneEnemyV2 : AbstractEnemy, IBeDamage
         }
     }
 
+}
+
+public class ExecuteHitAniCommand : AbstractCommand
+{
+    public GameObject target;
+
+    public ExecuteHitAniCommand(GameObject target)
+    {
+        this.target = target;
+    }
+
+    protected override void OnExecute()
+    {
+        if (target.TryGetComponent<IBeHitAni>(out var beHitAni))
+        {
+            beHitAni.Execute();
+        }
+    }
 }

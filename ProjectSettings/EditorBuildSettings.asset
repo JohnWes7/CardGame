@@ -14,4 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SpacePort.unity
     guid: ddb7779405b1a36499513b9a63481b8e
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 28ffbfea5ec11a34fb64ad57359e6cfe, type: 2}
+    com.unity.localization.settings: {fileID: 11400000, guid: 3e606b48d511e5945b55d01d481d9f0a, type: 2}

@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 
@@ -34,12 +31,13 @@ namespace CustomInspector
         [SerializeField]
         public float value;
 
-#if UNITY_EDITOR
+#pragma warning disable IDE0052 // Remove unread private members
         /// <summary>
-        /// The current min and max of the slider
+        /// The current min and max of the slider (EditorOnly)
         /// </summary>
         [SerializeField]
         float min, max;
+#pragma warning restore IDE0052 // Remove unread private members
 
         /// <summary>
         /// Initial values of min and max from the constructor
@@ -50,7 +48,7 @@ namespace CustomInspector
         /// The side that cannot be changed in the inspector
         /// </summary>
         readonly FixedSide fixedSide;
-#endif
+
 
         public DynamicSlider(float value, float min, float max, FixedSide fixedSide = FixedSide.None)
         {

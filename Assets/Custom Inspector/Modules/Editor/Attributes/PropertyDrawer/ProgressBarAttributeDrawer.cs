@@ -12,8 +12,9 @@ namespace CustomInspector.Editor
     [CustomPropertyDrawer(typeof(ProgressBarAttribute))]
     public class ProgressBarAttributeDrawer : PropertyDrawer
     {
-        static readonly GUIStyle minLabelStyle = new(GUI.skin.label) { fontSize = 10, alignment = TextAnchor.UpperLeft };
-        static readonly GUIStyle maxLabelStyle = new(GUI.skin.label) { fontSize = 10, alignment = TextAnchor.UpperRight };
+        //these guistyles cannot be readonly, because GUI.skin.label is only initialized during gui-calls
+        static GUIStyle MinLabelStyle => new(GUI.skin.label) { fontSize = 10, alignment = TextAnchor.UpperLeft };
+        static GUIStyle MaxLabelStyle => new(GUI.skin.label) { fontSize = 10, alignment = TextAnchor.UpperRight };
 
         const float cursorLineWidth = 5;
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -31,7 +32,7 @@ namespace CustomInspector.Editor
             float currentValue = Convert.ToSingle(property.GetValue());
 
             //draw a button below to force update inspector each time entering the ui element
-            if(info.isInteractible)
+            if (info.isInteractible)
                 GUI.Button(position, GUIContent.none);
 
             //Draw bar
@@ -39,9 +40,9 @@ namespace CustomInspector.Editor
             EditorGUI.ProgressBar(position, betweenThresholds, property.name + $" ({betweenThresholds * 100}%)");
 
             //Draw start and end
-            if(min != 0) //if not obvious
-                EditorGUI.LabelField(position, min.ToString(), minLabelStyle);
-            EditorGUI.LabelField(position, max.ToString(), maxLabelStyle);
+            if (min != 0) //if not obvious
+                EditorGUI.LabelField(position, min.ToString(), MinLabelStyle);
+            EditorGUI.LabelField(position, max.ToString(), MaxLabelStyle);
 
             //interaction
             if (info.isInteractible)
@@ -57,8 +58,9 @@ namespace CustomInspector.Editor
                             property.intValue = (int)(newValue + .5f);
                         else
                             property.floatValue = newValue;
+
                         property.serializedObject.ApplyModifiedProperties();
-                        EditorWindow.focusedWindow.Repaint(); //display changes
+                        //EditorWindow.focusedWindow.Repaint(); //display changes
                     }
 
                     Rect linePosition = new()
@@ -101,7 +103,7 @@ namespace CustomInspector.Editor
 
             public PropInfo(SerializedProperty property, ProgressBarAttribute attribute, FieldInfo fieldInfo)
             {
-                if(property.propertyType != SerializedPropertyType.Float && property.propertyType != SerializedPropertyType.Integer)
+                if (property.propertyType != SerializedPropertyType.Float && property.propertyType != SerializedPropertyType.Integer)
                 {
                     errorMessage = $"ProgressBar: type '{property.propertyType}' not supported";
                     return;
@@ -123,9 +125,9 @@ namespace CustomInspector.Editor
                     //Max
                     if (attribute.maxGetter == null)
                         getMax = (prop) => attribute.max;
-                    else if(maxProp.propertyType == SerializedPropertyType.Float)
+                    else if (maxProp.propertyType == SerializedPropertyType.Float)
                         getMax = (prop) => prop.GetOwnerAsFinder().FindPropertyRelative(attribute.maxGetter).floatValue;
-                    else if(maxProp.propertyType == SerializedPropertyType.Integer)
+                    else if (maxProp.propertyType == SerializedPropertyType.Integer)
                         getMax = (prop) => prop.GetOwnerAsFinder().FindPropertyRelative(attribute.maxGetter).intValue;
                     else
                     {
@@ -151,7 +153,7 @@ namespace CustomInspector.Editor
                 {
                     //Check if existing
                     //Max
-                    if(attribute.maxGetter != null)
+                    if (attribute.maxGetter != null)
                     {
                         DirtyValue maxValue;
                         try
@@ -184,7 +186,7 @@ namespace CustomInspector.Editor
                             return;
                         }
                         //Check type
-                        if(!typeof(float).IsAssignableFrom(minValue.Type))
+                        if (!typeof(float).IsAssignableFrom(minValue.Type))
                         {
                             errorMessage = $"ProgressBar: set minimum: Property {attribute.minGetter} is not a number";
                             return;
@@ -196,7 +198,7 @@ namespace CustomInspector.Editor
                     {
                         prop.serializedObject.ApplyModifiedPropertiesWithoutUndo();
                         DirtyValue owner = DirtyValue.GetOwner(property);
-                        if(attribute.maxGetter == null) //only min
+                        if (attribute.maxGetter == null) //only min
                             return ((float)owner.FindRelative(attribute.minGetter).GetValue(), attribute.max);
                         else if (attribute.minGetter == null) //only max
                             return (attribute.min, (float)owner.FindRelative(attribute.maxGetter).GetValue());

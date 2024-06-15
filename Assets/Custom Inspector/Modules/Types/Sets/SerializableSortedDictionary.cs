@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace CustomInspector
 {
@@ -21,6 +21,13 @@ namespace CustomInspector
         {
             keys_casted = (SerializableSortedSet<TKey>)base.keys;
         }
+        public SerializableSortedDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection) : this()
+        {
+            foreach (var item in collection)
+            {
+                this.Add(item.Key, item.Value);
+            }
+        }
 
 
         /// <returns>True, if key/value pair got added at key. False if key already exists</returns>
@@ -32,7 +39,7 @@ namespace CustomInspector
             }
 
             int ind = keys_casted.AddAndGetIndex(key);
-            if(ind != -1)
+            if (ind != -1)
             {
                 values.Insert(ind, value);
                 return true;
@@ -40,10 +47,34 @@ namespace CustomInspector
             return false;
         }
 
+        protected override void Internal_OnDeserialization(object sender)
+        {
+            base.Internal_OnDeserialization(sender);
 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (keys_casted.Count != base.keys.Count)
+            {
+                Debug.LogError("Deserialized keys were out of sync. Keys may lose their order");
+                base.keys = keys_casted;
+            }
+            else
+            {
+                for (int i = 0; i < base.keys.Count; i++)
+                {
+                    if (!keys_casted[i].Equals(base.keys[i]))
+                    {
+                        Debug.LogError("Deserialized keys were out of sync. Keys may lose their order");
+                        base.keys = keys_casted;
+                        break;
+                    }
+                }
+            }
+#endif
+            base.keys = keys_casted;
+        }
 
-        ICollection IDictionary.Keys => keys_casted;
-        ICollection IDictionary.Values => values;
+        ICollection IDictionary.Keys => keys_casted.AsReadOnly();
+        ICollection IDictionary.Values => values.AsReadOnly();
 
 
 

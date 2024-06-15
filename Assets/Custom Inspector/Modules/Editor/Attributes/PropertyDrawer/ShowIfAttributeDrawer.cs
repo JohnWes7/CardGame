@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace CustomInspector.Editor
 {
@@ -45,7 +44,7 @@ namespace CustomInspector.Editor
             var a = (ShowIfAttribute)attribute;
             var info = GetInfo(property, a);
 
-            if(info.errorMessage != null)
+            if (info.errorMessage != null)
             {
                 DrawProperties.DrawPropertyWithMessage(position, label, property, info.errorMessage, MessageType.Error);
                 return;
@@ -54,6 +53,7 @@ namespace CustomInspector.Editor
             //Display
             using (new EditorGUI.IndentLevelScope(attribute.indent))
             {
+                EditorGUI.BeginChangeCheck();
                 switch (a.style)
                 {
                     case DisabledStyle.Invisible:
@@ -71,6 +71,8 @@ namespace CustomInspector.Editor
                     default:
                         throw new System.NotImplementedException($"{a.style}");
                 }
+                if (EditorGUI.EndChangeCheck())
+                    property.serializedObject.ApplyModifiedProperties();
             }
         }
 
@@ -79,12 +81,12 @@ namespace CustomInspector.Editor
             var a = (ShowIfAttribute)attribute;
             var info = GetInfo(property, a);
 
-            if(info.errorMessage != null)
+            if (info.errorMessage != null)
             {
                 return DrawProperties.GetPropertyWithMessageHeight(label, property);
             }
             //If visible
-            if(info.condition(property))
+            if (info.condition(property))
             {
                 return DrawProperties.GetPropertyHeight(label, property);
             }
@@ -127,7 +129,7 @@ namespace CustomInspector.Editor
                 if (property.IsArrayElement()) //is element in a list
                 {
                     errorMessage = "conditional-show not valid on list elements." +
-                    "\nHint: Put your list in a (holder-)class, give it this attribute and UnwrapAttribute to hide and unhide the whole list";
+                    $"\nReplace field-type with {typeof(ListContainer<>).FullName} to apply all attributes to whole list instead of to single elements";
                     condition = null;
                     return;
                 }
@@ -166,7 +168,8 @@ namespace CustomInspector.Editor
                     {
                         return conditionalAttribute.comOp switch
                         {
-                            ComparisonOp.Equals => (p) => {
+                            ComparisonOp.Equals => (p) =>
+                            {
                                 var values = valuesGetter(p);
                                 object firstValue = values[0];
                                 if (firstValue.IsUnityNull())

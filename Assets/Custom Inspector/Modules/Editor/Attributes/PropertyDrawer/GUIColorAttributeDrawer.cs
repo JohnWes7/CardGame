@@ -16,7 +16,12 @@ namespace CustomInspector.Editor
             {
                 Color savedColor = GUI.color;
                 GUI.color = c.fixedColor.Value.ToColor();
+
+                EditorGUI.BeginChangeCheck();
                 DrawProperties.PropertyField(position, label, property);
+                if (EditorGUI.EndChangeCheck())
+                    property.serializedObject.ApplyModifiedProperties();
+
                 if (!c.colorWholeUI)
                     GUI.color = savedColor;
             }

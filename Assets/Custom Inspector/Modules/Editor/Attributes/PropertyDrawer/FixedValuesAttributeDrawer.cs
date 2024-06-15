@@ -1,6 +1,4 @@
 using CustomInspector.Extensions;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -13,7 +11,7 @@ namespace CustomInspector.Editor
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             FixedValuesAttribute f = (FixedValuesAttribute)attribute;
-            if(f.values == null || f.values.Length <= 0)
+            if (f.values == null || f.values.Length <= 0)
             {
                 DrawProperties.DrawPropertyWithMessage(position, label, property, errorMessage: "FixedValuesAttribute: No values given to choose from", MessageType.Error);
                 return;
@@ -21,7 +19,7 @@ namespace CustomInspector.Editor
 
             var values = f.values.ToList();
 
-            if(values.Any(_ => _.GetType() != fieldInfo.FieldType))
+            if (values.Any(_ => _.GetType() != fieldInfo.FieldType))
             {
                 DrawProperties.DrawPropertyWithMessage(position, label, property, errorMessage: $"FixedValuesAttribute: Not all given values are type of {fieldInfo.FieldType.Name}", MessageType.Error);
                 return;
@@ -30,13 +28,14 @@ namespace CustomInspector.Editor
             int index = values.IndexOf(property.GetValue());
             if (index == -1)
             {
-                property.SetValue(values[0]);
                 index = 0;
+                property.SetValue(values[0]);
+                property.serializedObject.ApplyModifiedProperties();
             }
 
             EditorGUI.BeginChangeCheck();
             index = EditorGUI.Popup(position, label, index, values.Select(_ => new GUIContent(_.ToString())).ToArray());
-            if(EditorGUI.EndChangeCheck())
+            if (EditorGUI.EndChangeCheck())
             {
                 property.SetValue(values[index]);
                 property.serializedObject.ApplyModifiedProperties();

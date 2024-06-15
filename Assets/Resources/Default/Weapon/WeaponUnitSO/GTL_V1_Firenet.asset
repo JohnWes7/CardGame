@@ -24,26 +24,26 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list:
+        _: 0
+        values:
         - zh
-        - en
       editor_input: 
     values:
-      list:
+      _: 0
+      values:
       - "GTL-1-\u706B\u529B\u7F51"
-      - GTL-1-Firenet
-    editor_keyInput: en
-    editor_valueInput: GTL-1-Firenet
+    editor_keyInput: zh
+    editor_valueInput: "GTL-1-\u706B\u529B\u7F51"
   descriptionInfo:
     info: 0
     keys:
       info: 0
       values:
-        list:
-        - zh
+        _: 0
+        values: []
       editor_input: 
     values:
-      list:
-      - "\u4F60\u4F24\u5BB3\u9AD8\u5417?\u6211\u5B50\u5F39\u591A!\u4F60\u6253\u7684\u4E2D\u5417?\u6211\u5B50\u5F39\u591A!\u4F60....,\u6211\u5B50\u5F39\u591A!"
+      _: 0
+      values: []
     editor_keyInput: zh
     editor_valueInput: "\u4F60\u4F24\u5BB3\u9AD8\u5417?\u6211\u5B50\u5F39\u591A!\u4F60\u6253\u7684\u4E2D\u5417?\u6211\u5B50\u5F39\u591A!\u4F60....,\u6211\u5B50\u5F39\u591A!"

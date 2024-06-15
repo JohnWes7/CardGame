@@ -47,9 +47,9 @@ public class ShipBuildController : MonoBehaviour, IController
     public SpriteRenderer PrefabShadow { get => prefabShadow; set => prefabShadow = value; }
 
     public bool IsBuilding { get => isBuilding; set => isBuilding = value; }
+    
 
-
-    private void Start()
+    private void Awake()
     {
         buildDir = default;
         sc.InterfaceObj = GetComponent<IShipController>();
@@ -67,6 +67,8 @@ public class ShipBuildController : MonoBehaviour, IController
         {
             GameObject temp = Instantiate(uiBuildPanelPrefab, GameObject.Find("Canvas").transform);
             uiBuildPanelInstance = temp.GetComponent<UIBase>();
+            // 调整为第一个子物体
+            temp.transform.SetAsFirstSibling();
         }
 
         // 添加委托
@@ -132,7 +134,7 @@ public class ShipBuildController : MonoBehaviour, IController
             PlayerControllerSingleton.Instance.SwitchCurrentActionMap("Build");
             prefabShadow.gameObject.SetActive(true);
             sc.InterfaceObj.SetAllFGridNodeBackGroundActive(true);
-            Johnwest.JWUniversalTool.LogWithClassMethodName("startBuild", System.Reflection.MethodBase.GetCurrentMethod());
+            Debug.Log("进入建造模式");
 
             // 显示ui
             uiBuildPanelInstance.OpenUI();

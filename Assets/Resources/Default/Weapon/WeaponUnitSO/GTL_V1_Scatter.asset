@@ -24,24 +24,26 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list:
+        _: 0
+        values:
         - zh
       editor_input: 
     values:
-      list:
+      _: 0
+      values:
       - "GTL-1-\u6563\u5C04"
     editor_keyInput: zh
-    editor_valueInput: "GTL-1-\u7ECF\u5178"
+    editor_valueInput: "GTL-1-\u6563\u5C04"
   descriptionInfo:
     info: 0
     keys:
       info: 0
       values:
-        list:
-        - zh
+        _: 0
+        values: []
       editor_input: 
     values:
-      list:
-      - "\u53CC\u500D\u706B\u529B!...\u5417?"
+      _: 0
+      values: []
     editor_keyInput: zh
     editor_valueInput: "\u53CC\u500D\u706B\u529B!...\u5417?"

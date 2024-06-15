@@ -82,7 +82,7 @@ namespace CustomInspector.Extensions
             }
         }
 
-        protected virtual FieldInfo GetFieldInfo() => fieldInfo;
+        protected virtual FieldInfo GetFieldInfo() => fieldInfo; //not public to not encourage to use this to get values
         public bool HasAttribute(Type attr)
             => GetFieldInfo().IsDefined(attr);
         public T GetAttribute<T>() where T : Attribute

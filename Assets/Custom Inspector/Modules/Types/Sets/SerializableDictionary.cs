@@ -1,8 +1,9 @@
-using CustomInspector.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace CustomInspector
@@ -13,16 +14,25 @@ namespace CustomInspector
     [System.Diagnostics.Conditional("UNITY_EDITOR")]
     public class DictionaryAttribute : PropertyAttribute
     {
+        /// <summary>
+        /// Only on SerializableDictionary: Overrides the key-column-header with a custom label
+        /// </summary>
+        public string keyLabel = null;
+        /// <summary>
+        /// Only on SerializableDictionary: Overrides the value-column-header with a custom label
+        /// </summary>
+        public string valueLabel = null;
+
         public readonly float keySize;
         public const float defaultKeySize = .4f;
         public DictionaryAttribute(float keySize = defaultKeySize)
         {
-            if(keySize <= 0)
+            if (keySize <= 0)
             {
                 Debug.LogWarning($"{nameof(keySize)} has to be greater zero");
                 keySize = defaultKeySize;
             }
-            else if(keySize >= 1)
+            else if (keySize >= 1)
             {
                 Debug.LogWarning($"{nameof(keySize)} has to be between 0 and 1, because it defines the proportion of space for keys and values");
                 keySize = defaultKeySize;
@@ -38,17 +48,15 @@ namespace CustomInspector
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [System.Serializable]
-    public class SerializableDictionary<TKey, TValue> : IEnumerable, IDictionary, IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
+    public class SerializableDictionary<TKey, TValue> : IEnumerable, IDictionary, IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>, IDeserializationCallback
     {
-#if UNITY_EDITOR
         [MessageBox("Use the [Dictionary]-attribute for displaying in the inspector", MessageBoxType.Error)]
         [SerializeField, HideField] bool info;
-#endif
+
 
         [SerializeField, HideField]
         protected SerializableSet<TKey> keys;
-        public ICollection<TKey> Keys => keys; //IDictionary<TKey, TValue>
-        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => keys;
+        public ReadOnlyCollection<TKey> Keys => keys.ToList().AsReadOnly();
 
 
         /// <summary>
@@ -56,8 +64,8 @@ namespace CustomInspector
         /// </summary>
         [SerializeField, HideField]
         protected ListContainer<TValue> values;
-        public ICollection<TValue> Values => values; //IDictionary<TKey, TValue>
-        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => values;
+        public ReadOnlyCollection<TValue> Values => values.AsReadOnly();
+
 
         public int Count => keys.Count;
 
@@ -86,6 +94,8 @@ namespace CustomInspector
                 throw new NullReferenceException("Keys is null");
             if (values == null)
                 throw new NullReferenceException("Values value is null");
+            if (keys.Count != values.Count)
+                throw new ArgumentException($"{nameof(keys)} and {nameof(values)} must have the same amount of elements");
             this.keys = keys;
             this.values = values;
         }
@@ -143,7 +153,7 @@ namespace CustomInspector
 
         public void RemoveAt(int index)
         {
-            if(index < 0)
+            if (index < 0)
                 throw new ArgumentOutOfRangeException($"Index ({index}) has to be greater zero");
             if (index >= Count)
                 throw new ArgumentOutOfRangeException($"Index ({index}) has to be smaller than the size of the collection ({Count})");
@@ -162,7 +172,23 @@ namespace CustomInspector
             }
             else
             {
-                value = values[ind];
+                try
+                {
+                    value = values[ind];
+                }
+                catch (ArgumentOutOfRangeException ae)
+                {
+                    if (keys.Count != values.Count)
+                    {
+                        throw new InvalidOperationException($"Internal Dictionary Error: Element with index '{ind}' cannot be accessed due to corrupted dictionary. " +
+                                                            $"Keys.Count='{keys.Count}' differ from Values.Count='{values.Count}'.\n\nOriginal Exception: {ae.Message}");
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"Internal Dictionary Error: Element with index '{ind}' is invalid on dictionary.Count='{Count}'." +
+                                                            $"\n\nOriginal Exception: {ae.Message}");
+                    }
+                }
                 return true;
             }
         }
@@ -255,7 +281,10 @@ namespace CustomInspector
         ICollection IDictionary.Keys => keys;
         ICollection IDictionary.Values => values;
 
-
+        ICollection<TKey> IDictionary<TKey, TValue>.Keys => keys.AsReadOnly();
+        ICollection<TValue> IDictionary<TKey, TValue>.Values => values.AsReadOnly();
+        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => keys.AsReadOnly();
+        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => values.AsReadOnly();
 
         object IDictionary.this[object key]
         {
@@ -367,7 +396,39 @@ namespace CustomInspector
             }
         }
 
-#if UNITY_EDITOR
+        void IDeserializationCallback.OnDeserialization(object sender)
+        {
+            Internal_OnDeserialization(sender);
+        }
+        protected virtual void Internal_OnDeserialization(object sender)
+        {
+            if (keys.Count != values.Count)
+            {
+                if (keys.Count > values.Count)
+                {
+                    int tooMuch = keys.Count - values.Count;
+                    for (int i = 0; i < tooMuch; i++)
+                    {
+                        keys.RemoveAt(keys.Count - 1);
+                    }
+
+                    Debug.LogError(nameof(SerializableDictionary<TKey, TValue>) + ": Deserialized 'key's amount was greater than 'value's amount. " +
+                                    $"{tooMuch} 'key's were discarded.");
+                }
+                else
+                {
+                    int tooMuch = values.Count - keys.Count;
+                    for (int i = 0; i < tooMuch; i++)
+                    {
+                        values.RemoveAt(values.Count - 1);
+                    }
+
+                    Debug.LogError(nameof(SerializableDictionary<TKey, TValue>) + ": Deserialized 'value's amount was greater than 'key' amount. " +
+                                    $"{tooMuch} 'value's were discarded.");
+                }
+            }
+        }
+
         /// <summary>
         /// This is just for editorPurpose.
         /// </summary>
@@ -378,6 +439,5 @@ namespace CustomInspector
         /// </summary>
         [SerializeField]
         TValue editor_valueInput;
-#endif
     }
 }

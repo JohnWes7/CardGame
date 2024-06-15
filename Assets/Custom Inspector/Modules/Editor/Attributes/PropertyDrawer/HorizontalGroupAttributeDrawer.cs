@@ -1,10 +1,10 @@
+using CustomInspector.Extensions;
+using CustomInspector.Helpers;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using CustomInspector.Extensions;
-using System.Linq;
-using System;
-using CustomInspector.Helpers;
 
 namespace CustomInspector.Editor
 {
@@ -38,6 +38,7 @@ namespace CustomInspector.Editor
 
                 using (new NewIndentLevel(0))
                 {
+                    EditorGUI.BeginChangeCheck();
                     if (info.errorMessage == null)
                     {
                         using (new LabelWidthScope(rect.width * labelFieldProportion))
@@ -49,9 +50,11 @@ namespace CustomInspector.Editor
                     {
                         DrawProperties.DrawPropertyWithMessage(rect, label, property, info.errorMessage, info.errorType);
                     }
+                    if (EditorGUI.EndChangeCheck())
+                        property.serializedObject.ApplyModifiedProperties();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.LogException(e);
             }
@@ -165,7 +168,9 @@ namespace CustomInspector.Editor
                     if (attribute.beginNewGroup)
                         errorMessage = $"{property.name} is alone in a horizontal group. Maybe set \"beginNewGroup\"=false to let him join the previous group";
                     else
-                        errorMessage = $"unnecessary assignment of HorizontalGroupAttribute ({property.name} is alone in a horizontal group). All members of the group must have the attribute and stand behind each other in the code";
+                        errorMessage = $"unnecessary assignment of HorizontalGroupAttribute ({property.name} is alone in a horizontal group). " +
+                        $"All members of the group must have the attribute and stand behind each other in the code. " +
+                        $"Members cannot be in different [Tab]-attribute groups";
                     errorType = MessageType.Warning;
                     startX = (r) => r.x;
                     width = (w) => w;
@@ -209,10 +214,18 @@ namespace CustomInspector.Editor
 
                 bool foundMyGroup = false; //we are looking for the group the property is in
 
+                TabAttribute currentTabAttribute = null;
+                TabAttribute previousTabAttribute = null;
+
                 foreach (SerializedProperty prop in owner.GetAllProperties(false))
                 {
                     //Check is in group
-                    HorizontalGroupAttribute hg = new DirtyValue(prop).GetAttribute<HorizontalGroupAttribute>();
+                    DirtyValue dv = new DirtyValue(prop);
+                    HorizontalGroupAttribute hg = dv.GetAttribute<HorizontalGroupAttribute>();
+
+                    previousTabAttribute = currentTabAttribute;
+                    currentTabAttribute = dv.GetAttribute<TabAttribute>();
+
                     if (hg is null)
                     {
                         if (foundMyGroup)
@@ -223,7 +236,8 @@ namespace CustomInspector.Editor
                             continue;
                         }
                     }
-                    if (hg.beginNewGroup == true)
+                    if (hg.beginNewGroup == true
+                        || currentTabAttribute?.groupName != previousTabAttribute?.groupName) //also split at different tabs
                     {
                         if (foundMyGroup)
                             break;
@@ -235,6 +249,11 @@ namespace CustomInspector.Editor
                     if (prop.name == property.name)
                         foundMyGroup = true;
                 }
+                if (!foundMyGroup)
+                {
+                    throw new GroupNotFoundException($"Provided property '{property.propertyPath}' was not flagged with {nameof(HorizontalGroupAttribute)}");
+                }
+
                 //Test
                 Debug.Assert(props.Count > 0, "Property group is empty");
                 //Return
@@ -250,6 +269,10 @@ namespace CustomInspector.Editor
                 propertyGroups.Add(id, group);
             }
             return group;
+        }
+        class GroupNotFoundException : Exception
+        {
+            public GroupNotFoundException(string message) : base(message) { }
         }
     }
 }

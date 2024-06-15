@@ -60,7 +60,7 @@ public abstract class AbstractTurret : UnitObject, IShipUnit
         ship.InterfaceObj = sc;
     }
 
-    private void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
         if (turretSO)
         {
@@ -85,7 +85,7 @@ public abstract class AbstractTurret : UnitObject, IShipUnit
     /// 获取弹药子弹
     /// </summary>
     /// <returns></returns>
-    public ProjectileSO GetProjectile()
+    public virtual ProjectileSO GetProjectile()
     {
         // 如果激发区有弹药 直接使用激发区弹药
         if (curProjectileNum > 0)
@@ -116,7 +116,7 @@ public abstract class AbstractTurret : UnitObject, IShipUnit
         return turretSO.defaultProjectile;
     }
 
-    public ProjectileSO PeekProjectile()
+    public virtual ProjectileSO PeekProjectile()
     {
         // 如果激发区有弹药 直接使用激发区弹药
         if (curProjectileNum > 0)

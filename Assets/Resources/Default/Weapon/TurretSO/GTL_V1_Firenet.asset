@@ -18,5 +18,5 @@ MonoBehaviour:
     projectileSO: {fileID: 11400000, guid: c78a393ff1a8c15458f316c67a7bf39d, type: 2}
   defaultProjectile: {fileID: 11400000, guid: 70cdfcc56dafaed4998bfdc6b65bac27, type: 2}
   fireGap: 0.1
-  radius: 10
+  radius: 15
   rotateSpeed: 20

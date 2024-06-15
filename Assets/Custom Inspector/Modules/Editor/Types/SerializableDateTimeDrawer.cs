@@ -1,7 +1,5 @@
 using CustomInspector.Extensions;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -14,6 +12,8 @@ namespace CustomInspector.Editor
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             SerializableDateTimeAttribute attr = (SerializableDateTimeAttribute)attribute;
+
+            EditorGUI.BeginChangeCheck();
 
             //draw default
             if (attr.format == SerializableDateTime.InspectorFormat.Default
@@ -64,9 +64,9 @@ namespace CustomInspector.Editor
                     Rect enumRect = new(space);
                     enumRect.width -= labelRect.width;
                     enumRect.width = (enumRect.width - 2 * EditorGUIUtility.standardVerticalSpacing) / 3f;
-                    if(enumRect.width < 40)
+                    if (enumRect.width < 40)
                         enumRect.width = 40;
-                    
+
                     enumRect.x += labelRect.width + 2 * (enumRect.width + EditorGUIUtility.standardVerticalSpacing); //go to end (because year first)
 
                     //year
@@ -93,8 +93,10 @@ namespace CustomInspector.Editor
                     dayProp.intValue = EditorGUI.Popup(enumRect, dayProp.intValue, Enumerable.Range(1, daysPossible + 1)
                                                   .Select(x => new GUIContent(x.ToString())).ToArray());
                 }
-                property.serializedObject.ApplyModifiedProperties();
             }
+
+            if (EditorGUI.EndChangeCheck())
+                property.serializedObject.ApplyModifiedProperties();
         }
         readonly struct MyDateTime
         {
@@ -156,7 +158,7 @@ namespace CustomInspector.Editor
                 or SerializableDateTime.InspectorFormat.AddTextInput => EditorGUI.GetPropertyHeight(property, label),
 
                 SerializableDateTime.InspectorFormat.TextInput
-                or SerializableDateTime.InspectorFormat.DateEnums    => EditorGUIUtility.singleLineHeight,
+                or SerializableDateTime.InspectorFormat.DateEnums => EditorGUIUtility.singleLineHeight,
                 _ => throw new NotImplementedException(attr.format.ToString()),
             };
         }

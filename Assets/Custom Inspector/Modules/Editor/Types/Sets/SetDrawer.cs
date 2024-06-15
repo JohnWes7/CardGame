@@ -13,7 +13,7 @@ namespace CustomInspector.Editor
     [CustomPropertyDrawer(typeof(SerializableSortedSet<>))]
     public class SetDrawer : PropertyDrawer
     {
-        const string valuesListPath = "values.list";
+        const string valuesListPath = "values.values";
         const float errorHeight = 60;
         //Remove has to happen after dict was drawn. otherwise tries to draw removed things
         List<Action> removesAfterDraw = new();

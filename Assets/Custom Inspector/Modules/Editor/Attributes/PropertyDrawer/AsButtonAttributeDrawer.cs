@@ -1,8 +1,6 @@
 using CustomInspector.Extensions;
 using CustomInspector.Helpers.Editor;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -31,7 +29,7 @@ namespace CustomInspector.Editor
 
 
             label = PropertyValues.RepairLabel(label, property); // bugfix
-            if(!string.IsNullOrEmpty(b.label))
+            if (!string.IsNullOrEmpty(b.label))
                 label.text = b.label;
 
             Rect buttonRect = GetButtonRect(position, label, b.size);
@@ -57,11 +55,13 @@ namespace CustomInspector.Editor
                 Color c = property.isExpanded ? b.selectedColor.ToColor() : Color.white;
                 using (new BackgroundColorScope(c))
                 {
+                    EditorGUI.BeginChangeCheck();
+
                     if (isPressed)
                         property.SetValue(IsPressedValue());
                     else
                     {
-                        if(property.isExpanded) // is selected
+                        if (property.isExpanded) // is selected
                             property.SetValue(IsSelectedValue());
                         else
                             property.SetValue(NotSelectedValue());
@@ -69,7 +69,7 @@ namespace CustomInspector.Editor
 
                     if (GUI.Button(buttonRect, label))
                     {
-                        if(!property.isExpanded) //if is not selected
+                        if (!property.isExpanded) //if is not selected
                         {
                             property.isExpanded = true;
                             property.SetValue(IsSelectedValue());
@@ -80,6 +80,9 @@ namespace CustomInspector.Editor
                             property.SetValue(NotSelectedValue());
                         }
                     }
+
+                    if (EditorGUI.EndChangeCheck())
+                        property.serializedObject.ApplyModifiedProperties();
                 }
             }
             else

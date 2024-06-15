@@ -24,11 +24,13 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list:
+        _: 0
+        values:
         - zh
       editor_input: 
     values:
-      list:
+      _: 0
+      values:
       - "MIS-V1-\u5BFC\u5F39\u4E95"
     editor_keyInput: zh
     editor_valueInput: "MIS-V1-\u5BFC\u5F39\u4E95"
@@ -37,11 +39,11 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list:
-        - zh
+        _: 0
+        values: []
       editor_input: 
     values:
-      list:
-      - "\u54BB\u54BB\u54BB~~"
+      _: 0
+      values: []
     editor_keyInput: zh
     editor_valueInput: "\u54BB\u54BB\u54BB~~"

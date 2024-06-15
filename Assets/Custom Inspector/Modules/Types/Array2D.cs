@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -77,7 +76,7 @@ namespace CustomInspector
                 this.rowAmount = rowAmount;
                 this.columnAmount = columnAmount;
             }
-            
+
             rows = new Row[rowAmount];
             for (int i = 0; i < rows.Length; i++)
             {

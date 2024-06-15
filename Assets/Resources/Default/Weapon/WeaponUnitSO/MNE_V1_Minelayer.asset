@@ -24,24 +24,26 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list:
+        _: 0
+        values:
         - zh
       editor_input: 
     values:
-      list:
+      _: 0
+      values:
       - "MNE-V1-\u5E03\u96F7\u5668"
     editor_keyInput: zh
-    editor_valueInput: "MIS-V1-\u5BFC\u5F39\u4E95"
+    editor_valueInput: "MNE-V1-\u5E03\u96F7\u5668"
   descriptionInfo:
     info: 0
     keys:
       info: 0
       values:
-        list:
-        - zh
+        _: 0
+        values: []
       editor_input: 
     values:
-      list:
-      - "\u6EF4."
+      _: 0
+      values: []
     editor_keyInput: zh
     editor_valueInput: "\u54BB\u54BB\u54BB~~"

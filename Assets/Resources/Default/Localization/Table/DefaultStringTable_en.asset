@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: DefaultStringTable_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 5e80da2051fa38046a7007e484d57578, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1137915555840
+    m_Localized: Start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1892911247360
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1961156767744
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 595758068625408
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 595945189109760
+    m_Localized: 'Language :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 596223678312448
+    m_Localized: 'Resolution :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 600497304989696
+    m_Localized: 'Start
+
+      Engine'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 600673348317184
+    m_Localized: 'Destination:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 637121447424000
+    m_Localized: Research List
+    m_Metadata:
+      m_Items: []
+  - m_Id: 637622784192512
+    m_Localized: Docking Shop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 663070134071296
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 663148202651648
+    m_Localized: Main Menu
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

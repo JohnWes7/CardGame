@@ -25,11 +25,13 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list:
+        _: 0
+        values:
         - zh
       editor_input: 
     values:
-      list:
+      _: 0
+      values:
       - "\u5B50\u5F39\u5236\u9020\u673AV1"
     editor_keyInput: zh
     editor_valueInput: "\u5B50\u5F39\u5236\u9020\u673AV1"
@@ -38,9 +40,11 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list: []
+        _: 0
+        values: []
       editor_input: 
     values:
-      list: []
+      _: 0
+      values: []
     editor_keyInput: 
     editor_valueInput: 

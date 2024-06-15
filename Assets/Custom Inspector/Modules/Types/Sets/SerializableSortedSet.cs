@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using System;
-using UnityEngine.Assertions;
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace CustomInspector
 {
@@ -124,7 +124,7 @@ namespace CustomInspector
         /// </summary>
         (int index, bool isSame) GetTheoreticalIndex(T item)
         {
-            if(item is null)
+            if (item is null)
             {
                 throw new ArgumentNullException("Item is null");
             }
@@ -185,22 +185,61 @@ namespace CustomInspector
                 };
             }
         }
-
-
-#if UNITY_EDITOR
-
-        /// <summary>
-        /// This function should fix all inputs from the user in the inspector when the default property drawer will be overwritten
-        /// </summary>
-        protected void CheckUserInputs()
+        public override T this[int index]
         {
+            get => values[index];
+            set
+            {
+                if (index > 0)
+                {
+                    switch (values[index - 1].CompareTo(value))
+                    {
+                        case < 0: // list[index-1] < value
+                            break;
+                        case 0: // list[middle] == value
+                            throw new ArgumentException($"Item '{value}' already existed in set at previous position");
+                        case > 0: // list[index-1] > value
+                            throw new ArgumentException($"Could not insert {value} at position {index} because element at previous position is greater");
+                    };
+                }
+                if (index + 1 < Count)
+                {
+                    switch (values[index + 1].CompareTo(value))
+                    {
+                        case < 0: // list[index+1] < value
+                            throw new ArgumentException($"Could not insert {value} at position {index} because element at next position is smaller");
+                        case 0: // list[index+1] == value
+                            throw new ArgumentException($"Item '{value}' already existed in set at previous position");
+                        case > 0: // list[index+1] > value
+                            break;
+                    };
+                }
+                values[index] = value;
+            }
+        }
+
+        protected override void Internal_OnDeserialization(object sender)
+        {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             for (int i = 0; i < values.Count - 1; i++)
             {
-                if (values[i].CompareTo(values[i + 1]) >= 0)
+                switch (values[i].CompareTo(values[i + 1]))
                 {
-                    Debug.LogException(new DataMisalignedException("values in SerializableSortedSet have to be ascending. You have to press Clear()"));
-                }
+                    case < 0: // list[i] < values[i + 1]
+                        break;
+                    case 0: // list[i] == values[i + 1]
+                        Debug.LogError($"DeserializationError: Duplicate Item found '{values[i]}' at position {i} and {i + 1}. Element removed at position {i + 1}");
+                        values.RemoveAt(i + 1);
+                        i--;
+                        break;
+                    case > 0: // list[i] > values[i + 1]
+                        Debug.LogError($"DeserializationError: Values were out of order. Values will be sorted.");
+                        values.Sort();
+                        Internal_OnDeserialization(sender);
+                        return;
+                };
             }
+#endif
         }
 
         void ICollection.CopyTo(Array array, int index)
@@ -224,7 +263,22 @@ namespace CustomInspector
                 array[i] = values[i];
             }
         }
-#endif
 
+#if UNITY_EDITOR
+
+        /// <summary>
+        /// This function should fix all inputs from the user in the inspector when the default property drawer will be overwritten
+        /// </summary>
+        protected void CheckUserInputs()
+        {
+            for (int i = 0; i < values.Count - 1; i++)
+            {
+                if (values[i].CompareTo(values[i + 1]) >= 0)
+                {
+                    Debug.LogException(new DataMisalignedException("values in SerializableSortedSet have to be ascending. You have to press Clear()"));
+                }
+            }
+        }
+#endif
     }
 }

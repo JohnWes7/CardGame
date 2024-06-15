@@ -5,10 +5,8 @@ using CustomInspector;
 
 public class ProjectileNormalBehaviorStg : AbstractProjectileBehaviorStgBase
 {
-    [SerializeField, ReadOnly]
-    private Projectile context;
-    [SerializeField, ReadOnly]
-    private float durationTimer;
+    [SerializeField] [ReadOnly] private Projectile context;
+    [SerializeField] [ReadOnly] private float durationTimer;
 
     public override void Initialize(object projectile)
     {
@@ -27,11 +25,9 @@ public class ProjectileNormalBehaviorStg : AbstractProjectileBehaviorStgBase
     public override void UpdatePreDeltaTime(float deltaTime)
     {
         durationTimer += deltaTime;
-        if (durationTimer > Projectile.PROJECTILE_DURATION)
-        {
-            context.Destroy();
-        }
-        context.transform.position += new Vector3(context.Direction.x, context.Direction.y) * context.ProjectileSO.speed * deltaTime;
+        if (durationTimer > Projectile.PROJECTILE_DURATION) context.Destroy();
+        context.transform.position += new Vector3(context.Direction.x, context.Direction.y) *
+                                      context.ProjectileSO.speed * deltaTime;
     }
 }
 
@@ -40,4 +36,3 @@ public abstract class AbstractProjectileBehaviorStgBase : MonoBehaviour, IProjec
     public abstract void Initialize(object args);
     public abstract void UpdatePreDeltaTime(float deltaTime);
 }
-

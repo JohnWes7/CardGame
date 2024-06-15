@@ -12,7 +12,10 @@ namespace CustomInspector.Editor
             IndentAttribute ia = (IndentAttribute)attribute;
             using (new EditorGUI.IndentLevelScope(ia.additionalIndentLevel))
             {
+                EditorGUI.BeginChangeCheck();
                 DrawProperties.PropertyField(position, label, property, true);
+                if (EditorGUI.EndChangeCheck())
+                    property.serializedObject.ApplyModifiedProperties();
             }
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)

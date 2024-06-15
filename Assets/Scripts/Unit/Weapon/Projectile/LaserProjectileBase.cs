@@ -12,9 +12,7 @@ public interface ILaserProjectile
 
 public abstract class LaserProjectileBase : Projectile, ILaserProjectile
 {
-    [SerializeField, ForceFill] private LineRenderer lineRenderer;
-
-
+    [SerializeField, ForceFill] protected LineRenderer lineRenderer;
 
     public virtual void DoDamage(AbstractTurret abstractTurret)
     {
@@ -27,6 +25,7 @@ public abstract class LaserProjectileBase : Projectile, ILaserProjectile
 
     public virtual void LaserUpdate(AbstractTurret turret, float deltaTime)
     {
+        // 之后可以把这个包装为一个 command 便于管理
         target = turret.GetTarget();
         lineRenderer.positionCount = 2;
         lineRenderer.SetPosition(0, turret.GetProjectileCreatePos());

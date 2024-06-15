@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: DefaultStringTable Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: DefaultStringTable
+  m_TableCollectionNameGuidString: 5e80da2051fa38046a7007e484d57578
+  m_Entries:
+  - m_Id: 1137915555840
+    m_Key: ui_start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1892911247360
+    m_Key: ui_setting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1961156767744
+    m_Key: ui_quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 595758068625408
+    m_Key: ui_settings_panel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 595945189109760
+    m_Key: ui_language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 596223678312448
+    m_Key: ui_resolution
+    m_Metadata:
+      m_Items: []
+  - m_Id: 600497304989696
+    m_Key: ui_start_engine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 600673348317184
+    m_Key: ui_destination
+    m_Metadata:
+      m_Items: []
+  - m_Id: 637121447424000
+    m_Key: ui_research_list
+    m_Metadata:
+      m_Items: []
+  - m_Id: 637622784192512
+    m_Key: ui_docking_shop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 663070134071296
+    m_Key: ui_back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 663148202651648
+    m_Key: ui_mainmenu
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 8692887393645625368
+  references:
+    version: 2
+    RefIds:
+    - rid: 8692887393645625368
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1717256936463

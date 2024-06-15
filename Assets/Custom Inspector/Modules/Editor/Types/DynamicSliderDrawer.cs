@@ -37,7 +37,7 @@ namespace CustomInspector.Editor
                         min.floatValue = defaultMin;
                     break;
                 case FixedSide.FixedMax:
-                    float defaultMax = (float)dv.FindRelative("defaultMax").GetValue(); 
+                    float defaultMax = (float)dv.FindRelative("defaultMax").GetValue();
                     if (max.floatValue != defaultMax)
                         max.floatValue = defaultMax;
                     break;
@@ -55,9 +55,9 @@ namespace CustomInspector.Editor
             }
 
             //Draw Label (with foldout)
-            GUIContent gc = new(property.name, property.tooltip);
+            label = PropertyValues.RepairLabel(label, property);
             position.height = EditorGUIUtility.singleLineHeight;
-            property.isExpanded = EditorGUI.Foldout(position, property.isExpanded, gc);
+            property.isExpanded = EditorGUI.Foldout(position, property.isExpanded, label);
             //Draw Slider
             SerializedProperty valueProperty = property.FindPropertyRelative("value");
             Rect sliderRect = new(x: position.x + EditorGUIUtility.labelWidth,
@@ -67,10 +67,13 @@ namespace CustomInspector.Editor
             EditorGUI.BeginChangeCheck();
             float res = EditorGUI.Slider(sliderRect, valueProperty.floatValue, min.floatValue, max.floatValue);
             if (EditorGUI.EndChangeCheck())
+            {
                 valueProperty.floatValue = res;
+                valueProperty.serializedObject.ApplyModifiedProperties();
+            }
 
 
-            
+
             if (property.isExpanded)
             {
                 using (new EditorGUI.IndentLevelScope(1))
@@ -80,18 +83,24 @@ namespace CustomInspector.Editor
                     {
                         position.y += position.height;
                         EditorGUI.BeginChangeCheck();
-                        res = Math.Min(max.floatValue, EditorGUI.FloatField(position, new GUIContent("Custom min", "Change the min value of the slider above"), min.floatValue));
+                        res = Math.Min(max.floatValue, EditorGUI.FloatField(position, new GUIContent("Custom Min", "Change the min value of the slider above"), min.floatValue));
                         if (EditorGUI.EndChangeCheck())
+                        {
                             min.floatValue = res;
+                            min.serializedObject.ApplyModifiedProperties();
+                        }
                     }
 
                     if (fixedSide != FixedSide.FixedMax)
                     {
                         position.y += position.height;
                         EditorGUI.BeginChangeCheck();
-                        res = Math.Max(min.floatValue, EditorGUI.FloatField(position, new GUIContent("Custom max", "Change the max value of the slider above"), max.floatValue));
+                        res = Math.Max(min.floatValue, EditorGUI.FloatField(position, new GUIContent("Custom Max", "Change the max value of the slider above"), max.floatValue));
                         if (EditorGUI.EndChangeCheck())
+                        {
                             max.floatValue = res;
+                            max.serializedObject.ApplyModifiedProperties();
+                        }
                     }
                 }
             }
@@ -110,7 +119,7 @@ namespace CustomInspector.Editor
             SerializedProperty max = property.FindPropertyRelative("max");
 
             float errorHeight = 0;
-            if(min.floatValue == max.floatValue)
+            if (min.floatValue == max.floatValue)
             {
                 errorHeight = DrawProperties.messageBoxHeight + DrawProperties.messageBoxStartSpacing;
             }

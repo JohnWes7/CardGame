@@ -1,7 +1,5 @@
 using CustomInspector.Extensions;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -18,7 +16,7 @@ namespace CustomInspector.Editor
             using (new NewIndentLevel(0))
             {
                 label = PropertyValues.RepairLabel(label, property);
-                var propertyType = property.propertyType;
+                SerializedPropertyType propertyType = property.propertyType;
                 if (propertyType == SerializedPropertyType.Integer)
                 {
                     EditorGUI.DelayedIntField(position, property, label);
@@ -31,17 +29,17 @@ namespace CustomInspector.Editor
                 {
                     EditorGUI.DelayedTextField(position, property, label);
                 }
-                else if (propertyType == SerializedPropertyType.Vector2Int
-                        || propertyType == SerializedPropertyType.Vector2
-                        || propertyType == SerializedPropertyType.Vector3Int
-                        || propertyType == SerializedPropertyType.Vector3)
+                else if (propertyType is SerializedPropertyType.Vector2Int
+                        or SerializedPropertyType.Vector2
+                        or SerializedPropertyType.Vector3Int
+                        or SerializedPropertyType.Vector3)
                 {
                     float labelWidth = EditorGUIUtility.labelWidth;
                     {
                         if (propertyType == SerializedPropertyType.Vector2Int)
                         {
                             Rect[] bodys = DivideByAndSetLabelWidth(DrawLabelGetBody(), 2);
-                            var v2i = property.vector2IntValue;
+                            Vector2Int v2i = property.vector2IntValue;
                             v2i.x = EditorGUI.DelayedIntField(bodys[0], "X", v2i.x);
                             v2i.y = EditorGUI.DelayedIntField(bodys[1], "Y", v2i.y);
                             property.vector2IntValue = v2i;
@@ -49,7 +47,7 @@ namespace CustomInspector.Editor
                         else if (propertyType == SerializedPropertyType.Vector2)
                         {
                             Rect[] bodys = DivideByAndSetLabelWidth(DrawLabelGetBody(), 2);
-                            var v2 = property.vector2Value;
+                            Vector2 v2 = property.vector2Value;
                             v2.x = EditorGUI.DelayedFloatField(bodys[0], "X", v2.x);
                             v2.y = EditorGUI.DelayedFloatField(bodys[1], "Y", v2.y);
                             property.vector2Value = v2;
@@ -57,7 +55,7 @@ namespace CustomInspector.Editor
                         else if (propertyType == SerializedPropertyType.Vector3Int)
                         {
                             Rect[] bodys = DivideByAndSetLabelWidth(DrawLabelGetBody(), 3);
-                            var v3i = property.vector3IntValue;
+                            Vector3Int v3i = property.vector3IntValue;
                             v3i.x = EditorGUI.DelayedIntField(bodys[0], "X", v3i.x);
                             v3i.y = EditorGUI.DelayedIntField(bodys[1], "Y", v3i.y);
                             v3i.z = EditorGUI.DelayedIntField(bodys[2], "Z", v3i.z);
@@ -66,15 +64,16 @@ namespace CustomInspector.Editor
                         else if (propertyType == SerializedPropertyType.Vector3)
                         {
                             Rect[] bodys = DivideByAndSetLabelWidth(DrawLabelGetBody(), 3);
-                            var v3 = property.vector3Value;
+                            Vector3 v3 = property.vector3Value;
                             v3.x = EditorGUI.DelayedFloatField(bodys[0], "X", v3.x);
                             v3.y = EditorGUI.DelayedFloatField(bodys[1], "Y", v3.y);
                             v3.z = EditorGUI.DelayedFloatField(bodys[2], "Z", v3.z);
                             property.vector3Value = v3;
                         }
                         else
+                        {
                             throw new Exception("Vector type not handled");
-                            
+                        }
 
                         Rect DrawLabelGetBody()
                         {
@@ -99,7 +98,7 @@ namespace CustomInspector.Editor
                                     rect = EditorGUI.IndentedRect(rect);
                                 }
                             }
-                            
+
                             return rect;
                         }
                         Rect[] DivideByAndSetLabelWidth(Rect r, int amount)
@@ -111,7 +110,7 @@ namespace CustomInspector.Editor
                             {
                                 x = r.x,
                                 y = r.y,
-                                width = (r.width - (amount - 1) * 5) / amount,
+                                width = (r.width - ((amount - 1) * 5)) / amount,
                                 height = r.height
                             };
                             return Enumerable.Range(0, amount)
@@ -125,6 +124,11 @@ namespace CustomInspector.Editor
                 {
                     DrawProperties.DrawPropertyWithMessage(position, label, property, $"Delayed2 (used on {propertyType}) is only available on numbers and strings", MessageType.Error);
                 }
+            }
+
+            if (Event.current.isKey && (Event.current.keyCode == KeyCode.Return || Event.current.keyCode == KeyCode.KeypadEnter))
+            {
+                property.serializedObject.ApplyModifiedProperties();
             }
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -140,12 +144,11 @@ namespace CustomInspector.Editor
                 case SerializedPropertyType.Vector2:
                 case SerializedPropertyType.Vector3Int:
                 case SerializedPropertyType.Vector3:
-                {
-                    if(EditorGUIUtility.wideMode)
-                        return EditorGUIUtility.singleLineHeight;
-                    else
-                        return 2 * EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-                }
+                    {
+                        return EditorGUIUtility.wideMode
+                            ? EditorGUIUtility.singleLineHeight
+                            : (2 * EditorGUIUtility.singleLineHeight) + EditorGUIUtility.standardVerticalSpacing;
+                    }
 
                 default:
                     return DrawProperties.GetPropertyWithMessageHeight(label, property);

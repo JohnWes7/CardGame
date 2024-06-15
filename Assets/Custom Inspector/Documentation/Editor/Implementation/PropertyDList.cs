@@ -7,6 +7,7 @@ namespace CustomInspector.Documentation
     public enum NewPropertyD
     {
         //attributes
+        AnimatorParameterAttribute,
         AsButtonAttribute,
         AsRangeAttribute,
         AssetsOnlyAttribute,
@@ -39,6 +40,7 @@ namespace CustomInspector.Documentation
         ReadOnlyAttribute,
         RequireTypeAttribute,
         RichTextAttribute,
+        SceneAttribute,
         SelfFillAttribute,
         ShowAssetReferenceAttribute,
         ShowIfAttribute,
@@ -64,10 +66,12 @@ namespace CustomInspector.Documentation
         FilePath,
         FolderPath,
         LineGraph,
+        ListContainer,
         MessageDrawer,
         ReorderableDictionary,
         SerializableDateTime,
         SerializableDictionary,
+        SerializableInterface,
         SerializableSortedDictionary,
         SerializableSet,
         SerializableSortedSet,
@@ -116,7 +120,7 @@ namespace CustomInspector.Documentation
         /// The y-position distance between two entrys
         /// </summary>
         public const float entryDistance = entrySpacing + entryHeight;
-        
+
 
         //------------------------------------------------------------------------------------------------------------
 
@@ -164,6 +168,7 @@ namespace CustomInspector.Documentation
         };
         static readonly List<NewPropertyD> attributes = new()
         {
+            NewPropertyD.AnimatorParameterAttribute,
             NewPropertyD.AsButtonAttribute,
             NewPropertyD.AsRangeAttribute,
             NewPropertyD.AssetsOnlyAttribute,
@@ -196,6 +201,7 @@ namespace CustomInspector.Documentation
             NewPropertyD.ReadOnlyAttribute,
             NewPropertyD.RequireTypeAttribute,
             NewPropertyD.RichTextAttribute,
+            NewPropertyD.SceneAttribute,
             NewPropertyD.SelfFillAttribute,
             NewPropertyD.ShowAssetReferenceAttribute,
             NewPropertyD.ShowIfAttribute,
@@ -223,10 +229,12 @@ namespace CustomInspector.Documentation
             NewPropertyD.FilePath,
             NewPropertyD.FolderPath,
             NewPropertyD.LineGraph,
+            NewPropertyD.ListContainer,
             NewPropertyD.MessageDrawer,
             NewPropertyD.ReorderableDictionary,
             NewPropertyD.SerializableDateTime,
             NewPropertyD.SerializableDictionary,
+            NewPropertyD.SerializableInterface,
             NewPropertyD.SerializableSortedDictionary,
             NewPropertyD.SerializableSet,
             NewPropertyD.SerializableSortedSet,

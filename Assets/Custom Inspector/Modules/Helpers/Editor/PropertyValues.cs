@@ -1,4 +1,3 @@
-using CustomInspector.Helpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -80,7 +79,7 @@ namespace CustomInspector.Extensions
                         Type type = DirtyValue.GetType(property);
                         IList res = (IList)EditProperties.ForceCreateInstance(type);
 
-                        if(!res.IsFixedSize) //list
+                        if (!res.IsFixedSize) //list
                         {
                             foreach (object item in property.GetAllProperties(false).Select(_ => _.GetValue()))
                             {
@@ -97,7 +96,7 @@ namespace CustomInspector.Extensions
                                     res[i] = props[i];
                                 }
                             }
-                            else if(type.IsArray) //we can fix if is array
+                            else if (type.IsArray) //we can fix if is array
                             {
                                 res = Array.CreateInstance(type.GetElementType(), props.Count);
                                 for (int i = 0; i < props.Count; i++)
@@ -108,7 +107,7 @@ namespace CustomInspector.Extensions
                             else //sometimes res.Count is zero due to 'property is null when loading'
                                 Debug.LogWarning($"{property.name}: {type} and property has different count: {res.Count} vs {props.Count}");
                         }
-                        
+
                         return res;
                     }
                     catch (Exception e)
@@ -136,11 +135,11 @@ namespace CustomInspector.Extensions
 
         public static IFindProperties GetOwnerAsFinder(this SerializedProperty property)
         {
-            if(property.propertyPath[^1] == ']') // is array element: something.here.Array.data[i]
+            if (property.propertyPath[^1] == ']') // is array element: something.here.Array.data[i]
             {
                 //last 2nd last dot
-                int i = property.propertyPath.Length -1;
-                while(property.propertyPath[i] != '.')
+                int i = property.propertyPath.Length - 1;
+                while (property.propertyPath[i] != '.')
                     i--;
                 i--;
                 while (property.propertyPath[i] != '.')
@@ -151,19 +150,20 @@ namespace CustomInspector.Extensions
             else //no array element
             {
                 int lastDot = property.propertyPath.LastIndexOf('.');
-                if(lastDot != -1)
+                if (lastDot != -1)
                 {
                     return new IFindProperties.ChildProp(property.serializedObject.FindProperty(property.propertyPath[..lastDot]));
                 }
                 else
                 {
                     return new IFindProperties.PropertyRoot(property.serializedObject);
-                }       
+                }
             }
         }
 
         public interface IFindProperties
         {
+            /// <returns>null if not found</returns>
             public abstract SerializedProperty FindPropertyRelative(string name);
             public abstract Type GetPropertyType();
             public abstract bool IsArray();
@@ -195,7 +195,7 @@ namespace CustomInspector.Extensions
                 {
                     get
                     {
-                        if(dv == null)
+                        if (dv == null)
                             dv = new DirtyValue(property);
                         return dv;
                     }
@@ -277,10 +277,11 @@ namespace CustomInspector.Extensions
 
         public static GUIContent RepairLabel(GUIContent label, SerializedProperty property)
         {
-            if (label.text == null) //even GUIContent.none has text = "" instead of null
-                label = new(property.name, property.tooltip);
-            Debug.Assert(label.text != null);
-            label.text = PropertyConversions.NameFormat(label.text);
+            if (label.text == null) // even GUIContent.none has text = "" instead of null
+                label = new(PropertyConversions.NameFormat(property.name), property.tooltip);
+            else
+                label.text = PropertyConversions.NameFormat(label.text);
+
             return label;
         }
         /// <summary>
@@ -322,11 +323,15 @@ namespace CustomInspector.Extensions
                 }
                 else if (fieldType.IsGenericType)
                 {
-                    if (fieldType.GetGenericTypeDefinition() == typeof(List<>)
-                        || fieldType.GetCustomAttribute<SerializableAttribute>() != null)
+                    if (fieldType.GetGenericTypeDefinition() == typeof(List<>))
                     {
                         var args = fieldType.GetGenericArguments();
-                        if (args.All(t => IsSerializable(t)))
+                        if (IsSerializable(args[0]))
+                            yield return field;
+                    }
+                    else
+                    {
+                        if (fieldType.GetCustomAttribute<SerializableAttribute>() != null)
                             yield return field;
                     }
                 }
@@ -343,7 +348,7 @@ namespace CustomInspector.Extensions
                 {
                     return !t.IsGenericType; //check if no valueTuple: only valuetuple is both generic and primitive
                 }
-                else if(t.IsEnum)
+                else if (t.IsEnum)
                 {
                     return true;
                 }

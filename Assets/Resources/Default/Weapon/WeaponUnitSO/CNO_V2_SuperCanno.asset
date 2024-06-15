@@ -27,11 +27,13 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list:
+        _: 0
+        values:
         - zh
       editor_input: 
     values:
-      list:
+      _: 0
+      values:
       - "CNO-V2-\u8D85\u7EA7\u5927\u70AE"
     editor_keyInput: zh
     editor_valueInput: "CNO-V2-\u8D85\u7EA7\u5927\u70AE"
@@ -40,9 +42,11 @@ MonoBehaviour:
     keys:
       info: 0
       values:
-        list: []
+        _: 0
+        values: []
       editor_input: 
     values:
-      list: []
+      _: 0
+      values: []
     editor_keyInput: zh
     editor_valueInput: "CNO-V2-\u8D85\u7EA7\u5927\u70AE"

@@ -1,63 +1,133 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Serialization;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace CustomInspector
 {
     [Serializable]
     public class ReorderableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
-#if UNITY_EDITOR
+        #region Inspector
+
         [MessageBox("Please add the [Dictionary]-attribute to this Dictionary for correct displaying")]
         [HideField, SerializeField] bool _;
-#endif
 
-        [SerializeField] List<SerializableKeyValuePair> keyValuePairs = new();
+        [SerializeField] List<SerializableKeyValuePair> keyValuePairs = new(); //HideInInspector caused bug on classes: could not aufklappen classes
+        #endregion
 
+        #region Constructors
         public ReorderableDictionary() : base()
         { }
+        public ReorderableDictionary(ReorderableDictionary<TKey, TValue> dict) : base()
+        {
+            foreach (KeyValuePair<TKey, TValue> item in dict)
+                this.Add(item.Key, item.Value);
+            ApplyValuesToList();
+        }
         public ReorderableDictionary(IDictionary<TKey, TValue> dictionary) : base(dictionary)
         {
-#if UNITY_EDITOR
-            keyValuePairs = dictionary.Select(_ => new SerializableKeyValuePair(_.Key, _.Value, true)).ToList();
-#endif
+            ApplyValuesToList();
         }
         public ReorderableDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection) : base(collection)
         {
-#if UNITY_EDITOR
-            // keyValuePairs.Clear();
-            foreach (KeyValuePair<TKey, TValue> item in collection)
-            {
-                if (!keyValuePairs.Any(x => x.key.Equals(item.Key)))
-                    keyValuePairs.Add(new SerializableKeyValuePair(item.Key, item.Value, true));
-                else    
-                    keyValuePairs.Add(new SerializableKeyValuePair(item.Key, item.Value, false));
-            }
-#endif
+            ApplyValuesToList();
+        }
+        public ReorderableDictionary(IEqualityComparer<TKey> comparer) : base(comparer)
+        { }
+        public ReorderableDictionary(int capacity) : base(capacity)
+        { }
+        public ReorderableDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer) : base(dictionary, comparer)
+        {
+            ApplyValuesToList();
+        }
+        public ReorderableDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IEqualityComparer<TKey> comparer) : base(collection, comparer)
+        {
+            ApplyValuesToList();
+        }
+        public ReorderableDictionary(int capacity, IEqualityComparer<TKey> comparer) : base(capacity, comparer)
+        { }
+        protected ReorderableDictionary(SerializationInfo info, StreamingContext context) : base(info, context)
+        { }
+
+        #endregion
+
+        [Conditional("UNITY_EDITOR")]
+        void ApplyValuesToList()
+        {
+            //take code changes
+            keyValuePairs = this.Select(_ => new SerializableKeyValuePair(_.Key, _.Value, true)).ToList();
         }
 
-        void ISerializationCallbackReceiver.OnBeforeSerialize() //from object to serialized
+        #region Serialization
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-            //Retrieve values from inner Dictionary
-            List<SerializableKeyValuePair> values = this.Select(_ => new SerializableKeyValuePair(_.Key, _.Value, true)).ToList();
+
         }
-        void ISerializationCallbackReceiver.OnAfterDeserialize() //from serialized to object
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
-            //Set values to inner Dictionary
+            // From serialized to object
+            // Set values to inner Dictionary
             base.Clear();
             foreach (var item in keyValuePairs)
             {
-                if(item.isValid)
+                if (item.isValid)
                 {
-                    if (this.TryAdd(item.key, item.value))
+                    if (base.TryAdd(item.key, item.value))
                         item.isValid = true;
                     else
                         item.isValid = false;
                 }
             }
         }
+        #endregion
+
+        #region Changes
+        public new void Clear()
+        {
+            base.Clear();
+            keyValuePairs.Clear();
+        }
+        public new bool TryAdd(TKey key, TValue value)
+        {
+            if (base.TryAdd(key, value))
+            {
+                keyValuePairs.Add(new(key, value, true));
+                return true;
+            }
+            return false;
+        }
+        public new void Add(TKey key, TValue value)
+        {
+            if (key == null)
+                throw new ArgumentNullException("Key cannot be null.");
+            if (!this.TryAdd(key, value))
+                throw new ArgumentException($"An item with the same key ({key}) has already been added.");
+        }
+        public new bool Remove(TKey key) => this.Remove(key, out TValue _);
+        public new bool Remove(TKey key, out TValue value)
+        {
+            if (base.Remove(key, out value))
+            {
+                int index = keyValuePairs.FindIndex(kvp => kvp.key.Equals(key));
+                Debug.Assert(index != -1, "Internal Error: Serialized representation was not syncronised with dictionaries values.");
+                keyValuePairs.RemoveAt(index);
+            }
+            return false;
+        }
+        public new TValue this[TKey key]
+        {
+            get => base[key];
+            set
+            {
+                base[key] = value;
+                keyValuePairs.Find(kvp => kvp.key.Equals(key)).value = value;
+            }
+        }
+        #endregion
 
         [System.Serializable]
         public class SerializableKeyValuePair

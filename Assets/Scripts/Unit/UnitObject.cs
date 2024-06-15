@@ -78,7 +78,7 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
 
     protected virtual void OnStop(SetUnitObjetEnableEvent obj)
     {
-        Debug.Log($"set {name} state{obj.value}");
+        Debug.Log($"set {name} state {obj.value}");
         this.enabled = obj.value;
     }
 
@@ -128,7 +128,7 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
         {
             DamageAmount = projectile.damageAmount,
             Position = transform.position,
-            Color = Color.red,
+            Color = LogDamageTextCommand.GetRedColor(),
             Duration = 1f,
             randomRadius = 2f
         };
@@ -177,7 +177,7 @@ public class UnitObject : MonoBehaviour, ITextInfoDisplay, IBeDamage, IBeRepairU
         {
             DamageAmount = amount,
             Position = transform.position,
-            Color = Color.green,
+            Color = LogDamageTextCommand.GetRepairColor(),
             Duration = 1f,
             randomRadius = 2f
         };

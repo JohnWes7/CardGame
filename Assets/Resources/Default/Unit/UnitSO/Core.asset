@@ -21,4 +21,32 @@ MonoBehaviour:
   - {x: 1, y: 1}
   spriteBLtoCMOffset: {x: 0.5, y: 0.5}
   maxHP: 200
-  itemCostList: []
+  cost: 0
+  nameInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        _: 0
+        values:
+        - zh
+      editor_input: 
+    values:
+      _: 0
+      values:
+      - "\u5305\u542B\u4E00\u5207\u4E4B\u6838\u5FC3"
+    editor_keyInput: zh
+    editor_valueInput: "\u5305\u542B\u4E00\u5207\u4E4B\u6838\u5FC3"
+  descriptionInfo:
+    info: 0
+    keys:
+      info: 0
+      values:
+        _: 0
+        values: []
+      editor_input: 
+    values:
+      _: 0
+      values: []
+    editor_keyInput: 
+    editor_valueInput: 

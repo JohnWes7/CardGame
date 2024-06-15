@@ -1,6 +1,4 @@
 using CustomInspector.Extensions;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,7 +12,11 @@ namespace CustomInspector.Editor
             Space2Attribute sa = (Space2Attribute)attribute;
             position.y += sa.pixels;
             position.height -= sa.pixels;
+
+            EditorGUI.BeginChangeCheck();
             DrawProperties.PropertyField(position, label, property);
+            if (EditorGUI.EndChangeCheck())
+                property.serializedObject.ApplyModifiedProperties();
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {

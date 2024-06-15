@@ -1,9 +1,9 @@
-using UnityEngine;
-using UnityEditor;
 using CustomInspector.Extensions;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 namespace CustomInspector.Editor
 {
@@ -15,7 +15,7 @@ namespace CustomInspector.Editor
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             ButtonAttribute ib = (ButtonAttribute)attribute;
-            
+
 
             if (ib.usePropertyAsParameter) //use field as input
             {
@@ -27,7 +27,7 @@ namespace CustomInspector.Editor
                 {
                     method = PropertyValues.GetMethodOnOwner(property, ib.methodPath, pTypes);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     DrawProperties.DrawPropertyWithMessage(position, label, property, e.Message, MessageType.Error);
                     return;
@@ -39,7 +39,7 @@ namespace CustomInspector.Editor
                 if (string.IsNullOrEmpty(label.text))
                     label.text = "param";
                 GUIContent inputLabel = new(PropertyConversions.NameFormat(label.text), label.tooltip + "\n-This will be passed in the function as paramter");
-                EditorGUIUtility.labelWidth = Mathf.Min( GUI.skin.label.CalcSize(inputLabel).x, position.width/4f);
+                EditorGUIUtility.labelWidth = Mathf.Min(GUI.skin.label.CalcSize(inputLabel).x, position.width / 4f);
 
                 Rect buttonRect = new(x: position.x, y: position.y,
                                     width: Math.Min(position.width - EditorGUIUtility.fieldWidth - horizontalSpacing, labelSize.x), //zumindest platz für ein field
@@ -55,7 +55,7 @@ namespace CustomInspector.Editor
                                             height: EditorGUIUtility.singleLineHeight);
 
                 float inputLabel_width = position.width - buttonRect.width - horizontalSpacing - inputRect.width;
-                if(inputLabel_width > 0)
+                if (inputLabel_width > 0)
                 {
                     Rect inputLabelRect = new(x: buttonRect.x + buttonRect.width + horizontalSpacing,
                                             y: position.y,
@@ -78,50 +78,14 @@ namespace CustomInspector.Editor
                             property.serializedObject.ApplyModifiedProperties();
                     }
                 }
-                
+
                 if (GUI.Button(buttonRect, buttonLabel))
                 {
                     object inputValue = property.GetValue();
                     Debug.Assert(inputValue.GetType() == dv.Type, $"Mismatched type: {inputValue.GetType()} not same type as {dv.Type}");
                     var input = new object[] { inputValue };
 
-                    if (Selection.count <= 1)
-                    {
-                        property.serializedObject.ApplyModifiedProperties();
-                        try
-                        {
-                            method.Invoke(parameters: input);
-                        }
-                        catch(Exception e) { Debug.LogException(e); }
-                        property.serializedObject.ApplyModifiedFields(true);
-                    }
-                    else //multiediting
-                    {
-                        var serializedObjects = property.serializedObject.targetObjects.Select(_ => new SerializedObject(_)).ToList();
-
-                        foreach (var so in serializedObjects)
-                        {
-                            so.ApplyModifiedProperties();
-                        }
-                        foreach (var so in serializedObjects)
-                        {
-                            InvokableMethod m = InvokableMethod.GetMethod(obj: new DirtyValue(so.targetObject, property.propertyPath.PrePath(false)),
-                                                                         methodPath: ib.methodPath, pTypes);
-                            try
-                            {
-                                m.Invoke();
-                            }
-                            catch (Exception e)
-                            {
-                                Debug.LogException(e);
-                            }
-                        }
-                        foreach (var so in serializedObjects)
-                        {
-                            so.ApplyModifiedFields(true);
-                            so.Dispose();
-                        }
-                    }
+                    InvokeMethodsOnAllSelected(method, parameterTypes: pTypes, parameters: input);
                 }
 
                 EditorGUIUtility.labelWidth = savedLabelWidth;
@@ -145,50 +109,9 @@ namespace CustomInspector.Editor
 
                 if (GUI.Button(buttonRect, buttonLabel))
                 {
-                    //Debug.Log("pressed button");
-                    if (Selection.count <= 1)
-                    {
-                        property.serializedObject.ApplyModifiedProperties();
-                        try
-                        {
-                            method.Invoke();
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.LogException(e);
-                        }
-                        property.serializedObject.ApplyModifiedFields(true);
-                    }
-                    else //multiediting
-                    {
-                        List<SerializedObject> serializedObjects = property.serializedObject.targetObjects.Select(_ => new SerializedObject(_)).ToList();
-
-                        foreach (var so in serializedObjects)
-                        {
-                            so.ApplyModifiedProperties();
-                        }
-                        foreach (var so in serializedObjects)
-                        {
-                            InvokableMethod m = InvokableMethod.GetMethod(obj: new DirtyValue(so.targetObject, property.propertyPath.PrePath(false)),
-                                                                         methodPath: ib.methodPath);
-                            try
-                            {
-                                m.Invoke();
-                            }
-                            catch (Exception e)
-                            {
-                                Debug.LogException(e);
-                            }
-                        }
-                        foreach (var so in serializedObjects)
-                        {
-                            so.ApplyModifiedFields(true);
-                            so.Dispose();
-                        }
-                    }
-                        
+                    InvokeMethodsOnAllSelected(method, null, null);
                 }
-                    
+
                 position.y += buttonRect.height + EditorGUIUtility.standardVerticalSpacing;
 
                 //And the field below
@@ -198,7 +121,49 @@ namespace CustomInspector.Editor
                 DrawProperties.PropertyField(position, propLabel, property, true);
             }
 
+            void InvokeMethodsOnAllSelected(InvokableMethod method, Type[] parameterTypes, object[] parameters)
+            {
+                // Debug.Log("pressed button " + Selection.count);
+                if (Selection.count <= 1)
+                {
+                    property.serializedObject.ApplyModifiedProperties();
+                    try
+                    {
+                        method.Invoke(parameters);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogException(e);
+                    }
+                    property.serializedObject.ApplyModifiedFields(true);
+                }
+                else //multiediting
+                {
+                    List<SerializedObject> serializedObjects = property.serializedObject.targetObjects.Select(_ => new SerializedObject(_)).ToList();
 
+                    foreach (var so in serializedObjects)
+                    {
+                        so.ApplyModifiedProperties();
+                    }
+                    foreach (var so in serializedObjects)
+                    {
+                        InvokableMethod m = PropertyValues.GetMethodOnOwner(so.FindProperty(property.propertyPath), ib.methodPath, parameterTypes);
+                        try
+                        {
+                            m.Invoke(parameters);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogException(e);
+                        }
+                    }
+                    foreach (var so in serializedObjects)
+                    {
+                        so.ApplyModifiedFields(true);
+                        so.Dispose();
+                    }
+                }
+            }
 
             (GUIContent buttonLabel, Vector2 size) GetButtonLabel()
             {
@@ -220,7 +185,7 @@ namespace CustomInspector.Editor
                 float buttonWidth = StylesConvert.ToButtonWidth(position.width, buttonLabel, ib.size);
                 float buttonHeight = StylesConvert.ToButtonHeight(ib.size);
 
-                return (buttonLabel, new Vector2 (buttonWidth, buttonHeight));
+                return (buttonLabel, new Vector2(buttonWidth, buttonHeight));
             }
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)

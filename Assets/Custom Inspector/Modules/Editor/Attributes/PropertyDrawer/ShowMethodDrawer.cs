@@ -1,9 +1,7 @@
-using UnityEditor;
-using UnityEngine;
 using CustomInspector.Extensions;
 using System;
-using System.Linq;
-using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
 namespace CustomInspector.Editor
 {
@@ -21,12 +19,12 @@ namespace CustomInspector.Editor
             {
                 getter = PropertyValues.GetMethodOnOwner(property, sm.getmethodPath);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 DrawProperties.DrawPropertyWithMessage(position, label, property, ex.Message, MessageType.Error);
                 return;
             }
-            
+
             //Check
             if (getter.ReturnType == typeof(void))
             {
@@ -97,26 +95,13 @@ namespace CustomInspector.Editor
         }
         public static string TryGetNameOuttaGetter(string getterName)
         {
-            if(getterName.Length >= 3
+            if (getterName.Length >= 3
                 && (getterName[0] == 'G' || getterName[0] == 'g')
                 && (getterName[1] == 'E' || getterName[1] == 'e')
                 && (getterName[2] == 'T' || getterName[2] == 't'))
-                    getterName = getterName[3..];
+                getterName = getterName[3..];
 
-            if(getterName.Length > 1)
-            {
-                List<char> newName = getterName.ToList();
-                for (int i = 1; i < newName.Count; i++)
-                {
-                    if (newName[i] >= 'A' && newName[i] <= 'Z') //uppercase
-                    {
-                        newName.Insert(i + 1, (char)(newName[i] + 'a' - 'A'));
-                        newName[i] = ' ';
-                    }
-                }
-                return String.Join(null, newName.Select(_ => _.ToString()));
-            }
-            else return getterName;
+            return PropertyConversions.NameFormat(getterName);
         }
     }
 }

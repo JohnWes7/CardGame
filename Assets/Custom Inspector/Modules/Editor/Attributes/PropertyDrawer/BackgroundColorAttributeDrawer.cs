@@ -19,7 +19,12 @@ namespace CustomInspector.Editor
 
             var savedLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = (EditorGUIUtility.labelWidth / position.width) * shrinked.width;
+
+            EditorGUI.BeginChangeCheck();
             DrawProperties.PropertyField(shrinked, label, property);
+            if (EditorGUI.EndChangeCheck())
+                property.serializedObject.ApplyModifiedProperties();
+
             EditorGUIUtility.labelWidth = savedLabelWidth;
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)

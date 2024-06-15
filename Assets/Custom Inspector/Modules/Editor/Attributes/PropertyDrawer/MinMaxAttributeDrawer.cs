@@ -29,7 +29,6 @@ namespace CustomInspector.Editor
             DoCapping();
 
 
-
             void DoCapping()
             {
                 if (DependsOnOtherProperty() || EditorGUI.EndChangeCheck())

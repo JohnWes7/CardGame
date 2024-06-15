@@ -1,9 +1,6 @@
 using UnityEngine;
-using UnityEditor;
 using System.Diagnostics;
 using System;
-using Debug = UnityEngine.Debug;
-using System.Linq;
 
 namespace CustomInspector
 {

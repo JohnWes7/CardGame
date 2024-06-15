@@ -1,7 +1,7 @@
-using UnityEngine;
-using UnityEditor;
 using CustomInspector.Extensions;
 using CustomInspector.Helpers;
+using UnityEditor;
+using UnityEngine;
 
 namespace CustomInspector.Editor
 {
@@ -15,8 +15,11 @@ namespace CustomInspector.Editor
         {
             MessageBoxAttribute hv = (MessageBoxAttribute)attribute;
 
+            EditorGUI.BeginChangeCheck();
             DrawProperties.DrawPropertyWithMessage(position, label, property, hv.content,
                 InternalEditorStylesConvert.ToUnityMessageType(hv.type));
+            if (EditorGUI.EndChangeCheck())
+                property.serializedObject.ApplyModifiedProperties();
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {

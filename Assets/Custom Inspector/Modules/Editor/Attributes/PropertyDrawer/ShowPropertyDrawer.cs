@@ -1,9 +1,6 @@
+using CustomInspector.Extensions;
 using UnityEditor;
 using UnityEngine;
-using CustomInspector.Extensions;
-using System;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace CustomInspector.Editor
 {
@@ -36,15 +33,17 @@ namespace CustomInspector.Editor
                 EditorGUI.BeginChangeCheck();
                 DrawProperties.PropertyField(propRect, propLabel, prop);
                 if (EditorGUI.EndChangeCheck())
-                {
                     prop.serializedObject.ApplyModifiedProperties();
-                }
             }
 
             //other
             propRect.y += propRect.height + EditorGUIUtility.standardVerticalSpacing;
             propRect.height = position.height - propRect.height - EditorGUIUtility.standardVerticalSpacing;
+
+            EditorGUI.BeginChangeCheck();
             DrawProperties.PropertyField(propRect, label, property);
+            if (EditorGUI.EndChangeCheck())
+                property.serializedObject.ApplyModifiedProperties();
         }
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {

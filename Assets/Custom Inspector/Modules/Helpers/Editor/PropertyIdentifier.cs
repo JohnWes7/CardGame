@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
 
 namespace CustomInspector.Helpers
 {
@@ -33,7 +31,7 @@ namespace CustomInspector.Helpers
 
         public override bool Equals(object obj)
         {
-            if(obj is PropertyIdentifier identifier)
+            if (obj is PropertyIdentifier identifier)
             {
                 return EqualityComparer<Type>.Default.Equals(targetObjectType, identifier.targetObjectType) &&
                         propertyPath == identifier.propertyPath;
@@ -46,16 +44,16 @@ namespace CustomInspector.Helpers
         }
         public static bool operator ==(PropertyIdentifier i1, PropertyIdentifier i2)
         {
-            if(i1 is null)
+            if (i1 is null)
                 return i2 is null;
-            else if(i2 is null)
+            else if (i2 is null)
                 return false;
-            
+
             return i1.targetObjectType == i2.targetObjectType
                 && i1.propertyPath == i2.propertyPath;
         }
 
-        
+
         public static bool operator !=(PropertyIdentifier i1, PropertyIdentifier i2)
         {
             if (i1 is null)

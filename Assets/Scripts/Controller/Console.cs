@@ -42,8 +42,6 @@ public class Console : MonoBehaviour
             //    Destroy(testgo);
             //}
         }
-
-        
     }
 
     public static TextMesh CreatText(string text, Vector3 localpostion, TextAnchor textAnchor = TextAnchor.MiddleCenter, Transform parent = null)

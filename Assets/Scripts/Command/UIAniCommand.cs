@@ -21,7 +21,11 @@ public class UIMoveCommand : AbstractCommand
     protected override void OnExecute()
     {
         rectTransform.localPosition = startPos;
-        var tweener = rectTransform.DOLocalMove(targetPos, duration).SetEase(ease);
+        var tweener = rectTransform.DOLocalMove(targetPos, duration)
+            .SetEase(ease)
+            .SetUpdate(true);
+
+        // 添加完成回调
         if (action != null)
         {
             tweener.OnComplete(action);
