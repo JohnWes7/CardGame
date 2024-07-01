@@ -12,6 +12,7 @@ public class Projectile : MonoBehaviour, IController
     [System.Serializable]
     public class ProjectileCreationParams
     {
+        public AbstractTurret abstractTurret;
         public ProjectileSO projectileSO;
         public Transform target;
         public Vector3 originPos = Vector3.zero;
@@ -20,7 +21,7 @@ public class Projectile : MonoBehaviour, IController
 
         public ProjectileCreationParams() { }
 
-        public ProjectileCreationParams(ProjectileSO projectileSO, Transform tgt, Vector3 origin, Vector2 moveDir, object crt = null)
+        public ProjectileCreationParams(ProjectileSO projectileSO, Transform tgt, Vector3 origin, Vector2 moveDir, AbstractTurret abstractTurret = null, object crt = null)
         {
             this.projectileSO = projectileSO;
             target = tgt;

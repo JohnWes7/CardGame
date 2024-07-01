@@ -16,6 +16,7 @@ public class OnFireScatterModify : OnFireModifyBase
         float a = scatterAngle / (scatterCount - 1);
 
         e.ProjectileCreationParams.Clear();
+
         // 以direction为中心，scatterAngle为角度，scatterCount为数量，生成散射方向
         for (int i = 0; i < scatterCount; i++)
         {
@@ -28,6 +29,7 @@ public class OnFireScatterModify : OnFireModifyBase
                 e.Target,
                 e.CreatePosition,
                 scatterDirection,
+                e.turret,
                 e.creator);
 
             // 加入到参数列表等待生成

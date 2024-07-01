@@ -246,8 +246,9 @@ GameObject:
   - component: {fileID: 3584089723893307666}
   - component: {fileID: 2123585911126705596}
   - component: {fileID: 4517580187053733832}
+  - component: {fileID: 3888437550469415573}
   m_Layer: 7
-  m_Name: GTL_V1_FixedNormal
+  m_Name: GTL_V1_F_FixedScatter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -340,7 +341,7 @@ MonoBehaviour:
   isOnline: 1
   ship:
     monoBehaviour: {fileID: 0}
-  turretSO: {fileID: 11400000, guid: 3d74bb3b127f1f6428ce5fc9f8b211c0, type: 2}
+  turretSO: {fileID: 11400000, guid: 3e7f3c6244bf6d94c8abb30c15f44263, type: 2}
   curProjectileNum: 0
   curMagazineData:
     magazineItem: {fileID: 0}
@@ -352,3 +353,18 @@ MonoBehaviour:
   isFire: 0
   turretFireStg:
     monoBehaviour: {fileID: 0}
+--- !u!114 &3888437550469415573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4609537882826921744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45eeea51feb2dbf4c877e8702d53fad4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  priority: 5
+  scatterAngle: 30
+  scatterCount: 3

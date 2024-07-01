@@ -68,6 +68,26 @@ MonoBehaviour:
     m_Localized: Main Menu
     m_Metadata:
       m_Items: []
+  - m_Id: 8232428398014464
+    m_Localized: '#Evacuation Successful#'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8233333725949952
+    m_Localized: '#Evacuation Failed#'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9084928181235712
+    m_Localized: 'I will sell basic turrets to obtain research funding for you to
+      study advanced turrets.
+
+      For details, please see  the<color=#5ACAFE>[</color><incr>research
+      list</> <color=#5ACAFE>]</color>.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9347271263875072
+    m_Localized: <size=30><bounce a=0.3>Thank you!</></size>
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

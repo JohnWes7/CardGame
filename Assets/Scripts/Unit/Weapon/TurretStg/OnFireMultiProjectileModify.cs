@@ -27,6 +27,7 @@ public class OnFireMultiProjectileModify : OnFireModifyBase
                 e.Target,
                 e.CreatePosition,
                 e.Direction,
+                e.turret,
                 e.creator);
 
             // 加入到参数列表等待生成

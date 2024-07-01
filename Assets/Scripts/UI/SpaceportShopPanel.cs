@@ -75,8 +75,6 @@ public class SpaceportShopPanel : SingletonUIBase<SpaceportShopPanel>, IControll
 
     public void RefreshShop()
     {
-        //SpaceportShopModel.Instance.RefreshShop();
-        //Debug.Log("刷新商店\n" + SpaceportShopModel.Instance.GetRefreshCost());
         this.SendCommand<RefreshShopCommand>();
     }
 

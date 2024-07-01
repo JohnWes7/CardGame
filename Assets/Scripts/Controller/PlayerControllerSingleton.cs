@@ -12,6 +12,5 @@ public class PlayerControllerSingleton : MonoBehaviour
     private void Awake()
     {
         instance = GetComponent<PlayerInput>();
-
     }
 }

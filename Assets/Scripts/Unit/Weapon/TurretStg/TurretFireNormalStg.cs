@@ -19,6 +19,7 @@ public class TurretFireNormalStg : TurretFireStrategyBase
             turretWeapon.GetTarget(), 
             turretWeapon.GetProjectileCreatePos(),
             direction,
+            turretWeapon,
             turretWeapon);
 
         // 触发事件 并等待事件修改参数
@@ -87,6 +88,7 @@ public class FireEventArgs : EventArgs
     public Transform Target;
     public Vector2 Direction;
     public ProjectileSO ProjectileSO;
+    public AbstractTurret turret;
     public List<Projectile.ProjectileCreationParams> ProjectileCreationParams = new List<Projectile.ProjectileCreationParams>();
     public object creator;
 

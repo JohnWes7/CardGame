@@ -38,7 +38,9 @@ public class TurretFireLaserStg : MonoBehaviour, ILaserFireStg
         isLaserOpen = true;
         timer = 0;
 
-        if (laserProjectile != null) laserProjectile.OpenLaser(turretWeapon);
+        if (laserProjectile != null) laserProjectile.OpenLaser(new LaserUpdateParams() { 
+            turret = turretWeapon
+        });
     }
 
     public void CloseLaser(AbstractTurret turretWeapon)
@@ -53,7 +55,10 @@ public class TurretFireLaserStg : MonoBehaviour, ILaserFireStg
         isLaserOpen = false;
         timer = 0;
 
-        if (laserProjectile != null) laserProjectile.CloseLaser(turretWeapon);
+        if (laserProjectile != null) laserProjectile.CloseLaser(new LaserUpdateParams()
+        {
+            turret = turretWeapon
+        });
     }
 
     public void LaserUpdate(AbstractTurret turretWeapon, float deltaTime)
@@ -86,7 +91,11 @@ public class TurretFireLaserStg : MonoBehaviour, ILaserFireStg
                 {
                     laserProjectile = temp as LaserProjectileBase;
                     timer += deltaTime;
-                    laserProjectile.LaserUpdate(turretWeapon, deltaTime);
+                    laserProjectile.LaserUpdate(new LaserUpdateParams()
+                    {
+                        turret = turretWeapon,
+                        deltaTime = deltaTime
+                    });
                 }
                 catch (Exception e)
                 {
@@ -104,14 +113,21 @@ public class TurretFireLaserStg : MonoBehaviour, ILaserFireStg
         }
 
         // 执行每一帧都需要的操作
-        laserProjectile.LaserUpdate(turretWeapon, deltaTime);
+        laserProjectile.LaserUpdate(new LaserUpdateParams()
+        {
+            turret = turretWeapon,
+            deltaTime = deltaTime
+        });
         timer += deltaTime;
 
         // 如果时间大于等于需要结算伤害的时间
         // 那么就结算伤害并且把时间调整为0
         if (timer >= turretWeapon.TurretSO.fireGap)
         {
-            laserProjectile.DoDamage(turretWeapon);
+            laserProjectile.DoDamage(new LaserUpdateParams()
+            {
+                turret = turretWeapon
+            });
             timer = 0;
             
             // 扣除弹药

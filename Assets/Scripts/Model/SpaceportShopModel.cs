@@ -52,7 +52,6 @@ public class SpaceportShopModel : Singleton<SpaceportShopModel>, ICanSendCommand
             // Choose a random unit from the list of unlocked units
             int index = Random.Range(0, allPool.Count);
 
-
             // Add the chosen unit to the list of current units
             // TODO: 计算价格上涨
             currentUnits.Add(new SpaceportShopProductInfo(allPool[index], Mathf.RoundToInt(allPool[index].cost * inflation)));
@@ -74,10 +73,22 @@ public class SpaceportShopModel : Singleton<SpaceportShopModel>, ICanSendCommand
             refreshCount++;
             GenerateCurUnits();
             Debug.Log("刷新商店成功\n" + GetRefreshCost());
+
+            // 触发刷新商店事件
+            this.SendCommand(new SendRefreshShopCommand(new SendRefreshShopCommand.RefreshShopEvent()
+            {
+                state = true
+            }));
         }
         else
         {
             Debug.Log("货币不足 无法刷新");
+            
+            // 触发刷新商店事件
+            this.SendCommand(new SendRefreshShopCommand(new SendRefreshShopCommand.RefreshShopEvent()
+            {
+                state = false
+            }));
         }
     }
 

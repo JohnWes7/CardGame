@@ -63,6 +63,42 @@ MonoBehaviour:
     m_Key: ui_mainmenu
     m_Metadata:
       m_Items: []
+  - m_Id: 8232428398014464
+    m_Key: ui_retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8233333725949952
+    m_Key: ui_failretry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9084928181235712
+    m_Key: ui_store_ai_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9347271263875072
+    m_Key: ui_store_ai_thx
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10866064322555904
+    m_Key: ui_store_ai_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10933011441610752
+    m_Key: ui_store_ai_buy_fail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10934247586885632
+    m_Key: ui_store_ai_unlock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10934581084385280
+    m_Key: ui_store_ai_refresh
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10942545413369856
+    m_Key: ui_store_ai_refresh_fail
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

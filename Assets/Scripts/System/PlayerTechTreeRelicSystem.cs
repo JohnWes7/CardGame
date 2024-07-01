@@ -48,14 +48,14 @@ public class PlayerTechTreeRelicSystem : AbstractSystem
         Reset();
 
         // 监听购买事件
-        EventCenter.Instance.AddEventListener("BoughtUnit", OnBoughtUnitChange);
+        this.RegisterEvent<BuyUnitFromShopCommand.BuyUnitFromShopEvent>(OnBoughtUnit);
     }
 
     protected override void OnDeinit()
     {
         base.OnDeinit();
         // 取消事件
-        EventCenter.Instance.RemoveEventListener("BoughtUnit", OnBoughtUnitChange);
+        this.UnRegisterEvent<BuyUnitFromShopCommand.BuyUnitFromShopEvent>(OnBoughtUnit);
     }
 
     public void Reset()
@@ -89,63 +89,61 @@ public class PlayerTechTreeRelicSystem : AbstractSystem
         Debug.Log($"PlayerTechTreeRelicSystem 遗物解锁系统初始化: OnInit techTreeUnlockProcessDict:\n {Johnwest.JWUniversalTool.DictToString(techTreeUnlockProcessDict)}");
     }
 
-    public void OnBoughtUnitChange(object sender, object e)
+    public void OnBoughtUnit(BuyUnitFromShopCommand.BuyUnitFromShopEvent args)
     {
-        Debug.Log("PlayerTechTreeRelicSystem 接收事件 BoughtUnitChange: \n 判断解锁新的炮塔");
-
-        if (e is SpaceportShopProductInfo spaceportShopProductInfo)
+        if (!args.state)
         {
-            // 把购买的单位加入购买字典 (相当于留一个收据)
-            if (boughtDict.ContainsKey(spaceportShopProductInfo.unitSO))
-            {
-                boughtDict[spaceportShopProductInfo.unitSO]++;
-            }
-            else
-            {
-                boughtDict.Add(spaceportShopProductInfo.unitSO, 1);
-            }
+            return;
+        }
 
-            // 判断能否解锁
-            foreach (var item in techTreeUnlockProcessDict)
-            {
-                if (!item.Value.active)
-                {
-                    bool unlock = item.Value.CheckUnlock(boughtDict);
-                    if (unlock)
-                    {
-                        Debug.Log($"PlayerTechTreeRelicSystem 解锁了新的炮塔: {item.Value.techTreeNode.unlockUnit.name}");
+        Debug.Log("PlayerTechTreeRelicSystem 接收事件 OnBoughtUnit: \n 判断解锁新的炮塔");
+        var spaceportShopProductInfo = args.info;
 
-                        // 解锁成功 添加到遗物背包 设置为已激活
-                        item.Value.active = true;
-                        PlayerModel.Instance.GetTechRelicInventory().AddTech(item.Value.techTreeNode);
-                    }
-
-                }
-            }
-
-            #region debug log
-            // debug 打印
-            Debug.Log($"PlayerTechTreeRelicSystem: bought dict:\n{Johnwest.JWUniversalTool.DictToString(boughtDict)}\n");
-            string debugStr = "";
-            foreach (var item in techTreeUnlockProcessDict)
-            {
-                // 获取每个科技的解锁情况
-                item.Value.techTreeNode.CheckUnlock(boughtDict, out Dictionary<UnitSO, int[]> outDict);
-                debugStr += $"{item.Value.techTreeNode.name}:\n";
-                foreach (KeyValuePair<UnitSO, int[]> pair in outDict)
-                {
-                    debugStr += $"{pair.Key.name} : {pair.Value[0]} / {pair.Value[1]}\n";
-                }
-            }
-            Debug.Log($"全部的解锁项:\n {debugStr}");
-            #endregion
+        // 把购买的单位加入购买字典 (相当于留一个收据)
+        if (boughtDict.ContainsKey(spaceportShopProductInfo.unitSO))
+        {
+            boughtDict[spaceportShopProductInfo.unitSO]++;
         }
         else
         {
-            Debug.LogWarning($"PlayerTechTreeRelicSystem 接收事件 BoughtUnitChang 参数传入错误: {e.GetType()}");
+            boughtDict.Add(spaceportShopProductInfo.unitSO, 1);
         }
+
+        // 判断能否解锁
+        foreach (var item in techTreeUnlockProcessDict)
+        {
+            if (!item.Value.active)
+            {
+                bool unlock = item.Value.CheckUnlock(boughtDict);
+                if (unlock)
+                {
+                    Debug.Log($"PlayerTechTreeRelicSystem 解锁了新的炮塔: {item.Value.techTreeNode.unlockUnit.name}");
+
+                    // 解锁成功 添加到遗物背包 设置为已激活
+                    item.Value.active = true;
+                    PlayerModel.Instance.GetTechRelicInventory().AddTech(item.Value.techTreeNode);
+                }
+
+            }
+        }
+
+        #region debug log
+        // debug 打印
+        Debug.Log($"PlayerTechTreeRelicSystem: bought dict:\n{Johnwest.JWUniversalTool.DictToString(boughtDict)}\n");
+        string debugStr = "";
+        foreach (var item in techTreeUnlockProcessDict)
+        {
+            // 获取每个科技的解锁情况
+            item.Value.techTreeNode.CheckUnlock(boughtDict, out Dictionary<UnitSO, int[]> outDict);
+            debugStr += $"{item.Value.techTreeNode.name}:\n";
+            foreach (KeyValuePair<UnitSO, int[]> pair in outDict)
+            {
+                debugStr += $"{pair.Key.name} : {pair.Value[0]} / {pair.Value[1]}\n";
+            }
+        }
+        Debug.Log($"全部的解锁项:\n {debugStr}");
+        #endregion
     }
-    
 
     public Dictionary<TechTreeNode, TechTreeUnlockProcess> GetTechTreeUnlockProcessDict()
     {

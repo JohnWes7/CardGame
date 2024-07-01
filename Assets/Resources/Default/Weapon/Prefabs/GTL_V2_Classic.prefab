@@ -53,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: faa41f00dab97214786f897045cdbc7d, type: 2}
+  - {fileID: 2100000, guid: 8fd8902736c3afa4ba320ce6961c0ca2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -74,8 +74,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 02293215fef58ae459d6f4640bf96330, type: 3}
-  m_Color: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 30a119c38080ba6409acb13dcc0c1b82, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -141,17 +141,17 @@ MonoBehaviour:
   ship:
     monoBehaviour: {fileID: 0}
   turretSO: {fileID: 11400000, guid: b7cbfc0c5c3d2664390d118209011496, type: 2}
+  curProjectileNum: 0
+  curMagazineData:
+    magazineItem: {fileID: 0}
+    projectileInOneMagazineNum: 0
+    projectileSO: {fileID: 0}
   turret: {fileID: 4499547161671649142}
   projectileCreatePos: {fileID: 6384172649007610716}
   target: {fileID: 0}
   timer: 0
   turretFireStg:
     monoBehaviour: {fileID: 0}
-  curProjectilNum: 0
-  curMagzineData:
-    magazineItem: {fileID: 0}
-    projectileInOneMagazineNum: 0
-    projectileSO: {fileID: 0}
 --- !u!114 &916000422785072504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,7 +288,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8b692038f4472954cabd92cf82118936, type: 2}
+  - {fileID: 2100000, guid: 71784ae26223f424399011243659d06b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -309,7 +309,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f9527e04f90d94440a788f4b022d56bf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1ad7de9abd565534a97612d4138a2aa0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

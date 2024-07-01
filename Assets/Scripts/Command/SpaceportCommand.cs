@@ -16,13 +16,17 @@ public class RefreshShopCommand : AbstractCommand
 }
 
 
-
-
 /// <summary>
 /// 购买单位命令
 /// </summary>
 public class BuyUnitFromShopCommand : AbstractCommand
 {
+    public struct BuyUnitFromShopEvent
+    {
+        public SpaceportShopProductInfo info;
+        public bool state;
+    }
+
     public int index;
 
     public BuyUnitFromShopCommand(int index)
@@ -46,10 +50,21 @@ public class BuyUnitFromShopCommand : AbstractCommand
             PlayerModel.Instance.CostCurrency(info.cost);   // 扣除货币
 
             Debug.Log("购买成功" + index + " : " + info.unitSO);
-            EventCenter.Instance.TriggerEvent("BoughtUnit", this, info);
+
+            // 触发购买事件
+            this.SendEvent(new BuyUnitFromShopEvent()
+            {
+                info = info,
+                state = true
+            });
         }
         else
         {
+            this.SendEvent(new BuyUnitFromShopEvent()
+            {
+                info = info,
+                state = false
+            });
             Debug.Log("货币不足");
         }
 
@@ -68,5 +83,28 @@ public class TryBuildUnitCommand : AbstractCommand
     protected override void OnExecute()
     {
 
+    }
+}
+
+/// <summary>
+/// 触发刷新商店事件
+/// </summary>
+public class SendRefreshShopCommand : AbstractCommand
+{
+    public struct RefreshShopEvent
+    {
+        public bool state; // 是否成功刷新商店
+    }
+
+    public RefreshShopEvent refreshShopEvent;
+
+    public SendRefreshShopCommand(RefreshShopEvent refreshShopEvent)
+    {
+        this.refreshShopEvent = refreshShopEvent;
+    }
+
+    protected override void OnExecute()
+    {
+        this.SendEvent(refreshShopEvent);
     }
 }

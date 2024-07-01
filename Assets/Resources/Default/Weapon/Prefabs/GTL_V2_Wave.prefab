@@ -58,17 +58,17 @@ MonoBehaviour:
   ship:
     monoBehaviour: {fileID: 0}
   turretSO: {fileID: 11400000, guid: a635fa57c0cb7b340a590ff4b26ec84a, type: 2}
+  curProjectileNum: 0
+  curMagazineData:
+    magazineItem: {fileID: 0}
+    projectileInOneMagazineNum: 0
+    projectileSO: {fileID: 0}
   turret: {fileID: 8070828844925664783}
   projectileCreatePos: {fileID: 1651098592742965797}
   target: {fileID: 0}
   timer: 0
   turretFireStg:
     monoBehaviour: {fileID: 0}
-  curProjectilNum: 0
-  curMagzineData:
-    magazineItem: {fileID: 0}
-    projectileInOneMagazineNum: 0
-    projectileSO: {fileID: 0}
 --- !u!114 &8664196817672738711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,8 +133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44053da560f70c74089cf24bafad2b36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  priority: 5
   targetCount: 9
-  provity: 1
 --- !u!114 &7025362441317238306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,8 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355ef518781b3ab45b78da459c5e2916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  priority: 5
   randomAngle: 40
-  provity: 5
 --- !u!1 &5975812247269229322
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,7 +202,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: faa41f00dab97214786f897045cdbc7d, type: 2}
+  - {fileID: 2100000, guid: 8fd8902736c3afa4ba320ce6961c0ca2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -223,8 +223,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 02293215fef58ae459d6f4640bf96330, type: 3}
-  m_Color: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 30a119c38080ba6409acb13dcc0c1b82, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -287,7 +287,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8b692038f4472954cabd92cf82118936, type: 2}
+  - {fileID: 2100000, guid: 71784ae26223f424399011243659d06b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -308,8 +308,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f9527e04f90d94440a788f4b022d56bf, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 1ad7de9abd565534a97612d4138a2aa0, type: 3}
+  m_Color: {r: 1, g: 0.47614014, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

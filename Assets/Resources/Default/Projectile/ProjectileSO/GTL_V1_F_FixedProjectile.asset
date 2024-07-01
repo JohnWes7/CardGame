@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1321d76951fb9a54ea33594c5cd8d7b9, type: 3}
-  m_Name: GTL_V1_FixedProjectile
+  m_Name: GTL_V1_F_FixedProjectile
   m_EditorClassIdentifier: 
   damage: 10
   speed: 45

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1321d76951fb9a54ea33594c5cd8d7b9, type: 3}
   m_Name: CNO_V2_Projectile_def
   m_EditorClassIdentifier: 
-  damage: 30
+  damage: 15
   speed: 40
   explosionRadius: 3
   penetration: 1

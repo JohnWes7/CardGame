@@ -67,6 +67,7 @@ public class ShipBuildController : MonoBehaviour, IController
         {
             GameObject temp = Instantiate(uiBuildPanelPrefab, GameObject.Find("Canvas").transform);
             uiBuildPanelInstance = temp.GetComponent<UIBase>();
+            uiBuildPanelInstance.Initialize();
             // 调整为第一个子物体
             temp.transform.SetAsFirstSibling();
         }

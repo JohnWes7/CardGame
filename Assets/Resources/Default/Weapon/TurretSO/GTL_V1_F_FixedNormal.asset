@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c3758f85d1d6443933d1ead0991caa, type: 3}
-  m_Name: LAS_V1_FixedLaser
+  m_Name: GTL_V1_F_FixedNormal
   m_EditorClassIdentifier: 
   magazineInfos:
   - magazineItem: {fileID: 11400000, guid: d8f761b087507b645add5635c9b47a3a, type: 2}
-    projectileInOneMagazineNum: 1
-    projectileSO: {fileID: 11400000, guid: 7d1175b37c8cedc429abe2143141c5cb, type: 2}
-  defaultProjectile: {fileID: 11400000, guid: 01d1efe2a9989fe489e183ceb57defdd, type: 2}
-  fireGap: 0.1
-  radius: 15
-  rotateSpeed: 20
+    projectileInOneMagazineNum: 10
+    projectileSO: {fileID: 11400000, guid: 6e0402a1685479d47903f196c3968d45, type: 2}
+  defaultProjectile: {fileID: 11400000, guid: 41bd8043fe21a094a80048725f0068a3, type: 2}
+  fireGap: 0.2
+  radius: 20
+  rotateSpeed: 0

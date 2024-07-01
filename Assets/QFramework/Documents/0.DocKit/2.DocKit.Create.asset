@@ -15,10 +15,10 @@ MonoBehaviour:
   CNName: "2.DocKit.\u521B\u5EFA"
   serializedNodes: []
   nodes:
-  - id: 0
-  - id: 1
-  - id: 2
-  - id: 3
+  - rid: 0
+  - rid: 1
+  - rid: 2
+  - rid: 3
   edges: []
   groups: []
   stackNodes: []
@@ -27,12 +27,13 @@ MonoBehaviour:
   serializedParameterList: []
   stickyNotes: []
   nodeInspectorReference: {fileID: 0}
-  position: {x: 43, y: -129, z: 0}
+  position: {x: 89, y: -66, z: 0}
   scale: {x: 0.7561437, y: 0.7561437, z: 1}
   mGraphCurrentID2Generate: 0
   references:
-    version: 1
-    00000000:
+    version: 2
+    RefIds:
+    - rid: 0
       type: {class: DocumentTitleNode, ns: QFramework, asm: DocKit.Editor}
       data:
         nodeCustomName: 
@@ -53,7 +54,7 @@ MonoBehaviour:
         ENText: In the Project view, right-click anywhere and select Create/DocKit/Create
           Document Graph- Create Document to Create the Document as follows
         Size: 1
-    00000001:
+    - rid: 1
       type: {class: DocumentImageNode, ns: QFramework, asm: DocKit.Editor}
       data:
         nodeCustomName: 
@@ -70,7 +71,7 @@ MonoBehaviour:
         nodeLock: 0
         CNTexture: {fileID: 2800000, guid: d3021fe69d0e84bde849785d4329cef0, type: 3}
         ENTexture: {fileID: 2800000, guid: d3021fe69d0e84bde849785d4329cef0, type: 3}
-    00000002:
+    - rid: 2
       type: {class: DocumentTitleNode, ns: QFramework, asm: DocKit.Editor}
       data:
         nodeCustomName: 
@@ -90,7 +91,7 @@ MonoBehaviour:
         ENText: Once created, press CTRL + E to see the document automatically displayed
           in the QFramework main window, as shown below
         Size: 1
-    00000003:
+    - rid: 3
       type: {class: DocumentImageNode, ns: QFramework, asm: DocKit.Editor}
       data:
         nodeCustomName: 

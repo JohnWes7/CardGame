@@ -43,6 +43,13 @@ public class GameManager : MonoBehaviour, IController
         {
             ResumeGame();
         });
+        // 注册核心被击毁事件
+        this.RegisterEvent<CoreUnitLostEvent>((args) =>
+        {
+            PauseGame();
+            GameOverPanel.Instance.OpenUI();
+            GameOverPanel.Instance.ChangeGameLostTitle();
+        });
     }
 
     private void Start()
@@ -57,7 +64,7 @@ public class GameManager : MonoBehaviour, IController
         {
             CheckTimeOut();
         }
-        
+
         SpawnEnemyPreFrame();
     }
 
@@ -90,16 +97,12 @@ public class GameManager : MonoBehaviour, IController
             // 如果没有下一关则表示游戏结束
             int stageCount = stageModel.GetAllStageSO().stageInfoSOs.Count;
             Debug.Log("下一关index stage index: " + stageindex + " 总共count数量 stageCount: " + stageCount);
-            
+
             if (stageindex >= stageCount)
             {
                 Debug.Log(" 游戏结束");
-                
-                //// TODO: 关闭player
-                //EventCenter.Instance.TriggerEvent("DisabalePlayer", this, null);
-                //// TODO: 关闭敌人
-                //EventCenter.Instance.TriggerEvent("DisableAllEnemy", this, null);
-                // 直接线暂停
+
+                // 直接暂停
                 PauseGame();
 
                 // 显示面板

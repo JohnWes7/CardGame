@@ -55,8 +55,8 @@ public class LangUtility : IUtility
         // 同步 localization
         SyncLocale(key);
 
-        Debug.Log($"current language : {key}");
-        Debug.Log($"SelectedLocale.LocaleName: {LocalizationSettings.SelectedLocale.LocaleName}");
+        // Debug.Log($"current language : {key}");
+        // Debug.Log($"SelectedLocale.LocaleName: {LocalizationSettings.SelectedLocale.LocaleName}");
 
         return key;
     }

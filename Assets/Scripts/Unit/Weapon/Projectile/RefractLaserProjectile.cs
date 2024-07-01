@@ -9,9 +9,9 @@ public class RefractLaserProjectile : LaserProjectileBase
     public float searchRadius = 10f;
     public List<MonoInterface<IBeDamage>> childBeDamages = new();
 
-    public override void DoDamage(AbstractTurret abstractTurret)
+    public override void DoDamage(LaserUpdateParams laserUpdateParams)
     {
-        base.DoDamage(abstractTurret);
+        base.DoDamage(laserUpdateParams);
 
         // 剔除不能使用的
         childBeDamages.RemoveAll(beDamage =>
@@ -20,13 +20,13 @@ public class RefractLaserProjectile : LaserProjectileBase
         // 遍历childBeDamages 并且对每一个IBeDamage执行伤害
         childBeDamages.ForEach(beDamage =>
         {
-            beDamage.InterfaceObj.BeDamage(new DamageInfo(projectileSO.damage, abstractTurret));
+            beDamage.InterfaceObj.BeDamage(new DamageInfo(projectileSO.damage, laserUpdateParams.turret));
         });
     }
 
-    public override void LaserUpdate(AbstractTurret turret, float deltaTime)
+    public override void LaserUpdate(LaserUpdateParams laserUpdateParams)
     {
-        target = turret.GetTarget();
+        target = laserUpdateParams.turret.GetTarget();
         if (target == null) return;
 
         // 剔除掉已有目标是 null 或者 目标超出范围的 在childBeDamages中的物体
@@ -67,7 +67,7 @@ public class RefractLaserProjectile : LaserProjectileBase
             lineRenderer = lineRenderer,
             positions = new List<Vector3>()
             {
-                turret.GetProjectileCreatePos(),
+                laserUpdateParams.turret.GetProjectileCreatePos(),
                 target.transform.position
             }
         };

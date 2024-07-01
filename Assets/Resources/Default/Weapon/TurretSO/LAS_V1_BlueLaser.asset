@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magazineInfos:
   - magazineItem: {fileID: 11400000, guid: d8f761b087507b645add5635c9b47a3a, type: 2}
-    projectileInOneMagazineNum: 10
+    projectileInOneMagazineNum: 2
     projectileSO: {fileID: 11400000, guid: 5d5d3814fe028b847a9ebb177fb3e960, type: 2}
   defaultProjectile: {fileID: 11400000, guid: 8027935fd7be4bb4495f6f91a2038edb, type: 2}
   fireGap: 0.1

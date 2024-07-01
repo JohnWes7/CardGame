@@ -26,7 +26,23 @@ public class BuildByInventoryPanelController : UIBase, IController
 
     public override void Initialize(object args = null)
     {
-        
+        // 在spaceportpanel 打开和关闭的时候 根据状态也 一同打开或者关闭
+        this.RegisterEvent<TriggerSpaceportShopPanelEventCommand.SpaceportPanelEvent>((args =>
+        {
+            if (args.toState)
+            {
+                OpenUI();
+            }
+            else
+            {
+                // 如果关闭的时候是build 那么就不关闭unit 面板
+                if (args.originMapName == "Build")
+                {
+                    return;
+                }
+                CloseUI();
+            }
+        })).UnRegisterWhenGameObjectDestroyed(gameObject);
     }
 
     public override void OpenUI()
@@ -34,10 +50,6 @@ public class BuildByInventoryPanelController : UIBase, IController
         base.OpenUI();
 
         Debug.Log("BuildByInventoryPanelController OpenUI");
-
-        //TODO: 通过事件监听来刷新UI
-        // ui 需要在打开的时候 每次inventory有变动就刷新一次 (通过事件)
-        // 并且每次打开的时候也初始化刷新
 
         // 不管ui是不是常驻的
         // 如果是只用这边接受事件 inventory变化后
@@ -48,7 +60,7 @@ public class BuildByInventoryPanelController : UIBase, IController
     {
         // 先删除 不需要显示的unit
         // 寻找不需要的unit
-        List<BuildByInventoryIcon> removeList =  new List<BuildByInventoryIcon>();
+        List<BuildByInventoryIcon> removeList = new List<BuildByInventoryIcon>();
         foreach (BuildByInventoryIcon item in iconList)
         {
             // 如果unit的数量是0或者不在inventory中 就销毁
@@ -61,7 +73,7 @@ public class BuildByInventoryPanelController : UIBase, IController
         }
         // 删除不需要的unit
         iconList.RemoveAll(x => removeList.Contains(x));
-        
+
 
 
         // 刷新所有unit

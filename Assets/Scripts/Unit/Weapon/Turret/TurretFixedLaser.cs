@@ -25,7 +25,9 @@ public class TurretFixedLaser : AbstractTurret
         base.SetState(value);
         if (!value && laserProjectileInstance != null)
         {
-            laserProjectileInstance.CloseLaser(this);
+            laserProjectileInstance.CloseLaser(new LaserUpdateParams() {
+                turret = this
+            });
         }
     }
 
@@ -101,7 +103,9 @@ public class TurretFixedLaser : AbstractTurret
             {
                 // Debug.Log("打开激光");
                 laserDamageTimer = 0;                
-                if (laserProjectileInstance != null) laserProjectileInstance.OpenLaser(this);
+                if (laserProjectileInstance != null) laserProjectileInstance.OpenLaser(new LaserUpdateParams() {
+                    turret = this
+                });
                 startFire = false;
             }
 
@@ -110,13 +114,20 @@ public class TurretFixedLaser : AbstractTurret
 
             // 激光更新
             laserDamageTimer += deltaTime;
-            if (laserProjectileInstance != null) laserProjectileInstance.LaserUpdate(this, deltaTime);
+            if (laserProjectileInstance != null) laserProjectileInstance.LaserUpdate(new LaserUpdateParams() { 
+                turret = this,
+                deltaTime = deltaTime,
+                dir = GetFireDir()
+            });
 
             // 如果timer 大于firegp 结算伤害
             if (laserDamageTimer >= turretSO.fireGap)
             {
                 // 结算伤害
-                if (laserProjectileInstance != null) laserProjectileInstance.DoDamage(this);
+                if (laserProjectileInstance != null) laserProjectileInstance.DoDamage(new LaserUpdateParams()
+                {
+                    turret = this
+                });
                 // 减少弹药
                 GetProjectile();
                 laserDamageTimer = 0;
@@ -124,7 +135,10 @@ public class TurretFixedLaser : AbstractTurret
         }
         else
         {
-            if (laserProjectileInstance != null) laserProjectileInstance.CloseLaser(this);
+            if (laserProjectileInstance != null) laserProjectileInstance.CloseLaser(new LaserUpdateParams()
+            {
+                turret = this
+            });
         }
     }
 
@@ -169,6 +183,12 @@ public class TurretFixedLaser : AbstractTurret
 
     protected override void OnDrawGizmosSelected()
     {
+        // 如果turretSO为空则不绘制
+        if (turretSO == null)
+        {
+            return;
+        }
+
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, turretSO.radius);
 

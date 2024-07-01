@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: zh
   m_SharedData: {fileID: 11400000, guid: 5e80da2051fa38046a7007e484d57578, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 77880642474606594
   m_TableData:
   - m_Id: 1137915555840
     m_Localized: "\u51FA\u53D1"
@@ -66,6 +67,51 @@ MonoBehaviour:
     m_Localized: "\u4E3B\u754C\u9762"
     m_Metadata:
       m_Items: []
+  - m_Id: 8232428398014464
+    m_Localized: "#\u6210\u529F\u64A4\u79BB\u533A\u57DF#"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8233333725949952
+    m_Localized: "#\u64A4\u79BB\u533A\u57DF\u5931\u8D25#"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9084928181235712
+    m_Localized: "\u6211\u5C06\u552E\u5356\u521D\u7EA7\u70AE\u5854\u83B7\u53D6\u7814\u7A76\u7ECF\u8D39\n\u7528\u6765\u7ED9\u4F60\u7814\u7A76\u9AD8\u7EA7\u70AE\u5854\n\u8BE6\u60C5\u8BF7\u89C1<color=#5ACAFE>[</color>
+      <incr>\u7814\u7A76\u6E05\u5355</> <color=#5ACAFE>]</color>."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9347271263875072
+    m_Localized: "<size=30><bounce a=0.3>\u8C22\u8C22\u60E0\u987E!</></size>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10866064322555904
+    m_Localized: "\u8D2D\u4E70\u7EC4\u4EF6,\u4E5F\u662F\u8D44\u52A9<color=#5ACAFE><wave
+      a=0.3>\u672A\u6765</></color>!\n\u5F15\u7528\u81EA - <\u5B87\u5B99\u884C\u5546\u5FC5\u5907\u8BDD\u672F
+      \u7B2C114\u6761>\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10933011441610752
+    m_Localized: "\u8D2D\u4E70<wiggle a=0.3>\u5931\u8D25</>\n\u8BF7\u5728\u4F60\u7684\u7269\u8D28\u662F\u5426\u8DB3\u591F"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10934247586885632
+    m_Localized: "\u6210\u529F\u89E3\u9501: "
+    m_Metadata:
+      m_Items:
+      - rid: 77880642474606594
+  - m_Id: 10934581084385280
+    m_Localized: "\u6B63\u5728\u91CD\u65B0\u914D\u7F6E\u8D27\u7269......\n\u8D27\u7269\u914D\u7F6E\u6210\u529F."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10942545413369856
+    m_Localized: "\u6B63\u5728\u91CD\u65B0\u914D\u7F6E\u8D27\u7269......\n\u65E0\u6CD5\u91CD\u65B0\u914D\u7F6E:
+      <wiggle a=0.3>FE\u4E0D\u8DB3</>"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 77880642474606594
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00704de7a3d82600

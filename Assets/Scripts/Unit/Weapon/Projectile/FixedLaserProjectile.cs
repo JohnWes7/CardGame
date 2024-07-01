@@ -8,13 +8,13 @@ using System.ComponentModel;
 /// </summary>
 public class FixedLaserProjectile : LaserProjectileBase
 {
-    public override void DoDamage(AbstractTurret abstractTurret)
+    public override void DoDamage(LaserUpdateParams laserUpdateParams)
     {
         // 通过射线检测调整距离
         RaycastHit2D hit = Physics2D.Raycast(
-            abstractTurret.GetProjectileCreatePos(),
-            abstractTurret.GetFireDir(),
-            abstractTurret.TurretSO.radius,
+            laserUpdateParams.turret.GetProjectileCreatePos(),
+            laserUpdateParams.turret.GetFireDir(),
+            laserUpdateParams.turret.TurretSO.radius,
             projectileSO.targetLayer
         );
         
@@ -25,13 +25,13 @@ public class FixedLaserProjectile : LaserProjectileBase
         }
     }
 
-    public override void LaserUpdate(AbstractTurret turret, float deltaTime)
+    public override void LaserUpdate(LaserUpdateParams laserUpdateParams)
     {
         // 通过射线检测调整距离
         RaycastHit2D hit = Physics2D.Raycast(
-            turret.GetProjectileCreatePos(),
-            turret.GetFireDir(),
-            turret.TurretSO.radius,
+            laserUpdateParams.turret.GetProjectileCreatePos(),
+            laserUpdateParams.turret.GetFireDir(),
+            laserUpdateParams.turret.TurretSO.radius,
             projectileSO.targetLayer
         );
 
@@ -41,7 +41,7 @@ public class FixedLaserProjectile : LaserProjectileBase
             target = hit.collider.transform;
 
             lineRenderer.positionCount = 2;
-            lineRenderer.SetPosition(0, turret.GetProjectileCreatePos());
+            lineRenderer.SetPosition(0, laserUpdateParams.turret.GetProjectileCreatePos());
             lineRenderer.SetPosition(1, hit.point);
         }
         else
@@ -49,8 +49,8 @@ public class FixedLaserProjectile : LaserProjectileBase
             target = null;
 
             lineRenderer.positionCount = 2;
-            lineRenderer.SetPosition(0, turret.GetProjectileCreatePos());
-            lineRenderer.SetPosition(1, turret.GetProjectileCreatePos() + (Vector3)(turret.GetFireDir() * turret.TurretSO.radius));
+            lineRenderer.SetPosition(0, laserUpdateParams.turret.GetProjectileCreatePos());
+            lineRenderer.SetPosition(1, laserUpdateParams.turret.GetProjectileCreatePos() + (Vector3)(laserUpdateParams.turret.GetFireDir() * laserUpdateParams.turret.TurretSO.radius));
         }
     }
 }

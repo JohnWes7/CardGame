@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1321d76951fb9a54ea33594c5cd8d7b9, type: 3}
-  m_Name: LAS_V1_FixedProjectile
+  m_Name: GTL_V1_F_FixedProjectile_def
   m_EditorClassIdentifier: 
-  damage: 8
-  speed: 0
+  damage: 5
+  speed: 45
   explosionRadius: 0
   penetration: 1
-  prefab: {fileID: 292520320485557527, guid: cb1743a176136c64d8f2c4a19914ac2c, type: 3}
+  prefab: {fileID: 292520320485557527, guid: fa04e87d85509394cadbee6664743700, type: 3}
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
